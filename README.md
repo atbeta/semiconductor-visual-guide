@@ -5,6 +5,11 @@
 
 **现在有 4 章**：02 晶体管、04 光刻、12 先进结构、22 可靠性。纯静态站点，无构建步骤、无外部依赖。
 
+- 线上：<https://semiconductor-visual-guide.vercel.app>
+- 源码：<https://github.com/atbeta/semiconductor-visual-guide>
+
+推 `main` 即触发 Vercel 生产部署（Git 已连接）；也可手动 `vercel deploy --prod`。
+
 ## 怎么打开
 
 ```bash
