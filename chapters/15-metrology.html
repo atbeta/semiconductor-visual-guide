@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 15 章 · 测量与检测 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 15 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 4 · 品质与良率</div>
+    <h1>测量与检测：工厂的眼睛</h1>
+    <p class="lede">结构只有几十纳米，肉眼看不见。每走完关键一步，都要靠设备回答两个问题：数值对不对（测量），以及有没有不该出现的东西（检测）。</p>
+    <div class="badges">
+      <span class="badge on">缺陷检测四步</span>
+      <span class="badge">测量 vs 检测</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>测量是数字，检测是图</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">测量 Metrology</h3>
+        <p class="caption" style="margin:0 0 8px">量出具体数值：膜厚、线宽、套刻误差、方块电阻。结果是一组数，用来判断「在不在范围内」。</p>
+        <p class="caption" style="margin:0;color:var(--faint)">例：CD-SEM 量线宽、椭偏仪量膜厚、四探针量方块电阻。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">检测 Inspection</h3>
+        <p class="caption" style="margin:0 0 8px">在整片晶圆上找不该出现的东西：微粒、刮伤、图形桥接。结果是一张标出位置的分布图。</p>
+        <p class="caption" style="margin:0;color:var(--faint)">例：明场/暗场光学扫描、电子束检测、复检 SEM。</p>
+      </div>
+    </div>
+    <p class="note"><b>现场都叫「测量」：</b>但一个产出数字，一个产出图。把两者混在一起讲，很容易搞错「这站到底在干嘛」。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>检测四步：从扫一片到看清一颗</h2>
+    <p class="sub">每颗裸片本该长得一模一样，所以「和隔壁不一样」就是线索。点步骤，看这台设备怎么把一颗微粒找出来。</p>
+
+    <div class="card">
+      <div class="steps" id="steps"></div>
+      <div class="stepHead">
+        <h3><span id="stepTitle">全片扫描</span><span class="stepCount"><b id="stepIdx">1</b> / 4</span></h3>
+        <p id="stepDesc">光学或电子束扫过整片晶圆，记录每一颗裸片的影像。</p>
+      </div>
+
+      <div class="grid2 asym">
+        <div>
+          <svg id="wafer" viewBox="0 0 420 420" role="img" aria-label="缺陷检测流程示意"></svg>
+        </div>
+        <div>
+          <div class="stat" style="grid-template-columns:1fr;margin-top:0">
+            <div><b id="defCount">0</b><small>已标记的差异点</small></div>
+            <div><b id="modeName">扫描中</b><small>当前模式</small></div>
+          </div>
+          <p class="note" id="stepNote" style="font-size:13.5px">
+            扫描时设备并不「认识」缺陷，它只是把每一颗裸片的影像存下来，等下一步做比对。
+          </p>
+        </div>
+      </div>
+
+      <div class="toolbar" style="margin-top:12px">
+        <button id="next">下一步 →</button>
+        <button id="replay">↺ 重来</button>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>常见的测量项目</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>量什么</th><th>怎么量</th><th>常见时机</th></tr></thead>
+        <tbody>
+          <tr><td>膜厚</td><td>打光、分析反射光的变化</td><td>薄膜沉积、CMP 之后</td></tr>
+          <tr><td>线宽 CD</td><td>CD-SEM，用电子显微镜从上方量</td><td>光刻、刻蚀之后</td></tr>
+          <tr><td>立体轮廓</td><td>OCD：分析散射光，搭配模型反推形状</td><td>先进结构的关键步骤</td></tr>
+          <tr><td>套刻误差</td><td>量上下两层的对准标记</td><td>光刻之后</td></tr>
+          <tr><td>方块电阻</td><td>四探针接触表面</td><td>注入、退火、金属沉积之后</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note cyan"><b>量测图形放在切割道：</b>很多测量不在真正的电路上做，而是在裸片之间的切割道放专门设计的测试结构——不碰电路，结果也更稳。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">04</span>抽样与破坏性分析</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">抽样：量多少才够</h3>
+        <p class="caption" style="margin:0">全量测量会塞爆量测机台、拖长周期。所以只抽部分批次、部分晶圆、部分位置。工艺稳定就降比例，新工艺/刚保养/出过问题就提高。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">破坏性分析</h3>
+        <p class="caption" style="margin:0">剖面、每层厚度与形状，必须切开才看得到。会毁掉晶圆，所以只用于工艺开发与失效分析。</p>
+      </div>
+    </div>
+    <p class="note red"><b>量测设备本身也要被管：</b>两台机台量同一片得到不同结果，所有工艺判断都会跟着错。所以要定期校正、做机台间匹配（GR&amp;R）。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>测量产出数字，检测产出缺陷分布图，用途不同。</li>
+      <li>缺陷检测靠「相邻裸片互相比对」找差异，再用 SEM 复检确认种类。</li>
+      <li>不是每个缺陷都致命，会造成失效的才叫 Killer Defect。</li>
+      <li>工厂靠抽样控制量测成本与风险。</li>
+      <li>量测设备本身必须校正与匹配，否则数据全部不可信。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="14-process-nodes.html">← 14 「几纳米」是什么意思</a>
+    <a class="next" href="16-yield-analysis.html">16 良率与失效分析 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+    <p>源码：<a href="https://github.com/atbeta/semiconductor-visual-guide">atbeta/semiconductor-visual-guide</a> · 推 main 自动部署到 Vercel。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+  .steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .steps button{font-size:12.5px;padding:5px 11px}
+  .stepHead h3{margin:0;font-size:17px;display:flex;align-items:baseline;gap:10px}
+  .stepCount{margin-left:auto;font-size:12px;color:var(--dim);font-weight:400}
+  .stepCount b{color:var(--amber);font-variant-numeric:tabular-nums}
+  .stepHead p{margin:4px 0 12px;color:var(--dim);font-size:14px}
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const CX = 210, CY = 210, R = 170;
+
+/* 生成晶圆上的裸片网格 */
+const DIE = 34, GAP = 4;
+const dies = [];
+for (let y = -R; y < R; y += DIE + GAP) {
+  for (let x = -R; x < R; x += DIE + GAP) {
+    const cx = x + DIE / 2, cy = y + DIE / 2;
+    if (Math.hypot(cx, cy) + DIE * 0.55 < R) dies.push({ x: CX + x, y: CY + y });
+  }
+}
+
+/* 造几个缺陷：位置在特定裸片上 */
+const DEFECTS = [
+  { i: 12, kind: 'particle' }, { i: 22, kind: 'scratch' },
+  { i: 31, kind: 'particle' }, { i: 35, kind: "bridge" }
+];
+
+const STEPS = [
+  { t:'全片扫描', d:'光学或电子束扫过整片晶圆，记录每一颗裸片的影像。',
+    n:'扫描时设备并不「认识」缺陷，它只是把每一颗裸片的影像存下来，等下一步做比对。', mode:'扫描中' },
+  { t:'比对相邻裸片', d:'把每一颗裸片和它旁边那颗叠在一起比，找出不一样的地方。',
+    n:'这是整条检测链的核心：不靠「缺陷长什么样」，而靠「和邻居不一样」。', mode:'比对中' },
+  { t:'标出差异', d:'把差异点标在晶圆图上，得到一张缺陷分布图。',
+    n:'分布图的形状本身就是线索：环状、刮痕、重复图案——第 16 章会讲怎么读。', mode:'标记完成' },
+  { t:'SEM 复检', d:'用电子显微镜给差异点拍近照，判断它是微粒、刮伤还是图形桥接。',
+    n:'复检决定「这颗缺陷是不是致命的」。分布图告诉你哪里有问题，复检告诉你是什么问题。', mode:'复检中' }
+];
+
+let step = 0;
+
+function draw() {
+  const svg = $('#wafer');
+  const defs = DEFECTS.slice(0, step >= 2 ? 4 : 0);
+  const showCompare = step === 1;
+  const showSem = step === 3;
+
+  let html = `
+    <circle cx="${CX}" cy="${CY}" r="${R + 12}" fill="var(--card2)" stroke="var(--line)" stroke-width="2"/>
+    <g>
+  `;
+  dies.forEach((d, i) => {
+    const isDef = defs.some(x => x.i === i);
+    html += `<rect x="${d.x}" y="${d.y}" width="${DIE}" height="${DIE}" rx="2"
+      fill="${isDef ? 'var(--red)' : 'var(--green)'}" opacity="${isDef ? .85 : .28}"/>`;
+  });
+  html += `</g>`;
+
+  if (showCompare) {
+    const a = dies[22], b = dies[23];
+    [a, b].forEach((d, k) => {
+      html += `<rect x="${d.x - 3}" y="${d.y - 3}" width="${DIE + 6}" height="${DIE + 6}" rx="4"
+        fill="none" stroke="${k === 0 ? 'var(--red)' : 'var(--cyan)'}" stroke-width="2.5"/>`;
+    });
+    html += `<text x="${a.x + 60}" y="${a.y - 12}" class="lbl" fill="var(--red)">有缺陷</text>
+             <text x="${b.x + 60}" y="${b.y - 12}" class="lbl" fill="var(--cyan)">正常（参考）</text>`;
+  }
+
+  if (step === 0) {
+    html += `<line x1="${CX - R}" y1="${CY - R}" x2="${CX - R}" y2="${CY + R}" stroke="var(--amber)" stroke-width="3" opacity=".8">
+      <animate attributeName="x1" values="${CX - R};${CX + R};${CX - R}" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="x2" values="${CX - R};${CX + R};${CX - R}" dur="3s" repeatCount="indefinite"/>
+    </line>`;
+  }
+
+  if (showSem) {
+    html += `<circle cx="${dies[22].x + DIE / 2}" cy="${dies[22].y + DIE / 2}" r="62" fill="var(--bg)" stroke="var(--amber)" stroke-width="2"/>
+      <circle cx="${dies[22].x + DIE / 2 - 8}" cy="${dies[22].y + DIE / 2}" r="14" fill="#94a3b8" opacity=".85"/>
+      <circle cx="${dies[22].x + DIE / 2 + 14}" cy="${dies[22].y + DIE / 2 + 10}" r="9" fill="#94a3b8" opacity=".7"/>
+      <text x="${dies[22].x + DIE / 2}" y="${dies[22].y + DIE / 2 + 86}" class="lbl" text-anchor="middle">SEM 视角：表面微粒</text>`;
+  }
+
+  svg.innerHTML = html;
+}
+
+function pick(i) {
+  step = i;
+  const s = STEPS[i];
+  $('#stepTitle').textContent = s.t;
+  $('#stepDesc').textContent = s.d;
+  $('#stepNote').textContent = s.n;
+  $('#stepIdx').textContent = i + 1;
+  $('#modeName').textContent = s.mode;
+  $('#defCount').textContent = i >= 2 ? DEFECTS.length : 0;
+  document.querySelectorAll('#steps button').forEach((b, k) => b.setAttribute('aria-pressed', k === i));
+  draw();
+}
+
+const btns = $('#steps');
+STEPS.forEach((s, i) => {
+  const b = document.createElement('button');
+  b.textContent = (i + 1) + ' ' + s.t;
+  b.onclick = () => pick(i);
+  btns.appendChild(b);
+});
+
+$('#next').onclick = () => pick((step + 1) % STEPS.length);
+$('#replay').onclick = () => pick(0);
+
+const q = new URLSearchParams(location.search);
+pick(q.get('s') ? Math.min(3, Math.max(0, +q.get('s') - 1)) : 0);
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
