@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 19 章 · 晶圆测试 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 19 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 5 · 后段：测试与封装</div>
+    <h1>晶圆测试：一颗一颗扎针</h1>
+    <p class="lede">前段做完，晶圆上还没有「芯片」，只有一片还没切开的裸片。切割之前先测一遍：哪些是好的、哪些该丢。这就是 CP。</p>
+    <div class="badges">
+      <span class="badge on">逐颗探针测试</span>
+      <span class="badge">Bin 与良率</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>WAT 与 CP：工艺成绩单 vs 产品体检</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">WAT · 切割道上的测试结构</h3>
+        <p class="caption" style="margin:0">在裸片之间的切割道放专门的小结构（晶体管、电阻、通孔链），用探针量它们的电性。查的是「工艺做得对不对」。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">CP · 每一颗裸片</h3>
+        <p class="caption" style="margin:0">探针卡逐颗扎在焊盘上，测功能。查的是「这颗芯片能不能用」。结果就是第 16 章那张晶圆图。</p>
+      </div>
+    </div>
+    <p class="note red"><b>WAT 全过 ≠ 每颗都好：</b>WAT 只量少数几个固定位置，随机分布的缺陷它看不到。两套数据要一起看。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>探针走一遍：从第一颗到最后一颗</h2>
+    <p class="sub">真实设备会一次扎多颗并行测，这里用单颗演示顺序。注意探针是「蛇形」走的——一行从左到右，下一行从右到左，减少空跑。</p>
+
+    <div class="card">
+      <div class="grid2 asym">
+        <div><svg id="wafer" viewBox="0 0 420 420" role="img" aria-label="CP 测试过程"></svg></div>
+        <div>
+          <div class="toolbar" style="margin-bottom:12px">
+            <button id="play" aria-pressed="false">▶ 开始测试</button>
+            <button id="reset">↺ 重置</button>
+          </div>
+
+          <div class="stat" style="grid-template-columns:1fr 1fr">
+            <div><b id="tested">0</b><small>已测颗数</small></div>
+            <div><b id="passN">0</b><small>合格（Bin 1）</small></div>
+          </div>
+          <div class="stat" style="grid-template-columns:1fr;margin-top:10px">
+            <div><b id="yieldVal" style="font-size:26px">—</b><small>CP 良率</small></div>
+          </div>
+
+          <div class="legend" style="margin-top:14px">
+            <span><i style="background:var(--green)"></i>Bin 1 合格</span>
+            <span><i style="background:var(--amber)"></i>Bin 2/3 参数不合格</span>
+            <span><i style="background:var(--red)"></i>Bin 5 功能失效</span>
+          </div>
+
+          <p class="note" id="cpNote" style="font-size:13.5px">点「开始测试」，看探针逐颗走完整片晶圆。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>三台设备，一根针</h2>
+    <p class="sub">探针卡上的针排成和焊盘一样的阵列；探针台负责移动晶圆；测试机负责送信号、判结果。</p>
+
+    <div class="card">
+      <svg viewBox="0 0 700 260" role="img" aria-label="CP 测试设备示意">
+        <rect x="250" y="26" width="200" height="52" rx="8" fill="var(--card2)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="350" y="48" text-anchor="middle" class="lbl-strong">测试机 Tester</text>
+        <text x="350" y="66" text-anchor="middle" class="lbl">送信号、判 Bin</text>
+
+        <rect x="280" y="96" width="140" height="20" rx="4" fill="var(--purple)" opacity=".35" stroke="var(--purple)"/>
+        <text x="350" y="110" text-anchor="middle" class="lbl" fill="var(--fg)">探针卡</text>
+
+        <g stroke="var(--amber)" stroke-width="2">
+          <line x1="300" y1="116" x2="300" y2="150"/><line x1="320" y1="116" x2="320" y2="150"/>
+          <line x1="340" y1="116" x2="340" y2="150"/><line x1="360" y1="116" x2="360" y2="150"/>
+          <line x1="380" y1="116" x2="380" y2="150"/><line x1="400" y1="116" x2="400" y2="150"/>
+        </g>
+
+        <ellipse cx="350" cy="176" rx="120" ry="24" fill="var(--sub)" stroke="var(--line)"/>
+        <ellipse cx="350" cy="172" rx="120" ry="24" fill="var(--card)" stroke="var(--faint)"/>
+        <rect x="240" y="200" width="220" height="26" rx="4" fill="var(--card2)" stroke="var(--line)"/>
+        <text x="350" y="218" text-anchor="middle" class="lbl">探针台 Chuck（移动 + 升降）</text>
+
+        <text x="520" y="150" class="lbl">↑ 探针同时落在焊盘上</text>
+        <text x="520" y="170" class="lbl">一次可并行测多颗</text>
+      </svg>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">04</span>Bin 与 KGD</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">Bin 是产品自定义的</h3>
+        <p class="caption" style="margin:0">Bin 1 通常是合格，其他编号代表不同失效原因。同一个编号在不同产品上可能意思完全不同。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">KGD 交给封装</h3>
+        <p class="caption" style="margin:0">晶圆图跟着晶圆进封装厂，设备只挑 Bin 1 的裸片（Known Good Die）。数据对错一片，就是好坏颠倒。</p>
+      </div>
+    </div>
+    <p class="note"><b>存储器会「修补」：</b>CP 发现坏掉的存储单元后，用熔丝切到备用电路再测一次——所以存储器的「原始良率」和「出货良率」可以差很多。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>WAT 测切割道上的测试结构，CP 测每一颗裸片。</li>
+      <li>CP 三件套：探针卡、探针台、测试机。</li>
+      <li>测试结果按 Bin 分类，画成晶圆图。</li>
+      <li>只有 Bin 1（KGD）会被送去封装。</li>
+      <li>测试时间就是成本，所以要在「测得全」和「测得快」之间取舍。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="18-abnormality-handling.html">← 18 异常处理与工程变更</a>
+    <a class="next" href="20-packaging.html">20 封装 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+    <p>源码：<a href="https://github.com/atbeta/semiconductor-visual-guide">atbeta/semiconductor-visual-guide</a> · 推 main 自动部署到 Vercel。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+  .lbl-strong{font-size:12.5px;fill:var(--fg);font-weight:600;font-family:inherit}
+  .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--dim)}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle}
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const CX = 210, CY = 210, R = 170, D = 32, GAP = 5;
+
+/* 蛇形排序的裸片 */
+const rows = [];
+for (let y = -R; y < R; y += D + GAP) {
+  const row = [];
+  for (let x = -R; x < R; x += D + GAP) {
+    const cx = x + D / 2, cy = y + D / 2;
+    if (Math.hypot(cx, cy) + D * 0.55 < R) row.push({ x, y, cx, cy });
+  }
+  if (row.length) rows.push(row);
+}
+const order = [];
+rows.forEach((row, i) => {
+  const r = i % 2 ? [...row].reverse() : row;
+  r.forEach(d => order.push(d));
+});
+
+/* 分配 Bin：中心一团失效 + 随机零星 */
+order.forEach((d, i) => {
+  const inCluster = Math.hypot(d.cx + 40, d.cy - 30) < 48;
+  const r = ((i * 48271) % 1000) / 1000;
+  d.bin = inCluster ? 5 : r < 0.05 ? 5 : r < 0.11 ? 3 : r < 0.15 ? 2 : 1;
+});
+
+const BIN_COLOR = { 1: 'var(--green)', 2: 'var(--amber)', 3: 'var(--amber)', 5: 'var(--red)' };
+
+let idx = 0, timer = null, running = false;
+
+function draw(probeAt) {
+  let html = `<circle cx="${CX}" cy="${CY}" r="${R + 10}" fill="var(--card2)" stroke="var(--line)" stroke-width="2"/>`;
+  order.forEach((d, i) => {
+    const tested = i < idx;
+    const fill = tested ? BIN_COLOR[d.bin] : 'var(--faint)';
+    const op = tested ? .88 : .22;
+    html += `<rect x="${CX + d.x}" y="${CY + d.y}" width="${D}" height="${D}" rx="2" fill="${fill}" opacity="${op}" stroke="var(--line)" stroke-width=".8"/>`;
+  });
+
+  if (probeAt) {
+    const px = CX + probeAt.cx, py = CY + probeAt.cy;
+    html += `<circle cx="${px}" cy="${py}" r="24" fill="none" stroke="var(--amber)" stroke-width="2"/>
+      <path d="M${px},${py - 26} L${px - 8},${py - 46} L${px + 8},${py - 46} Z" fill="var(--amber)"/>
+      <line x1="${px}" y1="${py - 46}" x2="${px}" y2="${py - 64}" stroke="var(--amber)" stroke-width="3"/>`;
+  }
+  $('#wafer').innerHTML = html;
+}
+
+function stats() {
+  const done = order.slice(0, idx);
+  const pass = done.filter(d => d.bin === 1).length;
+  $('#tested').textContent = idx;
+  $('#passN').textContent = pass;
+  $('#yieldVal').textContent = idx ? (pass / idx * 100).toFixed(1) + '%' : '—';
+  $('#yieldVal').style.color = !idx ? 'var(--fg)' : pass / idx > .85 ? 'var(--green)' : pass / idx > .7 ? 'var(--amber)' : 'var(--red)';
+}
+
+function step() {
+  if (idx >= order.length) { stop(); $('#cpNote').textContent = `测完 ${order.length} 颗，CP 良率 ${(order.filter(d => d.bin === 1).length / order.length * 100).toFixed(1)}%。这张图就是交给封装厂的晶圆图。`; return; }
+  const d = order[idx];
+  draw(d);
+  stats();
+  $('#cpNote').textContent = `正在测第 ${idx + 1} / ${order.length} 颗…`;
+  idx++;
+}
+
+function start() {
+  if (running) return;
+  running = true;
+  $('#play').textContent = '❚❚ 暂停'; $('#play').setAttribute('aria-pressed', 'true');
+  timer = setInterval(step, 55);
+}
+function stop() {
+  running = false; clearInterval(timer);
+  $('#play').textContent = '▶ 开始测试'; $('#play').setAttribute('aria-pressed', 'false');
+}
+
+$('#play').onclick = () => running ? stop() : start();
+$('#reset').onclick = () => {
+  stop(); idx = 0; draw(null); stats();
+  $('#cpNote').textContent = '点「开始测试」，看探针逐颗走完整片晶圆。';
+};
+
+draw(null); stats();
+if (new URLSearchParams(location.search).get('run') === '1') setTimeout(start, 300);
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 18 章 · 异常处理与工程变更 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 18 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 4 · 品质与良率</div>
+    <h1>异常处理与工程变更：先挡住，再修好</h1>
+    <p class="lede">上千台设备、几百个步骤，异常一定会发生。重点不是「永不出错」，而是出错时能快速、一致地处理——第一个动作永远是挡住，不是修好。</p>
+    <div class="badges">
+      <span class="badge on">影响范围可算</span>
+      <span class="badge">OCAP 六步</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>六步：从发现到防止再发</h2>
+    <p class="sub">顺序很重要：先挡住影响，再找原因。反过来做，损失会一直扩大。</p>
+
+    <div class="card">
+      <svg viewBox="0 0 760 150" role="img" aria-label="异常处理六步">
+        <g>
+          <rect x="20" y="40" width="110" height="54" rx="8" fill="var(--card2)" stroke="var(--red)" stroke-width="1.6"/>
+          <text x="75" y="64" text-anchor="middle" class="lbl-strong">① 发现异常</text>
+          <text x="75" y="82" text-anchor="middle" class="lbl">OOC / 报警</text>
+        </g>
+        <g>
+          <rect x="145" y="40" width="110" height="54" rx="8" fill="var(--card2)" stroke="var(--amber)" stroke-width="1.6"/>
+          <text x="200" y="64" text-anchor="middle" class="lbl-strong">② 挡住影响</text>
+          <text x="200" y="82" text-anchor="middle" class="lbl">Hold / 停设备</text>
+        </g>
+        <g>
+          <rect x="270" y="40" width="110" height="54" rx="8" fill="var(--card2)" stroke="var(--line)" stroke-width="1.6"/>
+          <text x="325" y="64" text-anchor="middle" class="lbl-strong">③ 找出范围</text>
+          <text x="325" y="82" text-anchor="middle" class="lbl">查履历</text>
+        </g>
+        <g>
+          <rect x="395" y="40" width="110" height="54" rx="8" fill="var(--card2)" stroke="var(--line)" stroke-width="1.6"/>
+          <text x="450" y="64" text-anchor="middle" class="lbl-strong">④ 判定处置</text>
+          <text x="450" y="82" text-anchor="middle" class="lbl">放行/返工/报废</text>
+        </g>
+        <g>
+          <rect x="520" y="40" width="110" height="54" rx="8" fill="var(--card2)" stroke="var(--line)" stroke-width="1.6"/>
+          <text x="575" y="64" text-anchor="middle" class="lbl-strong">⑤ 找根因</text>
+          <text x="575" y="82" text-anchor="middle" class="lbl">8D / FA</text>
+        </g>
+        <g>
+          <rect x="645" y="40" width="100" height="54" rx="8" fill="var(--card2)" stroke="var(--green)" stroke-width="1.6"/>
+          <text x="695" y="64" text-anchor="middle" class="lbl-strong">⑥ 防止再发</text>
+          <text x="695" y="82" text-anchor="middle" class="lbl">改 OCAP / 训练</text>
+        </g>
+        <g stroke="var(--faint)" stroke-width="1.6" fill="none">
+          <path d="M132,67 L143,67" marker-end="url(#a18)"/>
+          <path d="M257,67 L268,67" marker-end="url(#a18)"/>
+          <path d="M382,67 L393,67" marker-end="url(#a18)"/>
+          <path d="M507,67 L518,67" marker-end="url(#a18)"/>
+          <path d="M632,67 L643,67" marker-end="url(#a18)"/>
+        </g>
+        <defs>
+          <marker id="a18" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <text x="20" y="124" class="lbl">② 和 ⑤ 最容易搞反：先停，再查。</text>
+      </svg>
+    </div>
+
+    <p class="note red"><b>OCAP 的意义：</b>异常常常发生在半夜，当班的人不一定懂这个工艺。所以每种常见异常都事先写好「检查什么、做什么、通知谁」——让不同班别的人用同一套动作处理。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>影响范围：从「上一次确认正常」算起</h2>
+    <p class="sub">设备今天下午被发现异常，但它可能是早上就开始坏的。往回找最后一次确认正常的时点，从那之后经过的每一批都算可疑。</p>
+
+    <div class="card">
+      <div class="grid2 asym">
+        <div>
+          <svg id="timeline" viewBox="0 0 700 240" role="img" aria-label="异常影响范围时间轴"></svg>
+        </div>
+        <div>
+          <label class="caption" for="qual">最后一次确认正常：<b id="qualV">6</b> 小时前</label>
+          <input id="qual" type="range" min="2" max="24" step="1" value="6">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--faint)">
+            <span>2 小时前</span><span>24 小时前</span>
+          </div>
+
+          <div class="stat" style="grid-template-columns:1fr;margin-top:16px">
+            <div><b id="affN">3 批</b><small>需要 Hold 的可疑批次</small></div>
+          </div>
+
+          <p class="note" id="qualNote" style="font-size:13.5px">
+            检查越频繁，「最后一次确认正常」离现在越近，可疑范围就越小——这就是为什么设备要定期跑控片。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p class="note cyan"><b>预约 Hold（Future Hold）：</b>也可以让晶圆先继续跑，等走到指定步骤时系统自动挡下——例如等下一站的测量结果出来再判断，避免无谓地停线。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>四种处置</h2>
+    <div class="grid2">
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15.5px">放行 Release</h3><p class="caption" style="margin:0">确认没有影响，继续生产。要有数据支撑，不是「看起来还好」。</p></div>
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15.5px">返工 Rework</h3><p class="caption" style="margin:0">去掉部分结果重做。能返工的步骤很少，光刻是典型（去胶重来）。</p></div>
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15.5px">报废 Scrap</h3><p class="caption" style="margin:0">损坏无法挽回，或继续做风险太高。越早报废，浪费越少。</p></div>
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15.5px">有条件放行</h3><p class="caption" style="margin:0">继续生产，但加严后续检查或特别标记，用更多数据兜底。</p></div>
+    </div>
+    <p class="note"><b>MRB（物料审查会议）：</b>影响大或不确定时，由工艺、集成、质量保证一起决定，必要时通知客户。一个人拍板的情况越少，判断越稳。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">04</span>改变本身也是风险</h2>
+    <p class="sub">不只异常要管，变更也要管：改 Recipe、换材料、换供应商、加设备，都可能影响电性、良率、可靠性。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">ECN</h3>
+        <p class="caption" style="margin:0">工厂内部的工程变更通知与审核流程：评估风险 → 实验批验证 → 可靠性测试 → 审核 → 上线。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">PCN</h3>
+        <p class="caption" style="margin:0">对客户发出的变更通知。重大变更必须事先告知，客户可能要求重新验证。</p>
+      </div>
+    </div>
+    <p class="note red"><b>小改动也要走流程：</b>调整一个温度参数看起来无害，但它可能改变掺杂扩散、影响 Vt。变更管理管的是「风险」，不是「改动大小」。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>异常处理顺序：发现 → 挡住 → 找范围 → 判定 → 找根因 → 防止再发。</li>
+      <li>第一个动作是 Hold，不是修设备。</li>
+      <li>可疑范围从「最后一次确认正常」算起，所以设备要定期检查。</li>
+      <li>处置有四种：放行、返工、报废、有条件放行。</li>
+      <li>任何变更都要走 ECN，重大变更发 PCN 通知客户。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="17-process-control.html">← 17 工艺控制</a>
+    <a class="next" href="19-wafer-test.html">19 晶圆测试 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+    <p>源码：<a href="https://github.com/atbeta/semiconductor-visual-guide">atbeta/semiconductor-visual-guide</a> · 推 main 自动部署到 Vercel。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+  .lbl-strong{font-size:12.5px;fill:var(--fg);font-weight:600;font-family:inherit}
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const X0 = 70, X1 = 660, Y = 140;
+
+function draw() {
+  const G = +$('#qual').value;          // 最后一次确认正常：G 小时前
+  const lots = [];
+  for (let t = 2; t <= 24; t += 2) lots.push(t);   // t 小时前生产的批次
+
+  const x = t => X1 - (t / 24) * (X1 - X0);
+
+  const dots = lots.map(t => {
+    const affected = t <= G;
+    return `<circle cx="${x(t)}" cy="${Y}" r="9"
+      fill="${affected ? 'var(--red)' : 'var(--green)'}" opacity="${affected ? .9 : .35}"/>
+      <text x="${x(t)}" y="${Y + 28}" text-anchor="middle" class="lbl">${t}h</text>`;
+  }).join('');
+
+  const affectedN = lots.filter(t => t <= G).length;
+
+  $('#timeline').innerHTML = `
+    <line x1="${X0}" y1="${Y}" x2="${X1 + 20}" y2="${Y}" stroke="var(--line)"/>
+    <line x1="${x(G)}" y1="${Y - 70}" x2="${x(G)}" y2="${Y + 50}" stroke="var(--amber)" stroke-dasharray="6 5"/>
+    <text x="${x(G)}" y="${Y - 80}" text-anchor="middle" class="lbl" fill="var(--amber)">最后一次确认正常</text>
+
+    <line x1="${X1}" y1="${Y - 70}" x2="${X1}" y2="${Y + 50}" stroke="var(--red)"/>
+    <text x="${X1}" y="${Y - 80}" text-anchor="middle" class="lbl" fill="var(--red)">现在发现异常</text>
+
+    <rect x="${x(G)}" y="${Y - 40}" width="${X1 - x(G)}" height="80" fill="var(--red)" opacity=".07"/>
+    <text x="${(x(G) + X1) / 2}" y="${Y - 52}" text-anchor="middle" class="lbl" fill="var(--red)">可疑区间</text>
+
+    ${dots}
+    <text x="${X0}" y="${Y + 60}" class="lbl">← 24 小时前</text>
+    <text x="${X1}" y="${Y + 60}" text-anchor="end" class="lbl">现在 →</text>
+  `;
+
+  $('#qualV').textContent = G;
+  $('#affN').textContent = affectedN + ' 批';
+  $('#qual').style.setProperty('--p', ((G - 2) / 22 * 100) + '%');
+  $('#qualNote').innerHTML = G <= 6
+    ? '<b>检查够勤：</b>可疑范围只有几批，损失可控。这就是定期跑控片的价值。'
+    : G <= 14
+      ? '<b>有点久：</b>可疑批次已经过半，等于要把半天产量全部 Hold 起来。'
+      : '<b>太久了：</b>几乎整天的产出都要复查——这说明设备的定期确认间隔本身需要检讨。';
+}
+
+$('#qual').oninput = draw;
+const q = new URLSearchParams(location.search);
+if (q.get('h')) $('#qual').value = q.get('h');
+draw();
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

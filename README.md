@@ -3,9 +3,10 @@
 把 [chenwei810/Semiconductor_Manufacturing_Introduction](https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction)
 （25 章 × 5 语言，CC BY-NC-SA 4.0）里「静态文字最说不清」的部分，做成可以点、可以拖的页面。
 
-**现在有 19 章**（按书的顺序）：00 全景、01 晶圆厂、02 晶体管、03 沙子到晶圆、04 光刻、
-05 薄膜、06 刻蚀、07 离子注入、08 CMP、09 清洗、10 金属化、11 CMOS 流程、12 先进结构、
-13 存储器、14 几纳米、15 测量与检测、16 良率、17 工艺控制、22 可靠性。
+**现在有 22 章**（按书的顺序）：00–20 全部（00 全景、01 晶圆厂、02 晶体管、03 沙子到晶圆、
+04 光刻、05 薄膜、06 刻蚀、07 离子注入、08 CMP、09 清洗、10 金属化、11 CMOS 流程、12 先进结构、
+13 存储器、14 几纳米、15 测量与检测、16 良率、17 工艺控制、18 异常处理、19 晶圆测试、20 封装），
+外加 22 可靠性。缺 21 先进封装、23 工厂系统、24 固件。
 纯静态站点，无构建步骤、无外部依赖。
 
 - 线上：<https://semi.pbeta.dev>　（备用：<https://semiconductor-visual-guide.vercel.app>）
@@ -46,6 +47,9 @@ smi-viz/
 │   ├── 15-metrology.html               缺陷检测四步：扫描 → 比对 → 标记 → SEM 复检
 │   ├── 16-yield-analysis.html          三段良率相乘、六种晶圆图形态、裸片大小 vs 良率
 │   ├── 17-process-control.html         控制图四情景（规则判定）、Cpk 可调
+│   ├── 18-abnormality-handling.html    异常六步、影响范围时间轴（可拖）
+│   ├── 19-wafer-test.html              CP 逐颗探针动画、Bin 与良率
+│   ├── 20-packaging.html               打线 / 覆晶剖面切换、九步流程
 │   ├── 12-advanced-transistors.html    平面/FinFET/GAA 切换，看栅极包覆 1/3/4 面
 │   └── 22-reliability.html             浴缸曲线三段可点，老化筛选开关
 ├── assets/
