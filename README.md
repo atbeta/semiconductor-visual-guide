@@ -3,8 +3,9 @@
 把 [chenwei810/Semiconductor_Manufacturing_Introduction](https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction)
 （25 章 × 5 语言，CC BY-NC-SA 4.0）里「静态文字最说不清」的部分，做成可以点、可以拖的页面。
 
-**现在有 10 章**（按书的顺序）：00 全景、01 晶圆厂、02 晶体管、03 沙子到晶圆、04 光刻、
-05 薄膜、06 刻蚀、07 离子注入、12 先进结构、22 可靠性。纯静态站点，无构建步骤、无外部依赖。
+**现在有 13 章**（按书的顺序）：00 全景、01 晶圆厂、02 晶体管、03 沙子到晶圆、04 光刻、
+05 薄膜、06 刻蚀、07 离子注入、08 CMP、09 清洗、10 金属化、12 先进结构、22 可靠性。
+纯静态站点，无构建步骤、无外部依赖。
 
 - 线上：<https://semi.pbeta.dev>　（备用：<https://semiconductor-visual-guide.vercel.app>）
 - 源码：<https://github.com/atbeta/semiconductor-visual-guide>
@@ -35,6 +36,9 @@ smi-viz/
 │   ├── 05-thin-films.html              四种沉积在同一个沟槽里的覆盖对比
 │   ├── 06-etching.html                 各向异性滑块（侧蚀/CD）、终点检测曲线
 │   ├── 07-ion-implantation.html        能量/剂量 → 深度分布，沟道效应与退火
+│   ├── 08-cmp.html                     磨平前后对比滑块、Dishing / Erosion
+│   ├── 09-cleaning.html                四类污染 × 四种药液（点选去除）
+│   ├── 10-metallization.html           双大马士革 7 步动画 + 多层金属剖面
 │   ├── 12-advanced-transistors.html    平面/FinFET/GAA 切换，看栅极包覆 1/3/4 面
 │   └── 22-reliability.html             浴缸曲线三段可点，老化筛选开关
 ├── assets/

@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 10 章 · 金属化 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 10 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 2 · 工艺模块</div>
+    <h1>金属化：把晶体管连起来</h1>
+    <p class="lede">晶体管做好了，还得用十几层金属把它们连成电路。下层细密像巷弄，上层粗宽像高速。铜时代的关键工艺叫「大马士革」——先挖沟，再填铜。</p>
+    <div class="badges">
+      <span class="badge on">双大马士革 7 步</span>
+      <span class="badge">多层导线的疏密</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>双大马士革：先挖沟，再填铜</h2>
+    <p class="sub">铝时代是「先铺金属再刻蚀」；铜很难干法刻蚀，所以顺序反过来：先在绝缘层里挖出通孔和沟槽，再一次性填满铜，最后把多余的磨掉。</p>
+
+    <div class="card">
+      <div class="steps" id="stepBtns"></div>
+
+      <div class="stepHead">
+        <h3><span id="stepTitle">铺绝缘层</span><span class="stepCount"><b id="stepIdx">1</b> / 7</span></h3>
+        <p id="stepDesc">用 CVD 铺一层绝缘材料（通常是低介电常数材料）。</p>
+      </div>
+
+      <svg viewBox="0 118 720 224" role="img" aria-label="双大马士革流程剖面">
+        <!-- 硅 / 器件层 -->
+        <rect x="40" y="300" width="640" height="34" fill="var(--sub)"/>
+        <g fill="var(--cyan)" opacity=".7">
+          <rect x="180" y="292" width="40" height="8"/><rect x="280" y="292" width="40" height="8"/>
+          <rect x="430" y="292" width="40" height="8"/><rect x="530" y="292" width="40" height="8"/>
+        </g>
+        <text x="52" y="322" class="lbl">器件层</text>
+
+        <!-- 绝缘层 -->
+        <rect id="gIld" x="40" y="152" width="640" height="148" fill="var(--card2)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="54" y="292" class="lbl" id="ildLabel">绝缘层 ILD</text>
+
+        <!-- 通孔 -->
+        <rect id="gVia" x="312" y="202" width="56" height="98" fill="var(--bg)" opacity="0"/>
+
+        <!-- 沟槽 -->
+        <rect id="gTrench" x="200" y="152" width="280" height="50" fill="var(--bg)" opacity="0"/>
+
+        <!-- 阻挡层 -->
+        <g id="gBarrier" opacity="0" fill="none" stroke="#38bdf8" stroke-width="3">
+          <rect x="203" y="155" width="274" height="44"/>
+          <rect x="315" y="202" width="50" height="98"/>
+        </g>
+
+        <!-- 铜 -->
+        <g id="gCu" opacity="0">
+          <rect x="206" y="158" width="268" height="38" fill="#d97757"/>
+          <rect x="318" y="202" width="44" height="98" fill="#d97757"/>
+          <rect x="206" y="158" width="268" height="8" fill="#f0a082" opacity=".7"/>
+        </g>
+
+        <!-- 电镀多余铜（overburden） -->
+        <rect id="gOver" x="40" y="140" width="640" height="14" fill="#d97757" opacity="0"/>
+
+        <!-- CMP 后平面 -->
+        <rect id="gFlat" x="206" y="152" width="268" height="7" fill="#d97757" opacity="0"/>
+
+        <!-- 覆盖层 -->
+        <rect id="gCap" x="40" y="144" width="640" height="8" fill="var(--cyan)" opacity="0"/>
+      </svg>
+
+      <div class="toolbar" style="margin-top:14px">
+        <button id="playBtn">▶ 自动播放</button>
+        <span class="caption" style="margin:0">顺序：铺绝缘层 → 挖通孔 → 挖沟槽 → 阻挡层 → 电镀 → CMP → 覆盖层</span>
+      </div>
+      <p class="note" id="stepNote"><b>为什么先挖沟：</b>铜没法像铝那样刻蚀出图形，只能反过来——先把「模具」挖好，再往里灌铜。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>十几层，越往上越粗</h2>
+    <p class="sub">晶体管要的是又细又密的连线（局部互连），长距离的信号与电源要的是粗线（低电阻）。所以金属层宽度逐层放大。</p>
+
+    <div class="card">
+      <svg viewBox="0 0 720 320" role="img" aria-label="多层金属剖面">
+        <rect x="60" y="256" width="600" height="40" fill="var(--sub)"/>
+        <g fill="var(--cyan)" opacity=".8">
+          <rect x="120" y="250" width="20" height="6"/><rect x="200" y="250" width="20" height="6"/>
+          <rect x="280" y="250" width="20" height="6"/><rect x="360" y="250" width="20" height="6"/>
+          <rect x="440" y="250" width="20" height="6"/><rect x="520" y="250" width="20" height="6"/>
+        </g>
+
+        <!-- M1 细密 -->
+        <g fill="#d97757">
+          <rect x="110" y="230" width="12" height="20"/><rect x="140" y="230" width="12" height="20"/>
+          <rect x="170" y="230" width="12" height="20"/><rect x="200" y="230" width="12" height="20"/>
+          <rect x="230" y="230" width="12" height="20"/><rect x="260" y="230" width="12" height="20"/>
+          <rect x="290" y="230" width="12" height="20"/><rect x="320" y="230" width="12" height="20"/>
+          <rect x="350" y="230" width="12" height="20"/><rect x="380" y="230" width="12" height="20"/>
+          <rect x="410" y="230" width="12" height="20"/><rect x="440" y="230" width="12" height="20"/>
+          <rect x="470" y="230" width="12" height="20"/><rect x="500" y="230" width="12" height="20"/>
+          <rect x="530" y="230" width="12" height="20"/><rect x="560" y="230" width="12" height="20"/>
+        </g>
+
+        <!-- 通孔 -->
+        <g fill="#f0a082">
+          <rect x="130" y="218" width="8" height="14"/><rect x="300" y="218" width="8" height="14"/>
+          <rect x="470" y="218" width="8" height="14"/>
+          <rect x="180" y="186" width="12" height="16"/><rect x="420" y="186" width="12" height="16"/>
+        </g>
+
+        <!-- M2 中等 -->
+        <g fill="#d97757">
+          <rect x="100" y="196" width="60" height="22" rx="2"/><rect x="190" y="196" width="90" height="22" rx="2"/>
+          <rect x="310" y="196" width="70" height="22" rx="2"/><rect x="410" y="196" width="110" height="22" rx="2"/>
+          <rect x="548" y="196" width="60" height="22" rx="2"/>
+        </g>
+
+        <!-- M3 粗 -->
+        <g fill="#d97757">
+          <rect x="90" y="150" width="150" height="30" rx="3"/><rect x="270" y="150" width="200" height="30" rx="3"/>
+          <rect x="500" y="150" width="120" height="30" rx="3"/>
+        </g>
+        <g fill="#f0a082">
+          <rect x="150" y="180" width="16" height="16"/><rect x="360" y="180" width="16" height="16"/>
+          <rect x="540" y="180" width="16" height="16"/>
+        </g>
+
+        <!-- 顶层电源 -->
+        <g fill="#d97757">
+          <rect x="80" y="96" width="330" height="40" rx="4"/>
+          <rect x="440" y="96" width="200" height="40" rx="4"/>
+        </g>
+        <g fill="#f0a082">
+          <rect x="140" y="136" width="20" height="14"/><rect x="480" y="136" width="20" height="14"/>
+        </g>
+
+        <g class="lbl">
+          <text x="60" y="86">顶层 · 电源与长距离信号（最粗）</text>
+          <text x="60" y="146">M3 · 中等</text>
+          <text x="60" y="192">M2 · 中等</text>
+          <text x="60" y="226">M1 · 局部互连（最细）</text>
+          <text x="60" y="312">器件层</text>
+        </g>
+      </svg>
+      <p class="caption" style="margin-top:8px">实际先进芯片有十几层，这里只画四层示意。层与层之间靠通孔（Via）连接，第一层与晶体管之间靠接触孔（Contact，填钨）。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>从铝到铜，为什么</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">铝：先铺再刻</h3>
+        <p class="caption" style="margin:0">PVD 铺满铝 → 光刻 → 刻蚀掉多余的铝。工艺直观，但铝电阻较高、抗电迁移能力弱。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">铜：先挖再填</h3>
+        <p class="caption" style="margin:0">电阻低、抗电迁移好。但铜几乎无法干法刻蚀，只能「挖沟 — 填铜 — CMP」，这就是大马士革的由来。</p>
+      </div>
+    </div>
+    <p class="note"><b>电镀要从底部往上长：</b>镀液里加添加剂，让孔底的铜长得比开口快。否则开口先被封住，里面留下空洞，电阻变高、长期还容易断线。</p>
+    <p class="note cyan"><b>低介电常数材料（Low-k）：</b>两条靠得很近的导线就是一个小电容，会拖慢信号。Low-k 材料带微孔、结构脆弱，在刻蚀、CMP、封装时都容易受伤。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>导线叠成十几层，下层细密、上层粗宽。</li>
+      <li>接触孔连晶体管与 M1（填钨），通孔连上下金属层。</li>
+      <li>铜无法干法刻蚀，所以用「先挖沟再填铜」的大马士革工艺。</li>
+      <li>双大马士革把通孔与沟槽一次填铜，省一次 CMP。</li>
+      <li>电镀要靠添加剂从底部往上填，避免空洞。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="09-cleaning.html">← 09 清洗与污染控制</a>
+    <a class="next" href="12-advanced-transistors.html">12 先进晶体管结构 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+    <p>源码：<a href="https://github.com/atbeta/semiconductor-visual-guide">atbeta/semiconductor-visual-guide</a> · 推 main 自动部署到 Vercel。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+  .steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .steps button{font-size:12.5px;padding:5px 11px}
+  .stepHead{margin:6px 0 10px}
+  .stepHead h3{margin:0;font-size:17px;display:flex;align-items:baseline;gap:10px}
+  .stepCount{margin-left:auto;font-size:12px;color:var(--dim);font-weight:400}
+  .stepCount b{color:var(--amber);font-variant-numeric:tabular-nums}
+  .stepHead p{margin:4px 0 0;color:var(--dim);font-size:14px}
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const STEPS = [
+  { t:'铺绝缘层', d:'用 CVD 铺一层绝缘材料（通常是低介电常数材料）。',
+    on:['gIld'], note:'<b>为什么先挖沟：</b>铜没法像铝那样刻蚀出图形，只能反过来——先把「模具」挖好，再往里灌铜。' },
+  { t:'挖通孔', d:'光刻 + 刻蚀挖出连接下层金属的通孔。',
+    on:['gIld','gVia'], note:'<b>对准很关键：</b>通孔必须精确落在下层的着陆垫上，偏一点就接不通。' },
+  { t:'挖沟槽', d:'再挖出导线要走的沟槽，与通孔连通。',
+    on:['gIld','gVia','gTrench'], note:'<b>双大马士革：</b>通孔和沟槽一次填铜、一次 CMP，比分开做少一整套流程。' },
+  { t:'阻挡层 + 种子层', d:'先铺极薄的阻挡层防止铜扩散，再铺一层薄铜作为电镀起点。',
+    on:['gIld','gVia','gTrench','gBarrier'], note:'<b>阻挡层是保险丝：</b>铜扩散进硅会让器件失效，所以侧壁和底部必须先垫一层。' },
+  { t:'电镀铜', d:'放进电镀液，让铜填满通孔和沟槽，并在表面留下一层多余的铜。',
+    on:['gIld','gVia','gTrench','gBarrier','gCu','gOver'], note:'<b>从底部往上长：</b>添加剂让孔底长得快，避免开口先封住、里面留空洞。' },
+  { t:'铜 CMP', d:'把沟槽以外多余的铜磨掉，只留下沟槽和通孔里的铜。',
+    on:['gIld','gVia','gTrench','gBarrier','gCu','gFlat'], note:'<b>这一步最容易出问题：</b>磨不足留金属残留会短路，磨过头会 dishing，导线变薄、电阻升高。' },
+  { t:'铺覆盖层', d:'在铜表面盖一层薄薄的绝缘覆盖层，防止氧化与扩散。',
+    on:['gIld','gVia','gTrench','gBarrier','gCu','gFlat','gCap'], note:'<b>到此一层完成：</b>下一层重复同样的七步，一层一层往上叠。' }
+];
+
+const btns = $('#stepBtns');
+STEPS.forEach((s, i) => {
+  const b = document.createElement('button');
+  b.textContent = (i + 1) + ' ' + s.t;
+  b.onclick = () => { stop(); render(i); };
+  btns.appendChild(b);
+});
+
+function render(i) {
+  const s = STEPS[i];
+  ['gIld','gVia','gTrench','gBarrier','gCu','gOver','gFlat','gCap'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.setAttribute('opacity', s.on.includes(id) ? 1 : 0);
+  });
+  $('#stepTitle').textContent = s.t;
+  $('#stepDesc').textContent = s.d;
+  $('#stepNote').innerHTML = s.note;
+  $('#stepIdx').textContent = i + 1;
+  btns.querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-pressed', k === i));
+}
+
+let timer = null, cur = 0;
+const playBtn = $('#playBtn');
+function stop(){ clearInterval(timer); timer = null; playBtn.textContent = '▶ 自动播放'; playBtn.setAttribute('aria-pressed','false'); }
+playBtn.onclick = () => {
+  if (timer) { stop(); return; }
+  playBtn.textContent = '❚❚ 暂停'; playBtn.setAttribute('aria-pressed','true');
+  timer = setInterval(() => { cur = (cur + 1) % STEPS.length; render(cur); }, 1500);
+};
+
+const q = new URLSearchParams(location.search);
+render(q.get('step') ? Math.min(STEPS.length - 1, Math.max(0, +q.get('step') - 1)) : 0);
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 09 章 · 清洗与污染控制 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 09 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 2 · 工艺模块</div>
+    <h1>清洗与污染控制：看不见的敌人</h1>
+    <p class="lede">一颗纳米级的微粒就能废掉一颗裸片，一个钠离子就能让阈值电压漂移。清洗是全流程出现次数最多的步骤——它不生产任何结构，但直接决定良率。</p>
+    <div class="badges">
+      <span class="badge on">四种污染 · 四种洗法</span>
+      <span class="badge">RCA 配方</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>洗什么，用什么洗</h2>
+    <p class="sub">表面上其实有四类脏东西，各自要用不同的化学药液。选一种洗法，看哪几类被带走。</p>
+
+    <div class="card">
+      <div class="grid2 asym">
+        <div>
+          <svg viewBox="0 0 640 300" role="img" aria-label="晶圆表面四类污染与对应的清洗">
+            <!-- 硅 -->
+            <rect x="30" y="190" width="580" height="86" fill="var(--sub)"/>
+            <text x="44" y="264" class="lbl">硅晶圆</text>
+
+            <!-- 原生氧化层 -->
+            <g id="cOxide">
+              <rect x="30" y="182" width="580" height="8" fill="#eab308" opacity=".75"/>
+              <text x="30" y="162" class="lbl" fill="#eab308">原生氧化层</text>
+            </g>
+
+            <!-- 微粒 -->
+            <g id="cParticles" fill="#94a3b8">
+              <circle cx="110" cy="176" r="9"/><circle cx="188" cy="172" r="6"/>
+              <circle cx="330" cy="178" r="11"/><circle cx="470" cy="174" r="7"/>
+              <circle cx="556" cy="177" r="8"/>
+            </g>
+
+            <!-- 金属离子 -->
+            <g id="cMetals" fill="#ef4444">
+              <circle cx="150" cy="186" r="3"/><circle cx="250" cy="184" r="2.6"/>
+              <circle cx="392" cy="186" r="3.2"/><circle cx="512" cy="184" r="2.6"/>
+              <circle cx="596" cy="186" r="2.8"/>
+            </g>
+
+            <!-- 有机物 -->
+            <g id="cOrganics" fill="#a78bfa" opacity=".85">
+              <ellipse cx="230" cy="170" rx="18" ry="7"/><ellipse cx="430" cy="168" rx="22" ry="8"/>
+              <ellipse cx="600" cy="170" rx="14" ry="6"/>
+            </g>
+
+            <text x="30" y="36" class="lbl">蒸发残留 / 颗粒 / 金属 / 有机物的示意分布（非比例）</text>
+          </svg>
+        </div>
+
+        <div>
+          <div class="toolbar" style="gap:8px">
+            <button data-c="sc1">SC1 · 微粒+有机物</button>
+            <button data-c="sc2">SC2 · 金属</button>
+            <button data-c="dhf">DHF · 氧化层</button>
+            <button data-c="spm">SPM · 有机物</button>
+          </div>
+
+          <div class="checkList" id="checkList"></div>
+
+          <p class="note" id="cleanNote" style="font-size:13.5px">
+            <b>SC1（氨水 + 双氧水 + 水）：</b>轻微腐蚀表面，让微粒「托离」表面再被冲走，同时去除有机物。是 RCA 清洗的第一步。
+          </p>
+
+          <button id="resetClean" style="margin-top:10px">↺ 重新弄脏</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="note cyan"><b>为什么光洗不干净：</b>微粒不是「粘」在表面，而是靠静电和范德华力贴着。所以要先用化学药液把表面轻微腐蚀一点，让颗粒失去附着的基底，再用水冲走。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>RCA 清洗：1960 年代的方法，今天还在用</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>配方</th><th>主要成分</th><th>去除什么</th></tr></thead>
+        <tbody>
+          <tr><td>SC1</td><td>氨水 + 双氧水 + 水</td><td>微粒、有机物</td></tr>
+          <tr><td>SC2</td><td>盐酸 + 双氧水 + 水</td><td>金属污染（钠、铁、铜…）</td></tr>
+          <tr><td>DHF</td><td>稀释氢氟酸</td><td>薄氧化层（含原生氧化层）</td></tr>
+          <tr><td>SPM</td><td>硫酸 + 双氧水</td><td>有机物、光刻胶残留</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">RCA 是最早发表这套方法的实验室名字，不是某种化学品。实际产线会在它基础上加超声、兆声、单片旋转等手法。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>批式还是单片</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">批式湿法清洗槽</h3>
+        <p class="caption" style="margin:0">整批晶圆依序浸入一排化学槽与清水槽，像洗车流水线。产能高、成本低；缺点是片与片之间可能互相带污染，槽液也会随使用变化。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">单片旋转清洗</h3>
+        <p class="caption" style="margin:0">一次一片，边转边喷。药液新鲜、控制精准、无交叉污染，先进工艺越来越常用；代价是产能低、药液用量大。</p>
+      </div>
+    </div>
+    <p class="note"><b>水也是耗材：</b>清洗用的是超纯水（UPW），几乎不含离子、微粒和细菌。晶圆厂每天用掉大量超纯水，是厂务的大项。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">04</span>洗干净之后：Q-Time 与交叉污染</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">Q-Time：干净会过期</h3>
+        <p class="caption" style="margin:0">清洗后的表面会重新长出原生氧化层、吸附空气中的污染物。所以两站之间有等待上限，超时就要重洗。系统会自动算、自动挡。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">铜不能回前段</h3>
+        <p class="caption" style="margin:0">铜在硅里扩散极快，微量进入晶体管区就会漏电。铜区的设备、晶圆盒、手套都要与前段严格分开，靠标签和系统等级卡住。</p>
+      </div>
+    </div>
+    <p class="note red"><b>背面也要洗：</b>背面一颗微粒会把晶圆局部顶高，曝光时那一块就失焦；微粒还会留在设备上传给下一片。所以清洗和检查不能只看正面。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>四类污染：微粒、金属、有机物、原生氧化层，各有对应药液。</li>
+      <li>RCA 清洗（SC1 / SC2）是基准配方，DHF 去氧化层，SPM 去有机物。</li>
+      <li>批式产能高但有交叉污染风险；单片精准、先进工艺更常用。</li>
+      <li>Q-Time 限制清洗后的等待时间，超时要重洗。</li>
+      <li>铜必须与前段隔离，否则会大范围污染。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="08-cmp.html">← 08 CMP</a>
+    <a class="next" href="10-metallization.html">10 金属化 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+    <p>源码：<a href="https://github.com/atbeta/semiconductor-visual-guide">atbeta/semiconductor-visual-guide</a> · 推 main 自动部署到 Vercel。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+  .checkList{display:grid;gap:8px;margin:14px 0}
+  .chk{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--dim);
+       border:1px solid var(--line);border-radius:10px;padding:8px 12px;transition:.2s}
+  .chk .dot{width:9px;height:9px;border-radius:50%;background:var(--red);flex:0 0 auto}
+  .chk.ok{color:var(--green);border-color:color-mix(in srgb,var(--green) 40%,transparent)}
+  .chk.ok .dot{background:var(--green)}
+  .chk .st{margin-left:auto;font-size:11.5px;letter-spacing:.05em}
+</style>
+
+<script>
+const TYPES = [
+  { id:'cParticles', name:'微粒', color:'#94a3b8' },
+  { id:'cMetals', name:'金属离子', color:'#ef4444' },
+  { id:'cOrganics', name:'有机物', color:'#a78bfa' },
+  { id:'cOxide', name:'原生氧化层', color:'#eab308' }
+];
+const NOTES = {
+  sc1: '<b>SC1（氨水 + 双氧水 + 水）：</b>轻微腐蚀表面，让微粒「托离」表面再被冲走，同时去除有机物。是 RCA 清洗的第一步。',
+  sc2: '<b>SC2（盐酸 + 双氧水 + 水）：</b>酸性环境把金属离子溶进溶液带走。金属污染最危险——钠离子进入栅极氧化层会让 Vt 漂移。',
+  dhf: '<b>DHF（稀释氢氟酸）：</b>把薄薄的原生氧化层溶掉，露出新鲜的硅表面。通常紧接在关键步骤之前做，做晚了又会重新长出来。',
+  spm: '<b>SPM（硫酸 + 双氧水）：</b>强氧化，专门对付有机物和光刻胶残留。温度高、反应剧烈，通常用来做「去胶」后的清洗。'
+};
+const KILL = { sc1:['cParticles','cOrganics'], sc2:['cMetals'], dhf:['cOxide'], spm:['cOrganics'] };
+
+const list = document.querySelector('#checkList');
+function renderList() {
+  list.innerHTML = TYPES.map(t => {
+    const el = document.getElementById(t.id);
+    const gone = el.getAttribute('opacity') === '0';
+    return `<div class="chk ${gone ? 'ok' : ''}">
+      <span class="dot" style="background:${gone ? '' : t.color}"></span>
+      <span>${t.name}</span>
+      <span class="st">${gone ? '已去除' : '残留'}</span>
+    </div>`;
+  }).join('');
+}
+
+function clean(kind) {
+  (KILL[kind] || []).forEach(id => document.getElementById(id).setAttribute('opacity', 0));
+  document.querySelectorAll('[data-c]').forEach(b => b.setAttribute('aria-pressed', b.dataset.c === kind));
+  document.querySelector('#cleanNote').innerHTML = NOTES[kind];
+  renderList();
+}
+
+function reset() {
+  TYPES.forEach(t => document.getElementById(t.id).setAttribute('opacity', 1));
+  document.querySelectorAll('[data-c]').forEach(b => b.setAttribute('aria-pressed', false));
+  renderList();
+}
+
+document.querySelectorAll('[data-c]').forEach(b => b.onclick = () => clean(b.dataset.c));
+document.querySelector('#resetClean').onclick = reset;
+
+const q = new URLSearchParams(location.search);
+reset();
+if (q.get('c') && NOTES[q.get('c')]) clean(q.get('c'));
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
