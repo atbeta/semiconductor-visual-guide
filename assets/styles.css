@@ -5,6 +5,7 @@
   --amber:#ffc247; --amber2:#ff9c1a;
   --purple:#8b7cf6; --cyan:#4fd1c5; --red:#ff6b6b; --green:#4ade80;
   --sub:#3b4a63; --film:#2f6f8f; --pr:#f0b428; --wafer:#1f2836;
+  --metal:#cbd5e1; --metal-hi:#e2e8f0; --on-sub:#dbeafe; --on-film:#eaf6ff;
   --radius:16px;
 }
 html[data-theme="light"]{
@@ -13,6 +14,7 @@ html[data-theme="light"]{
   --amber:#b8730a; --amber2:#d98600;
   --purple:#6d5bd0; --cyan:#0e8f86; --red:#c0392b; --green:#1e8449;
   --sub:#c8d0dc; --film:#8fb8ca; --pr:#e0a52a; --wafer:#aab4c2;
+  --metal:#93a2b8; --metal-hi:#b8c4d6; --on-sub:#26313f; --on-film:#0b2b38;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;overflow-x:hidden}

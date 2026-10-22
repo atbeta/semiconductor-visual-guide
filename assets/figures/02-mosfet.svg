@@ -39,7 +39,7 @@
   </g>
 
   <!-- 沟道长度标注 -->
-  <g stroke="#e2e8f0" stroke-width="1.4">
+  <g stroke="#8b93a7" stroke-width="1.4">
     <line x1="222" y1="330" x2="418" y2="330" stroke-dasharray="4 3"/>
     <line x1="222" y1="322" x2="222" y2="338"/>
     <line x1="418" y1="322" x2="418" y2="338"/>

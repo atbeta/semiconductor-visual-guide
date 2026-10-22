@@ -16,9 +16,9 @@
 
   <!-- 曲线 -->
   <path d="M92,80 C120,180 160,232 210,236 C270,241 330,238 400,236 C470,234 520,232 560,222 C604,211 632,170 652,96"
-        fill="none" stroke="#f8fafc" stroke-width="3.4" stroke-linecap="round"/>
+        fill="none" stroke="#94a3b8" stroke-width="3.4" stroke-linecap="round"/>
   <path d="M92,80 C120,180 160,232 210,236 C270,241 330,238 400,236 C470,234 520,232 560,222 C604,211 632,170 652,96 L652,272 L92,272 Z"
-        fill="#f8fafc" opacity=".06"/>
+        fill="#94a3b8" opacity=".06"/>
 
   <!-- 编号 -->
   <g font-family="ui-monospace,Menlo,monospace" font-size="16" font-weight="700" text-anchor="middle">
