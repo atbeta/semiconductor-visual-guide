@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 11 章 · 走一遍完整的 CMOS 流程 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 11 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 3 · 工艺整合</div>
+    <h1>走一遍完整的 CMOS 流程</h1>
+    <p class="lede">前面十章的工艺模块，到这里拼成一条完整的线。整条流程看着吓人，其实大部分是同一个循环重复几十次——每重复一次，就用掉一层掩模版。</p>
+    <div class="badges">
+      <span class="badge on">FEOL 七步剖面</span>
+      <span class="badge">三段分工</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>三段：做器件、接出来、盖导线</h2>
+    <p class="sub">整条流程按目的分成三段。注意这里的「前段/后段」发生在晶圆厂内部，和封装测试的「后段」不是一回事。</p>
+
+    <div class="card">
+      <svg viewBox="0 30 720 130" role="img" aria-label="FEOL MOL BEOL 三段分工">
+        <rect x="40" y="60" width="300" height="56" rx="8" fill="var(--amber)" opacity=".22" stroke="var(--amber)"/>
+        <rect x="340" y="60" width="120" height="56" rx="8" fill="var(--cyan)" opacity=".2" stroke="var(--cyan)"/>
+        <rect x="460" y="60" width="220" height="56" rx="8" fill="var(--purple)" opacity=".2" stroke="var(--purple)"/>
+
+        <text x="190" y="82" text-anchor="middle" class="lbl-strong">FEOL · 做出晶体管</text>
+        <text x="190" y="102" text-anchor="middle" class="lbl">隔离 / 井 / 栅极 / 源漏</text>
+
+        <text x="400" y="82" text-anchor="middle" class="lbl-strong">MOL · 接出来</text>
+        <text x="400" y="102" text-anchor="middle" class="lbl">接触孔（填钨）</text>
+
+        <text x="570" y="82" text-anchor="middle" class="lbl-strong">BEOL · 盖导线</text>
+        <text x="570" y="102" text-anchor="middle" class="lbl">多层铜 + 钝化层 + 焊盘</text>
+
+        <text x="40" y="44" class="lbl">工程价值：器件性能 / 接触电阻 / 连线密度</text>
+      </svg>
+      <p class="caption">三段的分界在不同工厂略有不同，MOL 有时会被并入 FEOL 或 BEOL。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>一个循环，重复几十次</h2>
+    <p class="sub">每做一次光刻，就用掉一层掩模版。简单 CMOS 约二十层，先进工艺加上多重曝光可以到数十层。</p>
+
+    <div class="card">
+      <svg viewBox="0 0 720 220" role="img" aria-label="工艺循环">
+        <g>
+          <rect x="30" y="80" width="110" height="56" rx="8" fill="var(--card2)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="85" y="104" text-anchor="middle" class="lbl-strong">铺材料</text>
+          <text x="85" y="122" text-anchor="middle" class="lbl">薄膜 / 氧化</text>
+        </g>
+        <g>
+          <rect x="170" y="80" width="110" height="56" rx="8" fill="var(--card2)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="225" y="104" text-anchor="middle" class="lbl-strong">光刻</text>
+          <text x="225" y="122" text-anchor="middle" class="lbl">定义图形</text>
+        </g>
+        <g>
+          <rect x="310" y="80" width="110" height="56" rx="8" fill="var(--card2)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="365" y="104" text-anchor="middle" class="lbl-strong">刻蚀 / 注入</text>
+          <text x="365" y="122" text-anchor="middle" class="lbl">去掉或打进材料</text>
+        </g>
+        <g>
+          <rect x="450" y="80" width="110" height="56" rx="8" fill="var(--card2)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="505" y="104" text-anchor="middle" class="lbl-strong">去胶 + 清洗</text>
+          <text x="505" y="122" text-anchor="middle" class="lbl">把胶和残留清掉</text>
+        </g>
+        <g>
+          <rect x="590" y="80" width="100" height="56" rx="8" fill="var(--card2)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="640" y="104" text-anchor="middle" class="lbl-strong">测量</text>
+          <text x="640" y="122" text-anchor="middle" class="lbl">CD / 膜厚</text>
+        </g>
+        <g stroke="var(--faint)" stroke-width="1.6" fill="none" opacity=".7">
+          <path d="M140,108 L166,108" marker-end="url(#a11)"/>
+          <path d="M280,108 L306,108" marker-end="url(#a11)"/>
+          <path d="M420,108 L446,108" marker-end="url(#a11)"/>
+          <path d="M560,108 L586,108" marker-end="url(#a11)"/>
+          <path d="M640,140 C640,190 200,196 90,140" marker-end="url(#a11)" stroke-dasharray="6 6"/>
+        </g>
+        <defs>
+          <marker id="a11" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <text x="360" y="196" text-anchor="middle" class="lbl">回到第一格，换一层掩模版再来一次</text>
+      </svg>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>FEOL 七步：晶体管是怎么长出来的</h2>
+    <p class="sub">点步骤，看剖面一层层变化。每一步下面标了它动用了哪些工艺模块。</p>
+
+    <div class="card">
+      <div class="steps" id="stepBtns"></div>
+
+      <div class="stepHead">
+        <h3><span id="stepTitle">隔离</span><span class="stepCount"><b id="stepIdx">1</b> / 7</span></h3>
+        <p id="stepDesc">挖浅沟槽填氧化硅，再用 CMP 磨平。</p>
+      </div>
+
+      <svg viewBox="0 100 720 180" role="img" aria-label="FEOL 剖面演进">
+        <!-- 衬底 -->
+        <rect x="40" y="170" width="640" height="90" fill="var(--sub)"/>
+
+        <!-- 井 -->
+        <g id="gWell" opacity="0">
+          <rect x="40" y="170" width="320" height="90" fill="#a78bfa" opacity=".22"/>
+          <rect x="360" y="170" width="320" height="90" fill="#38bdf8" opacity=".2"/>
+
+        </g>
+
+        <!-- STI -->
+        <g id="gSti" opacity="0">
+          <rect x="120" y="170" width="46" height="34" fill="var(--cyan)" opacity=".8"/>
+          <rect x="554" y="170" width="46" height="34" fill="var(--cyan)" opacity=".8"/>
+          <text x="143" y="163" class="lbl" text-anchor="middle">STI</text>
+        </g>
+
+        <!-- 栅极 -->
+        <g id="gGate" opacity="0">
+          <rect x="286" y="162" width="148" height="8" fill="#7dd3fc"/>
+          <rect x="306" y="126" width="108" height="36" rx="3" fill="var(--amber)"/>
+          <text x="360" y="118" class="lbl" text-anchor="middle">栅极</text>
+        </g>
+
+        <!-- 浅掺 -->
+        <g id="gLdd" opacity="0">
+          <rect x="246" y="170" width="40" height="18" fill="#38bdf8" opacity=".55"/>
+          <rect x="434" y="170" width="40" height="18" fill="#38bdf8" opacity=".55"/>
+        </g>
+
+        <!-- Spacer -->
+        <g id="gSpacer" opacity="0">
+          <path d="M286,162 L270,170 L286,170 Z" fill="var(--cyan)"/>
+          <path d="M434,162 L450,170 L434,170 Z" fill="var(--cyan)"/>
+        </g>
+
+        <!-- 源漏 -->
+        <g id="gSd" opacity="0">
+          <rect x="230" y="170" width="56" height="34" fill="#38bdf8" opacity=".85"/>
+          <rect x="434" y="170" width="56" height="34" fill="#38bdf8" opacity=".85"/>
+          <text x="258" y="222" class="lbl" text-anchor="middle">源极</text>
+          <text x="462" y="222" class="lbl" text-anchor="middle">漏极</text>
+        </g>
+
+        <text x="54" y="252" class="lbl">紫 = P 井（NMOS）　蓝 = N 井（PMOS）　青 = STI 隔离</text>
+
+        <!-- 硅化物 -->
+        <g id="gSilicide" opacity="0">
+          <rect x="230" y="166" width="56" height="6" fill="#e2e8f0"/>
+          <rect x="434" y="166" width="56" height="6" fill="#e2e8f0"/>
+          <rect x="306" y="122" width="108" height="6" fill="#e2e8f0"/>
+          <text x="360" y="112" class="lbl" text-anchor="middle">金属硅化物</text>
+        </g>
+      </svg>
+
+      <div class="mods" id="mods"></div>
+
+      <div class="toolbar" style="margin-top:12px">
+        <button id="playBtn">▶ 自动播放</button>
+      </div>
+      <p class="note" id="stepNote">STI 通常是流程里最早做的结构之一。它不导电，但形状会影响晶体管的漏电与特性。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">04</span>现代栅极：先做假的，再换成真的</h2>
+    <p class="sub">先进工艺的栅极是「高介电常数绝缘层 + 金属栅极」（HKMG）。金属受不了源漏退火的高温，所以先用多晶硅做个假栅极占位，等高温步骤全做完，再把它挖掉换成金属。</p>
+    <p class="note"><b>这种「牺牲层」思维在先进工艺里到处都是：</b>先做容易加工的占位材料，最后再换成真正想要的材料。第 12 章的 GAA 也是先长硅锗、再挖掉。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>整条流程大部分是同一个循环：铺材料 → 光刻 → 刻蚀/注入 → 去胶清洗 → 测量。</li>
+      <li>三大段：FEOL 做器件、MOL 接出来、BEOL 盖导线。</li>
+      <li>FEOL 七步：隔离、井、栅极、浅掺、Spacer、源漏、金属硅化物。</li>
+      <li>每多一层掩模版，就多一轮循环，成本与周期都上升。</li>
+      <li>先进工艺常用「假栅极」占位，高温步骤结束后再换成金属栅极。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="10-metallization.html">← 10 金属化</a>
+    <a class="next" href="12-advanced-transistors.html">12 先进晶体管结构 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+    <p>源码：<a href="https://github.com/atbeta/semiconductor-visual-guide">atbeta/semiconductor-visual-guide</a> · 推 main 自动部署到 Vercel。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+  .lbl-strong{font-size:13px;fill:var(--fg);font-weight:600;font-family:inherit}
+  .steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .steps button{font-size:12.5px;padding:5px 11px}
+  .stepHead h3{margin:0;font-size:17px;display:flex;align-items:baseline;gap:10px}
+  .stepCount{margin-left:auto;font-size:12px;color:var(--dim);font-weight:400}
+  .stepCount b{color:var(--amber);font-variant-numeric:tabular-nums}
+  .stepHead p{margin:4px 0 10px;color:var(--dim);font-size:14px}
+  .mods{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+  .mods span{font-size:11.5px;color:var(--dim);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const STEPS = [
+  { t:'隔离', d:'挖浅沟槽填氧化硅，再用 CMP 磨平。', g:['gSti'], mods:['光刻','刻蚀','薄膜','CMP'],
+    note:'STI 通常是流程里最早做的结构之一。它不导电，但形状会影响晶体管的漏电与特性。' },
+  { t:'做井', d:'光刻 + 注入，分别做出 P 井与 N 井，再退火。', g:['gSti','gWell'], mods:['光刻','注入','退火'],
+    note:'同一种工艺要做出两种极性的区域，所以这里至少要两道光刻、两次注入，互相用光刻胶挡住。' },
+  { t:'做栅极', d:'长极薄的栅极绝缘层，铺栅极材料，光刻 + 刻蚀定义栅极。', g:['gSti','gWell','gGate'], mods:['薄膜','光刻','刻蚀'],
+    note:'栅极长度是整条流程最关键的尺寸之一，直接决定速度和漏电。' },
+  { t:'浅掺杂', d:'在栅极两侧做一次浅而轻的注入。', g:['gSti','gWell','gGate','gLdd'], mods:['注入'],
+    note:'浅掺（LDD）是为了缓解短沟道效应：让源漏附近的电场变化缓一点。' },
+  { t:'栅极侧墙', d:'铺一层薄膜再全面往下刻蚀，只在栅极两侧留下 Spacer。', g:['gSti','gWell','gGate','gLdd','gSpacer'], mods:['薄膜','刻蚀'],
+    note:'Spacer 的作用是「撑开距离」：让后面那次重掺不要紧贴栅极。' },
+  { t:'源极与漏极', d:'做一次深而重的注入，Spacer 保证它离栅极有点距离，然后退火激活。', g:['gSti','gWell','gGate','gLdd','gSpacer','gSd'], mods:['注入','退火'],
+    note:'到这一步，晶体管在电学上已经能工作了。' },
+  { t:'金属硅化物', d:'铺金属并加热，让它和硅反应，形成低电阻化合物，方便后续接线。', g:['gSti','gWell','gGate','gLdd','gSpacer','gSd','gSilicide'], mods:['薄膜','退火'],
+    note:'硅化物是为了降低接触电阻。之后 MOL 会在这些位置打接触孔、填钨。' }
+];
+
+const ALL = ['gSti','gWell','gGate','gLdd','gSpacer','gSd','gSilicide'];
+const btns = $('#stepBtns');
+
+STEPS.forEach((s, i) => {
+  const b = document.createElement('button');
+  b.textContent = (i + 1) + ' ' + s.t;
+  b.onclick = () => { stop(); render(i); };
+  btns.appendChild(b);
+});
+
+function render(i) {
+  const s = STEPS[i];
+  ALL.forEach(id => document.getElementById(id).setAttribute('opacity', s.g.includes(id) ? 1 : 0));
+  $('#stepTitle').textContent = s.t;
+  $('#stepDesc').textContent = s.d;
+  $('#stepNote').textContent = s.note;
+  $('#stepIdx').textContent = i + 1;
+  $('#mods').innerHTML = s.mods.map(m => `<span>${m}</span>`).join('');
+  btns.querySelectorAll('button').forEach((b, k) => b.setAttribute('aria-pressed', k === i));
+}
+
+let timer = null, cur = 0;
+const playBtn = $('#playBtn');
+function stop(){ clearInterval(timer); timer = null; playBtn.textContent = '▶ 自动播放'; playBtn.setAttribute('aria-pressed','false'); }
+playBtn.onclick = () => {
+  if (timer) { stop(); return; }
+  playBtn.textContent = '❚❚ 暂停'; playBtn.setAttribute('aria-pressed','true');
+  timer = setInterval(() => { cur = (cur + 1) % STEPS.length; render(cur); }, 1500);
+};
+
+const q = new URLSearchParams(location.search);
+render(q.get('step') ? Math.min(6, Math.max(0, +q.get('step') - 1)) : 0);
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
