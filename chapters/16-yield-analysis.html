@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 晶圆完成工艺，并经过电学特性测试</span><span class="arw">→</span><span><b>本章</b> 分析良率，找出芯片坏掉的原因</span><span class="arw">→</span><span><b>下一站</b> 把找到的原因反馈给工艺，持续改善</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>整体良率 = 三段相乘</h2>
     <p class="sub">拖三个滑块。注意相乘之后掉得有多快——三段各丢几个百分点，整体就丢了十几个。</p>
@@ -120,6 +122,17 @@
     </div>
     <p class="note"><b>随机 vs 系统性：</b>随机的只能靠洁净度长期改善；系统性的有固定原因（某台设备、某个图形），找到就能一次解决——所以工厂会优先追系统性。</p>
   </section>
+<section>
+    <h2 class="sec-head"><span class="num">＋</span>良率就是钱</h2>
+    <p class="sub">一片晶圆的制造成本大致固定，上面的好芯片越多，每颗芯片摊到的成本就越低。所以良率直接决定芯片成本与工厂获利。</p>
+    <p class="note"><b>良率学习曲线：</b>新工艺刚量产时良率通常不高，工程师一个一个找问题、解决问题，良率才逐步爬升。谁爬得更快，谁就更有竞争力。</p>
+  </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>良率（Yield）</span></h4><dl><dt>定义</dt><dd>产出的好产品占全部产品的比例。</dd><dt>现场用法</dt><dd>「这批的 CP 良率掉到八成。」</dd><dt>相关名词</dt><dd>晶圆良率、裸片良率、最终测试良率、良率学习曲线</dd><dt>常见混淆</dt><dd class="q">听到「良率」一定要先确认是哪一种。晶圆良率 98% 和裸片良率 98% 代表的意义完全不同。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>晶圆图（Wafer Map）</span></h4><dl><dt>定义</dt><dd>把晶圆上每一颗裸片的测试结果，依照位置画出来的分布图。</dd><dt>现场用法</dt><dd>「这片的 Map 有一条刮痕。」</dd><dt>相关名词</dt><dd>Bin、晶圆测试、缺陷分布图</dd><dt>常见混淆</dt><dd class="q">晶圆图是电学特性测试的结果，缺陷分布图则是缺陷检测的结果。把两张图叠起来比对，可以判断哪些缺陷真的造成芯片失效。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>每个曝光区都坏在同一个位置，先查掩模版</span></h4><dl><dt>情境</dt><dd>晶圆图上的坏裸片，在每一个曝光区里都出现在相同的位置。</dd><dt>做法</dt><dd>优先检查这一层使用的掩模版，以及相关的曝光条件。</dd><dt>为什么</dt><dd>曝光机每次曝光都使用同一片掩模版，掩模版上的缺陷会被「复制」到每一个曝光区。</dd><dt>没做会怎样</dt><dd class="q">如果把它当成一般的随机缺陷，会花很多时间在错误的方向上，而有问题的掩模版还会持续影响后面的晶圆。</dd><dt>相关章节</dt><dd><a href="04-lithography.html">第 4 章 光刻</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>先找共同点，再找原因</span></h4><dl><dt>情境</dt><dd>好几批晶圆良率异常，但原因不明。</dd><dt>做法</dt><dd>把良率差的晶圆和良率正常的晶圆，逐站比对经过的设备、腔体、时间与材料，找出只有坏晶圆才有的共同点。</dd><dt>为什么</dt><dd>一片晶圆要经过数百站，不可能每站都详细调查。共因分析能快速把范围缩小到少数几站。</dd><dt>没做会怎样</dt><dd class="q">调查漫无目标，问题持续影响更多晶圆。</dd><dt>相关章节</dt><dd><a href="06-etching.html">第 6 章 刻蚀</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>Gary S. May、Costas J. Spanos，《Fundamentals of Semiconductor Manufacturing and Process Control》，良率相关章节</li><li>EDFAS／ASM International，《Microelectronics Failure Analysis Desk Reference》</li></ul></section>
+<!-- enriched:end -->
+
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

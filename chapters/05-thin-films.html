@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 清洗，晶圆表面已经处理干净</span><span class="arw">→</span><span><b>本章</b> 薄膜沉积，在晶圆表面铺上一层新材料</span><span class="arw">→</span><span><b>下一站</b> 光刻，在这层材料上定义图形</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>同一个沟槽，四种盖法</h2>
     <p class="sub">真实的结构从来不是平的。切换四种方法，看同一个深沟里，薄膜在顶部、侧壁、底部各有多厚。</p>
@@ -148,6 +150,12 @@
     </div>
     <p class="note cyan"><b>反直觉的一点：</b>填窄沟时，覆盖「越均匀」反而越糟——两侧同时长厚，开口会先被封住，里面留下空洞。所以填沟工艺常常要刻意做成「从底部往上长」。</p>
   </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>CVD（Chemical Vapor Deposition，化学气相沉积）</span></h4><dl><dt>定义</dt><dd>让气体在晶圆表面发生化学反应，形成固态薄膜的方法。</dd><dt>现场用法</dt><dd>「这层氮化硅是 CVD 长的」，现场常把沉积薄膜说成「长膜」。</dd><dt>相关名词</dt><dd>LPCVD、PECVD、ALD、外延</dd><dt>常见混淆</dt><dd class="q">CVD 是一大类方法的总称。ALD 和外延从原理上看也属于 CVD 的特殊形式，但现场通常把它们当成独立的工艺来称呼。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>台阶覆盖率（Step Coverage）</span></h4><dl><dt>定义</dt><dd>在有沟槽或孔洞的表面上，薄膜在顶部、侧壁和底部的厚度是否一致。</dd><dt>现场用法</dt><dd>「这个孔的覆盖不好，底部太薄。」</dd><dt>相关名词</dt><dd>保形性（Conformality）、深宽比、空洞（Void）</dd><dt>常见混淆</dt><dd class="q">覆盖均匀不一定是好事。要把窄沟填满时，如果侧壁同时长厚，开口可能先被封住，里面就留下空洞，所以填沟时反而希望从底部往上长。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>清洗完要赶快进炉管</span></h4><dl><dt>情境</dt><dd>晶圆完成炉前清洗，正在等待进入氧化炉管。</dd><dt>做法</dt><dd>两站之间设定等待时间上限（Q-Time），超过时间就必须重新清洗。</dd><dt>为什么</dt><dd>清洗后的硅表面很「新鲜」，放久了会重新长出一层原生氧化层，也会吸附空气中的污染物。</dd><dt>没做会怎样</dt><dd class="q">长出来的氧化层质量变差，影响晶体管的电学特性和可靠性。</dd><dt>相关章节</dt><dd><a href="09-cleaning.html">第 9 章 清洗与污染控制</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>炉管一次决定上百片晶圆的命运</span></h4><dl><dt>情境</dt><dd>炉管一次处理好几批晶圆，一跑就是好几个小时。</dd><dt>做法</dt><dd>进炉前，系统会检查同一炉的晶圆是否都在相同步骤、使用相同的 Recipe；炉内也会放几片控片，事后测量膜厚，确认这一炉的结果。</dd><dt>为什么</dt><dd>批式设备一旦开始就无法中途修正，而且薄膜沉积通常无法重做。</dd><dt>没做会怎样</dt><dd class="q">只要一个设定出错，同一炉的好几批晶圆会同时受影响。</dd><dt>相关章节</dt><dd><a href="23-fab-systems.html">第 23 章 工厂如何被系统管理</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>常见异常</h2><div style="overflow-x:auto"><table><thead><tr><th>异常</th><th>可能原因</th><th>结果</th></tr></thead><tbody><tr><td>膜厚偏厚或偏薄</td><td>温度、时间或气体流量偏移</td><td>影响电学特性与后续刻蚀</td></tr><tr><td>均匀度差</td><td>腔体内的气流或温度分布不均</td><td>晶圆不同位置的裸片表现不同</td></tr><tr><td>微粒</td><td>腔体内壁的沉积物剥落</td><td>缺陷、良率下降</td></tr><tr><td>薄膜剥落或龟裂</td><td>应力太大、附着力不足</td><td>结构损坏</td></tr><tr><td>空洞</td><td>填沟时开口先被封住</td><td>断路或可靠性问题</td></tr></tbody></table></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>Peter Van Zant，《Microchip Fabrication》，氧化与沉积相关章节</li><li>Hong Xiao，《Introduction to Semiconductor Manufacturing Technology》，CVD 与 PVD 章节</li></ul></section>
+<!-- enriched:end -->
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

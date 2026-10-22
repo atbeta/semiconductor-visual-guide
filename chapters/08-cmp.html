@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 薄膜沉积，表面因为底下的图形而高低不平</span><span class="arw">→</span><span><b>本章</b> CMP，把晶圆表面磨平</span><span class="arw">→</span><span><b>下一站</b> 清洗，然后进行下一层光刻</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>一台 CMP 在做什么</h2>
     <p class="sub">五个零件：旋转的平台、贴在上面的抛光垫、把晶圆压下去的抛光头、送抛光液的喷嘴，还有一直在刮垫子的修整器。</p>
@@ -172,6 +174,12 @@
       <div class="card"><h3 style="margin:0 0 4px;font-size:15px">耗材漂移</h3><p class="caption" style="margin:0">抛光垫与抛光液是消耗品，速率会变，靠前几批的量测回馈微调时间。</p></div>
     </div>
   </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>CMP（Chemical Mechanical Planarization，化学机械抛光）</span></h4><dl><dt>定义</dt><dd>结合化学反应与机械研磨，把晶圆表面磨平或去除多余材料的工艺。</dd><dt>现场用法</dt><dd>「这层 CMP 磨过头了」，现场也常直接说「研磨」。</dd><dt>相关名词</dt><dd>抛光液、抛光垫、Dishing、Erosion</dd><dt>常见混淆</dt><dd class="q">CMP 不只是用砂纸磨东西，化学作用同样重要。不同材料要用不同配方的抛光液，才能磨得又快又平。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>碟形凹陷与侵蚀（Dishing / Erosion）</span></h4><dl><dt>定义</dt><dd>碟形凹陷是较宽的金属导线中间被磨得凹下去，像一个盘子；侵蚀是导线密集的整个区域被磨得比周围低。</dd><dt>现场用法</dt><dd>「大面积金属的 Dishing 太严重。」</dd><dt>相关名词</dt><dd>图形密度、填充图形、过度抛光</dd><dt>常见混淆</dt><dd class="q">碟形凹陷发生在「单一条宽导线」内部，侵蚀则是「一整片密集区域」一起变低，两者的原因和解法不同。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>芯片里有很多不通电的图形</span></h4><dl><dt>情境</dt><dd>用显微镜观察芯片，会发现很多没有连到任何电路的小方块。</dd><dt>做法</dt><dd>设计流程的最后，软件会在空旷的区域自动补上填充图形，让各区的图形密度落在规定范围内。</dd><dt>为什么</dt><dd>CMP 的抛光速率和图形密度有关，密度不均匀，就会磨得一边高一边低。</dd><dt>没做会怎样</dt><dd class="q">表面不平，导致光刻失焦、导线厚度不一致，甚至金属残留造成短路。</dd><dt>相关章节</dt><dd><a href="04-lithography.html">第 4 章 光刻</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>CMP 之后要马上清洗</span></h4><dl><dt>情境</dt><dd>晶圆刚磨完，表面沾满抛光液和研磨颗粒。</dd><dt>做法</dt><dd>CMP 设备内部通常集成了清洗模块，晶圆磨完后立刻刷洗、冲净并烘干，干干净净地离开设备，现场称为「干进干出」。</dd><dt>为什么</dt><dd>抛光液一旦在晶圆表面干掉，颗粒会牢牢粘住，很难再洗掉。</dd><dt>没做会怎样</dt><dd class="q">残留的颗粒变成缺陷，影响后续的薄膜和光刻，造成良率损失。</dd><dt>相关章节</dt><dd><a href="09-cleaning.html">第 9 章 清洗与污染控制</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>常见异常</h2><div style="overflow-x:auto"><table><thead><tr><th>异常</th><th>可能原因</th><th>结果</th></tr></thead><tbody><tr><td>磨过头或磨不够</td><td>抛光速率改变、终点判断错误</td><td>膜厚不合格</td></tr><tr><td>碟形凹陷与侵蚀</td><td>图形密度不均、过度抛光</td><td>导线变薄、电阻变高</td></tr><tr><td>刮伤</td><td>抛光液中有大颗粒、抛光垫异常</td><td>断路或短路</td></tr><tr><td>金属残留</td><td>金属没有磨干净</td><td>相邻导线短路</td></tr><tr><td>腐蚀</td><td>铜表面接触化学品太久</td><td>导线损伤</td></tr></tbody></table></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>Peter Van Zant，《Microchip Fabrication》，平坦化相关章节</li><li>Hong Xiao，《Introduction to Semiconductor Manufacturing Technology》，CMP 章节</li></ul></section>
+<!-- enriched:end -->
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

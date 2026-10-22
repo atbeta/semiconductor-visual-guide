@@ -36,6 +36,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 走完一条平面晶体管的 CMOS 流程</span><span class="arw">→</span><span><b>本章</b> 晶体管结构如何从平面走向立体</span><span class="arw">→</span><span><b>下一站</b> 看存储器的工艺</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>问题：闸门只压住一面</h2>
     <p class="sub">平面晶体管里，栅极只从上方压住沟道。源极和漏极靠得越近，下方越深的地方就越容易有电流「溜过去」——即使栅极关着。另一个麻烦是绝缘层：为了控制得更牢，它被做得越来越薄，最后薄到电子直接穿过去。</p>
@@ -213,6 +215,17 @@
       </table>
     </div>
   </section>
+<section>
+    <h2 class="sec-head"><span class="num">＋</span>背面供电：把电源线搬到背面</h2>
+    <p class="sub">信号线和电源线原本都挤在正面的金属层里。晶体管越密，布线越挤，电源线太细还会造成电压下降。</p>
+    <p class="note"><b>做法：</b>先把晶圆正面键合到一片承载晶圆上，翻过来，把原晶圆磨到极薄，再在背面做电源导线。正面因此可以整层留给信号线，供电也更稳。这项技术在 2020 年代中期开始进入量产。</p>
+  </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>FinFET（鳍式场效应晶体管）</span></h4><dl><dt>定义</dt><dd>沟道做成垂直鳍状、栅极从三面包覆沟道的晶体管结构。</dd><dt>现场用法</dt><dd>「这个器件用了三根 Fin。」</dd><dt>相关名词</dt><dd>Fin、多重曝光、GAA</dd><dt>常见混淆</dt><dd class="q">FinFET 的名称来自形状像鱼鳍，和材料无关。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>GAA 与纳米片（Gate-All-Around / Nanosheet）</span></h4><dl><dt>定义</dt><dd>GAA 是栅极完全包住沟道的晶体管结构；纳米片是目前最主流的 GAA 做法，沟道是几片水平堆叠的薄片。</dd><dt>现场用法</dt><dd>「这一代改成 GAA，Sheet 叠了三层。」</dd><dt>相关名词</dt><dd>硅锗、沟道释放、内侧墙</dd><dt>常见混淆</dt><dd class="q">GAA 是概念，纳米片是实现方式之一。还有纳米线等其他形式，名称经常被混用。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>先做一个假的，再换成真的</span></h4><dl><dt>情境</dt><dd>新人常常疑惑，为什么很多材料铺上去之后又被挖掉。</dd><dt>做法</dt><dd>先进工艺大量使用<b>牺牲层</b>：例如先做假栅极再换成金属栅极、先长硅锗再把它挖掉，以及多重曝光中先做出、之后再移除的辅助图形。</dd><dt>为什么</dt><dd>最终要的材料可能承受不了前面步骤的高温，或者根本无法直接做成那个形状，只好先用容易加工的材料「占位」。</dd><dt>没做会怎样</dt><dd class="q">很多先进结构根本做不出来。理解这个思维，就比较容易看懂复杂的工艺流程。</dd><dt>相关章节</dt><dd><a href="04-lithography.html">第 4 章 光刻</a>、<a href="13-memory.html">第 13 章 存储器工艺</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>结构越立体，测量越困难</span></h4><dl><dt>情境</dt><dd>GAA 的沟道藏在栅极里面，从上方根本看不到。</dd><dt>做法</dt><dd>改用光学模型推算立体结构的尺寸，并定期把晶圆切开，用电子显微镜观察剖面。</dd><dt>为什么</dt><dd>平面结构从上往下看就能量线宽，立体结构却有高度、侧壁角度、每一层的厚度要确认。</dd><dt>没做会怎样</dt><dd class="q">结构异常无法在工艺中被实时发现，要等到电学特性测试才知道。</dd><dt>相关章节</dt><dd><a href="15-metrology.html">第 15 章 测量与检测</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>IEEE IRDS（International Roadmap for Devices and Systems），More Moore 章节</li><li>IEEE IEDM（International Electron Devices Meeting）历年论文</li></ul></section>
+<!-- enriched:end -->
+
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

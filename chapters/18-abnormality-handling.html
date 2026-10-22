@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 工艺控制发出了异常信号</span><span class="arw">→</span><span><b>本章</b> 处理异常，并管理工艺的变更</span><span class="arw">→</span><span><b>下一站</b> 晶圆完成前段工艺，准备进入测试</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>六步：从发现到防止再发</h2>
     <p class="sub">顺序很重要：先挡住影响，再找原因。反过来做，损失会一直扩大。</p>
@@ -146,6 +148,11 @@
     </div>
     <p class="note red"><b>小改动也要走流程：</b>调整一个温度参数看起来无害，但它可能改变掺杂扩散、影响 Vt。变更管理管的是「风险」，不是「改动大小」。</p>
   </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>OCAP（Out of Control Action Plan，异常处理计划）</span></h4><dl><dt>定义</dt><dd>针对特定异常，事先规定好「要检查什么、要做什么、要通知谁」的处理步骤。</dd><dt>现场用法</dt><dd>「这个 OOC 照 OCAP 走，先停设备、量控片。」</dd><dt>相关名词</dt><dd>OOC、Hold、SPC</dd><dt>常见混淆</dt><dd class="q">OCAP 不是事后的检讨报告，而是异常发生「当下」的行动指引。它让不同班别、不同的人都用同样的方式处理。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>第一件事是挡住，不是修好</span></h4><dl><dt>情境</dt><dd>发现某台设备的结果异常。</dd><dt>做法</dt><dd>先停设备、Hold 可疑的晶圆，再开始调查原因。</dd><dt>为什么</dt><dd>调查原因可能要花好几个小时。如果边查边让设备继续生产，受影响的晶圆会越来越多。</dd><dt>没做会怎样</dt><dd class="q">原本只影响一两批的问题，扩大成十几批甚至更多，损失成倍增加。</dd><dt>相关章节</dt><dd><a href="17-process-control.html">第 17 章 工艺控制</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>影响范围从「上一次确认正常」开始算</span></h4><dl><dt>情境</dt><dd>设备在今天下午被发现异常，但不知道是从什么时候开始的。</dd><dt>做法</dt><dd>往回找到这台设备最后一次确认正常的时间点，例如上一次控片测量合格的时间。从那之后经过这台设备的所有晶圆，都列入可疑范围。</dd><dt>为什么</dt><dd>异常可能早在被发现之前就开始了。只挡发现当下的晶圆，会漏掉更早受影响的晶圆。</dd><dt>没做会怎样</dt><dd class="q">有问题的晶圆被放行，到测试甚至客户端才发现。这也是设备需要定期检查的原因：检查越频繁，可疑的范围就越小。</dd><dt>相关章节</dt><dd><a href="23-fab-systems.html">第 23 章 工厂如何被系统管理</a></dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>ECN 与 PCN（Engineering Change Notice / Process Change Notification）</span></h4><dl><dt>定义</dt><dd>ECN 是工厂内部的工程变更通知与审核流程；PCN 是对客户发出的工艺或产品变更通知。</dd><dt>现场用法</dt><dd>「这个 Recipe 改动要走 ECN」「换材料要发 PCN 给客户」。</dd><dt>相关名词</dt><dd>变更管理、验证、可靠性测试、分批实验</dd><dt>常见混淆</dt><dd class="q">不是只有大改动才要走流程。看起来很小的修改，例如调整一个温度参数，也可能影响可靠性，所以同样要经过评估。</dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>JEDEC，J-STD-046《Customer Notification Standard for Product/Process Changes by Electronic Product Suppliers》</li><li>Gary S. May、Costas J. Spanos，《Fundamentals of Semiconductor Manufacturing and Process Control》</li></ul></section>
+<!-- enriched:end -->
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

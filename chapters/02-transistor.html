@@ -37,6 +37,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 认识晶圆厂这个场地</span><span class="arw">→</span><span><b>本章</b> 认识晶圆厂要制造的东西：晶体管</span><span class="arw">→</span><span><b>下一站</b> 准备原料，做出一片空白晶圆</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>五个名字，一个开关</h2>
     <p class="sub">MOSFET 的构造可以想成一个水闸门：源极是进水口，漏极是出水口，栅极是闸门。闸门和硅之间隔着极薄的一层绝缘层，闸门下方那片硅就是沟道。</p>
@@ -202,6 +204,11 @@
       </svg>
     </div>
   </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>掺杂（Doping）</span></h4><dl><dt>定义</dt><dd>刻意在半导体中加入少量特定元素，改变它的导电特性。</dd><dt>现场用法</dt><dd>「这一区的掺杂浓度偏高」「这层是 N 型掺杂」。</dd><dt>相关名词</dt><dd>N 型、P 型、离子注入、退火</dd><dt>常见混淆</dt><dd class="q">掺杂是刻意、精准控制的加入；不想要的杂质（例如金属）进入晶圆则是污染，见<a href="09-cleaning.html">第 9 章</a>。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>MOSFET（金属氧化物半导体场效应晶体管）</span></h4><dl><dt>定义</dt><dd>用栅极电压控制沟道导通与否的晶体管，是现代芯片最基本的器件。</dd><dt>现场用法</dt><dd>通常简称 MOS，例如「这颗 NMOS 的 Vt 偏高」。</dd><dt>相关名词</dt><dd>NMOS、PMOS、CMOS、阈值电压</dd><dt>常见混淆</dt><dd class="q">名称中的「金属、氧化物」来自早期结构。后来栅极改用多晶硅，现在又改回金属，绝缘层也不只是氧化硅，但名称一直沿用。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>同一个工艺，可以做出快的和省电的晶体管</span></h4><dl><dt>情境</dt><dd>一颗手机芯片同时需要高速运算，也需要在待机时尽量省电。</dd><dt>做法</dt><dd>同一个工艺通常会提供几种不同 Vt 的晶体管：低 Vt 的开关快但漏电多，高 Vt 的开关慢但很省电。设计者可以在同一颗芯片上混合使用。</dd><dt>为什么</dt><dd>不同电路的需求不同，运算核心要速度，待机电路要省电。</dd><dt>没做会怎样</dt><dd class="q">只能在「全部快但耗电」和「全部省电但慢」之间二选一。代价是每多一种 Vt，就要多几道光刻和注入步骤，成本也会增加。</dd><dt>相关章节</dt><dd><a href="07-ion-implantation.html">第 7 章 离子注入与热处理</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>工艺偏一点，电学特性就偏一点</span></h4><dl><dt>情境</dt><dd>栅极的线宽做得比目标小了一点。</dd><dt>做法</dt><dd>每片晶圆完成前段工艺后，都会测量晶体管的电学特性参数，例如 Vt、导通电流和漏电流。</dd><dt>为什么</dt><dd>线宽、氧化层厚度、掺杂浓度只要稍微改变，晶体管的电学特性就会跟着改变。电学特性参数是工艺结果最直接的「成绩单」。</dd><dt>没做会怎样</dt><dd class="q">工艺慢慢偏移却没有发现，最后芯片速度或耗电不符合规格，甚至到客户端才出问题。</dd><dt>相关章节</dt><dd><a href="19-wafer-test.html">第 19 章 晶圆测试</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>S. M. Sze、M. K. Lee，《Semiconductor Devices: Physics and Technology》</li><li>Michael Quirk、Julian Serda，《Semiconductor Manufacturing Technology》，半导体材料与器件相关章节</li></ul></section>
+<!-- enriched:end -->
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

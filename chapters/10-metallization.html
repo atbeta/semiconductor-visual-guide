@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 晶体管已经做好，完整顺序见第 11 章</span><span class="arw">→</span><span><b>本章</b> 金属化，做出连接晶体管的金属导线</span><span class="arw">→</span><span><b>下一站</b> 一层一层往上叠，最后铺上钝化层</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>双大马士革：先挖沟，再填铜</h2>
     <p class="sub">铝时代是「先铺金属再刻蚀」；铜很难干法刻蚀，所以顺序反过来：先在绝缘层里挖出通孔和沟槽，再一次性填满铜，最后把多余的磨掉。</p>
@@ -181,6 +183,12 @@
     <p class="note"><b>电镀要从底部往上长：</b>镀液里加添加剂，让孔底的铜长得比开口快。否则开口先被封住，里面留下空洞，电阻变高、长期还容易断线。</p>
     <p class="note cyan"><b>低介电常数材料（Low-k）：</b>两条靠得很近的导线就是一个小电容，会拖慢信号。Low-k 材料带微孔、结构脆弱，在刻蚀、CMP、封装时都容易受伤。</p>
   </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>接触孔与通孔（Contact / Via）</span></h4><dl><dt>定义</dt><dd>接触孔连接晶体管和第一层金属；通孔连接上下两层金属。</dd><dt>现场用法</dt><dd>「这颗 Via 开不通」，意思是通孔没有接好，形成断路。</dd><dt>相关名词</dt><dd>钨塞、阻挡层、Via Chain</dd><dt>常见混淆</dt><dd class="q">两者都是「填满金属的孔」，差别在连接的位置：接触孔在晶体管上方，通孔在金属层之间。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>大马士革工艺（Damascene）</span></h4><dl><dt>定义</dt><dd>先在绝缘层挖出沟槽，填入金属，再用 CMP 磨掉多余部分的导线制作方法。</dd><dt>现场用法</dt><dd>「这几层是铜的双大马士革。」</dd><dt>相关名词</dt><dd>电镀、阻挡层、种子层、铜 CMP</dd><dt>常见混淆</dt><dd class="q">铝导线是「先铺金属再刻蚀」，铜导线是「先挖沟再填金属」，两者顺序刚好相反。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>电镀铜要从底部往上填</span></h4><dl><dt>情境</dt><dd>要把又窄又深的沟槽完全填满铜。</dd><dt>做法</dt><dd>电镀液中会加入特殊的添加剂，让孔洞底部的铜长得比开口处快，由下往上填满。</dd><dt>为什么</dt><dd>如果开口处的铜长得比较快，开口会先被封住。</dd><dt>没做会怎样</dt><dd class="q">导线内部留下空洞，电阻变高，长期使用时也更容易断线。</dd><dt>相关章节</dt><dd><a href="05-thin-films.html">第 5 章 薄膜</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>铜磨完之后不能放太久</span></h4><dl><dt>情境</dt><dd>铜 CMP 完成，晶圆表面的铜直接暴露在空气中。</dd><dt>做法</dt><dd>CMP 到铺上覆盖层之间设有 Q-Time 限制，超过时间要由工程师判断处理方式。</dd><dt>为什么</dt><dd>裸露的铜很容易氧化和腐蚀。</dd><dt>没做会怎样</dt><dd class="q">铜表面劣化，通孔的接触电阻变高，可靠性也会下降。</dd><dt>相关章节</dt><dd><a href="09-cleaning.html">第 9 章 清洗与污染控制</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>常见异常</h2><div style="overflow-x:auto"><table><thead><tr><th>异常</th><th>可能原因</th><th>结果</th></tr></thead><tbody><tr><td>铜填充空洞</td><td>电镀条件异常、开口太窄</td><td>电阻变高、可靠性问题</td></tr><tr><td>铜残留</td><td>CMP 抛光不足</td><td>导线短路</td></tr><tr><td>通孔不通</td><td>刻蚀不足、孔底残留</td><td>断路</td></tr><tr><td>阻挡层失效</td><td>阻挡层太薄或不连续</td><td>铜扩散，造成漏电</td></tr><tr><td>低介电材料损伤</td><td>刻蚀、CMP 或封装的应力</td><td>漏电、结构剥离</td></tr></tbody></table></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>James D. Plummer、Michael D. Deal、Peter B. Griffin，《Silicon VLSI Technology》，后段工艺章节</li><li>Hong Xiao，《Introduction to Semiconductor Manufacturing Technology》，金属化章节</li></ul></section>
+<!-- enriched:end -->
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

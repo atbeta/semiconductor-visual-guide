@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 光刻，光刻胶已经挡住不需要注入的区域</span><span class="arw">→</span><span><b>本章</b> 离子注入与退火，在指定区域加入杂质，改变电学特性</span><span class="arw">→</span><span><b>下一站</b> 去除光刻胶、清洗</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>五段：从气体到晶圆</h2>
     <p class="sub">离子源 → 质量分析 → 加速 → 扫描 → 晶圆。每一段解决一个问题。</p>
@@ -132,6 +134,12 @@
 
     <p class="note cyan"><b>热预算：</b>晶圆经历的高温总量是有限额的。每一次高温都会让前面注入的杂质再扩散一点——所以工艺顺序要把高温步骤尽量排前面，金属层出现之后就必须降温。</p>
   </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>剂量与能量（Dose / Energy）</span></h4><dl><dt>定义</dt><dd>剂量是单位面积注入的原子数量，能量是离子被加速的程度。</dd><dt>现场用法</dt><dd>「这道的剂量是 1E15」，意思是每平方厘米注入 10 的 15 次方个原子。</dd><dt>相关名词</dt><dd>注入角度、方块电阻、Vt 调整</dd><dt>常见混淆</dt><dd class="q">能量越高是打得越深，不是打进越多原子。原子的数量由剂量决定。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>退火（Anneal）</span></h4><dl><dt>定义</dt><dd>通过加热修复晶格损伤，并让杂质激活的工艺。</dd><dt>现场用法</dt><dd>「注入完还要过一道 RTA。」</dd><dt>相关名词</dt><dd>激活、扩散、热预算、RTA</dd><dt>常见混淆</dt><dd class="q">退火不只会修复晶格，也会让杂质往外扩散。温度越高、时间越长，杂质跑得越远，所以退火永远是在「激活」和「扩散」之间取得平衡。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>注入做错，眼睛看不出来</span></h4><dl><dt>情境</dt><dd>一片注入错误的晶圆，外观和正确的晶圆一模一样。</dd><dt>做法</dt><dd>注入设备的 Recipe 和参数受到特别严格的管控，系统会在开机前再次确认注入的元素、剂量和能量，设备也会实时监测剂量。</dd><dt>为什么</dt><dd>注入的错误无法用肉眼或一般显微镜看出来，往往要等到几周后的电学特性测试才会发现，而且无法重做。</dd><dt>没做会怎样</dt><dd class="q">错误一路被带到工艺后段才发现，前面所有加工都白费，还可能已经影响了很多批晶圆。</dd><dt>相关章节</dt><dd><a href="19-wafer-test.html">第 19 章 晶圆测试</a>、<a href="23-fab-systems.html">第 23 章 工厂如何被系统管理</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>高温步骤要尽量排在前面</span></h4><dl><dt>情境</dt><dd>规划一个产品的完整工艺流程。</dd><dt>做法</dt><dd>需要高温的步骤尽量安排在前面，越后面的步骤温度越低；退火也尽量使用时间最短的方式。</dd><dt>为什么</dt><dd>杂质的扩散会累积。后面的每一次加热，都会让前面做好的掺杂区域变形。</dd><dt>没做会怎样</dt><dd class="q">源极和漏极的掺杂扩散得太深、太宽，晶体管的漏电变大、Vt 偏移。</dd><dt>相关章节</dt><dd><a href="11-cmos-process-flow.html">第 11 章 走一遍完整的 CMOS 流程</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>常见异常</h2><div style="overflow-x:auto"><table><thead><tr><th>异常</th><th>可能原因</th><th>结果</th></tr></thead><tbody><tr><td>剂量偏移</td><td>Recipe 设定错误、剂量测量异常</td><td>Vt 与电阻偏移</td></tr><tr><td>注入错误的元素或能量</td><td>Recipe 或气体错误</td><td>电学特性完全错误，通常只能报废</td></tr><tr><td>注入不均匀</td><td>离子束扫描异常</td><td>晶圆不同位置的电学特性不同</td></tr><tr><td>光刻胶阻挡不足</td><td>光刻胶太薄或有缺陷</td><td>不该注入的区域被注入</td></tr><tr><td>退火温度偏移</td><td>加热系统异常</td><td>激活不足或扩散过度</td></tr></tbody></table></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>James D. Plummer、Michael D. Deal、Peter B. Griffin，《Silicon VLSI Technology》，离子注入与扩散章节</li><li>Peter Van Zant，《Microchip Fabrication》，掺杂相关章节</li></ul></section>
+<!-- enriched:end -->
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

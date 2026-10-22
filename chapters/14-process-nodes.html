@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 认识了逻辑和存储器的各种结构</span><span class="arw">→</span><span><b>本章</b> 读懂新闻里常听到的「几纳米工艺」</span><span class="arw">→</span><span><b>下一站</b> 进入质量与良率的世界</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>名字和尺寸，早就脱钩了</h2>
     <p class="sub">早期节点名称大致等于栅极长度；后来结构越来越复杂，实际尺寸的缩小速度跟不上名字，两者就分开了。</p>
@@ -120,6 +122,17 @@
     <p class="note"><b>Pitch 和 CD 不是一回事：</b>Pitch 是「一条线 + 一个间隔」的总宽，CD 通常只指线宽本身。Pitch 的一半叫半间距。</p>
     <p class="note red"><b>不同公司的「N 纳米」不能直接比：</b>命名没有统一标准，同名工艺密度可能差很多，数字更大的反而可能更密。</p>
   </section>
+<section>
+    <h2 class="sec-head"><span class="num">＋</span>成熟工艺一样重要</h2>
+    <p class="sub">最先进的工艺最受瞩目，但世界上大量的芯片仍然使用二十多纳米以上的成熟工艺：汽车电子、电源管理、微控制器、传感器、显示驱动。</p>
+    <p class="note"><b>选工艺看的是需求，不是名气：</b>性能、成本、产量、是否需要模拟或高压——先进工艺的掩模版与设计成本极高，只有销量大、性能要求高的产品才划算；很多模拟与高压电路在成熟工艺上反而表现更好，可靠性也经过长期验证。</p>
+  </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>工艺节点（Process Node / Technology Node）</span></h4><dl><dt>定义</dt><dd>代表某一代工艺技术的名称，通常以「几纳米」表示。</dd><dt>现场用法</dt><dd>「这个产品要从 7 纳米移到 5 纳米。」</dd><dt>相关名词</dt><dd>微缩、摩尔定律、晶体管密度</dd><dt>常见混淆</dt><dd class="q">节点名称是世代代号，不是芯片上任何结构的实际尺寸，也和光刻测量的 CD 是不同的东西。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>间距（Pitch）</span></h4><dl><dt>定义</dt><dd>重复排列的图形中，一条线加上一个间隔的总宽度。</dd><dt>现场用法</dt><dd>「这层的 Pitch 太小，一次曝光做不出来。」</dd><dt>相关名词</dt><dd>CPP、MMP、半间距、CD</dd><dt>常见混淆</dt><dd class="q">Pitch 是「线宽加间隔」，CD 通常只指线宽本身。Pitch 的一半称为半间距。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>比较工艺时，看密度和间距，不看名字</span></h4><dl><dt>情境</dt><dd>新闻说某家的「N 纳米」打败另一家的「M 纳米」。</dd><dt>做法</dt><dd>比较晶体管密度、栅极间距、金属间距、SRAM 面积，以及在相同条件下的性能与功耗。</dd><dt>为什么</dt><dd>节点名称没有统一定义，只看数字容易被误导。</dd><dt>没做会怎样</dt><dd class="q">得出错误的结论，例如以为数字小的工艺一定比较密、比较好。</dd><dt>相关章节</dt><dd><a href="12-advanced-transistors.html">第 12 章 先进晶体管结构</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>不是每颗芯片都需要最先进的工艺</span></h4><dl><dt>情境</dt><dd>一个新产品要决定使用哪一代工艺。</dd><dt>做法</dt><dd>依照性能需求、成本、产量、模拟或高电压的需求来选择，而不是一味追求最新世代。</dd><dt>为什么</dt><dd>先进工艺的掩模版和设计成本非常高，只有销量大、对性能要求高的产品才划算。很多模拟和高电压电路在成熟工艺上反而表现更好，可靠性也经过长期验证。</dd><dt>没做会怎样</dt><dd class="q">产品成本过高而失去竞争力，或者无法满足模拟、耐压与可靠性的需求。</dd><dt>相关章节</dt><dd><a href="22-reliability.html">第 22 章 最终测试与可靠性</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>IEEE IRDS（International Roadmap for Devices and Systems），More Moore 章节</li><li>WikiChip 网站的技术节点相关页面</li></ul></section>
+<!-- enriched:end -->
+
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

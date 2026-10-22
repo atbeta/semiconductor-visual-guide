@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 芯片出货，装进了产品里</span><span class="arw">→</span><span><b>本章</b> 芯片开始工作后，工艺如何影响固件和软件</span><span class="arw">→</span><span><b>下一站</b> 旅程结束，附录有术语总表与延伸阅读</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>四条「规定」的来历</h2>
     <div class="grid2">
@@ -143,6 +145,17 @@
     </div>
     <p class="note red"><b>固件里的「魔术数字」别乱改：</b>那些时序和电压往往是大量芯片在不同温度下的实测结果，已经算进了工艺变异与老化裕量。在几片样品上试没问题，量产可能在某些温度下翻车。</p>
   </section>
+<section>
+    <h2 class="sec-head"><span class="num">＋</span>Row Hammer：单元靠得太近</h2>
+    <p class="sub">DRAM 单元越做越密，相邻单元越容易互相干扰。2014 年有研究公开发表：反复、快速地存取同一行，可能让相邻行的数据翻转。</p>
+    <p class="note red"><b>不只是可靠性，还是安全问题：</b>攻击者可能借此改写不该改的数据。现在的 DRAM 与存储器控制器都加入了检测机制，并对相邻行做额外刷新来防范。</p>
+  </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>刷新（Refresh）</span></h4><dl><dt>定义</dt><dd>定期读出 DRAM 中的数据再写回，补充电容流失的电荷，避免数据消失。</dd><dt>现场用法</dt><dd>「高温时刷新频率加倍，带宽会掉一些。」</dd><dt>相关名词</dt><dd>DRAM、电容、数据保存时间、存储器控制器</dd><dt>常见混淆</dt><dd class="q">刷新是由存储器控制器和 DRAM 在后台自动进行的，不是操作系统或应用程序在做，但固件会设定相关的参数。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>ECC（Error Correction Code，纠错码）</span></h4><dl><dt>定义</dt><dd>在数据中加入额外的校验位，让系统能检测并更正少量的比特错误。</dd><dt>现场用法</dt><dd>「这台服务器的存储器一定要开 ECC。」</dd><dt>相关名词</dt><dd>软错误、比特翻转、奇偶校验</dd><dt>常见混淆</dt><dd class="q">ECC 有能力上限，只能更正一定数量的错误，错误太多时只能检测、无法更正。新一代 DRAM 芯片内部的 ECC，和系统层级的 ECC 也是两件不同的事。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>固件里的「魔术数字」常常来自工艺</span></h4><dl><dt>情境</dt><dd>固件代码里有一些看不出道理的时序参数、电压值或等待时间。</dd><dt>做法</dt><dd>修改之前，先找出这些数字的来源，例如芯片规格书、特性测量报告或厂商的建议值。</dd><dt>为什么</dt><dd>这些数字通常是根据大量芯片在不同温度、电压下的实测结果订出来的，并且已经考虑了工艺变异和老化的裕量。</dd><dt>没做会怎样</dt><dd class="q">在实验室的几片样品上看起来没问题，量产后却在某些芯片、某些温度下出现难以重现的错误。</dd><dt>相关章节</dt><dd><a href="22-reliability.html">第 22 章 最终测试与可靠性</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>只改金属层，修正又快又省</span></h4><dl><dt>情境</dt><dd>芯片发现一个设计错误，需要尽快推出修正版。</dd><dt>做法</dt><dd>设计时预先在芯片各处埋入一些备用的逻辑门。发现错误后，只要修改上层几道金属层的掩模版，就能把这些备用逻辑门接进电路。工厂甚至可以先把一些晶圆停在金属层之前等待，修正版掩模版一到就继续生产。</dd><dt>为什么</dt><dd>底层晶体管的掩模版最多、最贵，工艺时间也最长；只改上层金属，可以省下大量的成本和时间。</dd><dt>没做会怎样</dt><dd class="q">每一次修正都要从头重做，等待好几个月，成本也高出许多。</dd><dt>相关章节</dt><dd><a href="11-cmos-process-flow.html">第 11 章 走一遍完整的 CMOS 流程</a>、<a href="18-abnormality-handling.html">第 18 章 异常处理与工程变更</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>Bruce Jacob、Spencer W. Ng、David T. Wang，《Memory Systems: Cache, DRAM, Disk》</li><li>Rino Micheloni、Luca Crippa、Alessia Marelli，《Inside NAND Flash Memories》</li><li>Yoongu Kim 等，〈Flipping Bits in Memory Without Accessing Them: An Experimental Study of DRAM Disturbance Errors〉，ISCA 2014</li></ul></section>
+<!-- enriched:end -->
+
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

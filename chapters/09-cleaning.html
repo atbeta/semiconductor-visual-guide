@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 几乎任何一个工艺步骤</span><span class="arw">→</span><span><b>本章</b> 清洗，去除晶圆表面的污染</span><span class="arw">→</span><span><b>下一站</b> 下一个工艺步骤</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>洗什么，用什么洗</h2>
     <p class="sub">表面上其实有四类脏东西，各自要用不同的化学药液。选一种洗法，看哪几类被带走。</p>
@@ -143,6 +145,12 @@
     </div>
     <p class="note red"><b>背面也要洗：</b>背面一颗微粒会把晶圆局部顶高，曝光时那一块就失焦；微粒还会留在设备上传给下一片。所以清洗和检查不能只看正面。</p>
   </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>RCA 清洗（RCA Clean）</span></h4><dl><dt>定义</dt><dd>以 SC1、SC2 为核心的标准晶圆清洗流程。</dd><dt>现场用法</dt><dd>「炉管前要先过一道 RCA。」</dd><dt>相关名词</dt><dd>SC1、SC2、DHF、炉前清洗</dd><dt>常见混淆</dt><dd class="q">RCA 是最早发表这套方法的实验室名称，不是某种化学品。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>Q-Time（Queue Time，等待时间限制）</span></h4><dl><dt>定义</dt><dd>两个工艺步骤之间允许等待的最长时间。</dd><dt>现场用法</dt><dd>「这批 Q-Time 快到了，先跑它」「Q-Time 超过了，要重洗」。</dd><dt>相关名词</dt><dd>Hold、返工、派工</dd><dt>常见混淆</dt><dd class="q">Q-Time 不是工艺本身花的时间，而是「两站之间可以等多久」。它也不只用在清洗，例如铜 CMP 之后到铺上覆盖层之间，同样有 Q-Time 限制。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>接触过铜的东西，不能回到前段</span></h4><dl><dt>情境</dt><dd>晶圆进入金属导线工艺后，开始接触铜。</dd><dt>做法</dt><dd>工厂会把设备和晶圆盒分成不同的污染等级，常用颜色或标签区分。系统也会检查晶圆盒和设备的等级是否相符，不符就禁止进设备。</dd><dt>为什么</dt><dd>微量的铜一旦被带进前段设备，就会污染之后经过那台设备的所有晶圆。</dd><dt>没做会怎样</dt><dd class="q">大范围的晶圆受到铜污染，晶体管漏电，良率大幅下降，而且很难追查源头。</dd><dt>相关章节</dt><dd><a href="10-metallization.html">第 10 章 金属化</a>、<a href="23-fab-systems.html">第 23 章 工厂如何被系统管理</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>晶圆背面也要干净</span></h4><dl><dt>情境</dt><dd>晶圆背面沾了一颗微粒。</dd><dt>做法</dt><dd>清洗和检查不能只顾正面，背面的微粒和污染同样要控制。</dd><dt>为什么</dt><dd>曝光时晶圆平贴在设备上，背面的微粒会把晶圆局部顶高，造成失焦；微粒还可能留在设备上，传给下一片晶圆。</dd><dt>没做会怎样</dt><dd class="q">同一个位置反复出现失焦的缺陷，而且一台设备可能污染许多批晶圆。</dd><dt>相关章节</dt><dd><a href="04-lithography.html">第 4 章 光刻</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>常见异常</h2><div style="overflow-x:auto"><table><thead><tr><th>异常</th><th>可能原因</th><th>结果</th></tr></thead><tbody><tr><td>清洗后微粒反而增加</td><td>化学槽变脏、过滤器失效</td><td>缺陷增加</td></tr><tr><td>水痕</td><td>干燥不完全</td><td>表面残留</td></tr><tr><td>金属污染</td><td>化学品纯度不足、零件腐蚀</td><td>漏电、良率下降</td></tr><tr><td>薄膜被吃掉太多</td><td>氢氟酸浓度或时间异常</td><td>膜厚不足</td></tr><tr><td>图形倒塌</td><td>干燥时液体的表面张力拉倒细高的结构</td><td>结构损坏</td></tr></tbody></table></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>Karen A. Reinhardt、Werner Kern 编，《Handbook of Silicon Wafer Cleaning Technology》</li><li>Peter Van Zant，《Microchip Fabrication》，污染控制相关章节</li></ul></section>
+<!-- enriched:end -->
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

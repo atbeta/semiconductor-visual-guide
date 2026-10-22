@@ -36,6 +36,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 封装完成</span><span class="arw">→</span><span><b>本章</b> 最终测试与可靠性，确保芯片现在能用、未来也能用很多年</span><span class="arw">→</span><span><b>下一站</b> 出货，装进产品里</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>失效率的三个阶段</h2>
     <p class="sub">把一大批芯片的失效率按时间画出来，两端高、中间低，像浴缸。左边是「先天不足」，中间是「稳定工作」，右边是「老化」。</p>
@@ -165,6 +167,11 @@
 
     <p class="note"><b>可靠性是统计问题：</b>没法预测「这一颗」哪天坏，但可以用大量样本推算一群芯片的失效概率，单位是 FIT——每十亿器件小时失效几次。这是和客户对话的共同语言。</p>
   </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>FT（Final Test，最终测试）</span></h4><dl><dt>定义</dt><dd>芯片封装完成后、出货前的功能与电学特性测试。</dd><dt>现场用法</dt><dd>「这批在 FT 的高温测试掉了不少。」</dd><dt>相关名词</dt><dd>CP、分类机、分级、SLT</dd><dt>常见混淆</dt><dd class="q">CP 是在晶圆上测裸片，FT 是测封装好的芯片。两者的测试项目和目的不完全相同。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>浴缸曲线（Bathtub Curve）</span></h4><dl><dt>定义</dt><dd>描述产品失效率随时间变化的曲线，两端高、中间低，形状像浴缸。</dd><dt>现场用法</dt><dd>「老化筛选就是把浴缸左边那段先烧掉。」</dd><dt>相关名词</dt><dd>老化筛选、早期失效、老化、可靠性</dd><dt>常见混淆</dt><dd class="q">老化筛选只能筛掉早期失效，无法让芯片更耐用，也无法解决设计或工艺造成的老化问题。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>可靠性是统计问题</span></h4><dl><dt>情境</dt><dd>客户问：「这颗芯片会不会坏？」</dd><dt>做法</dt><dd>用失效率来描述可靠性，常用的单位是 <b>FIT</b>，代表每十亿个器件小时中发生几次失效。</dd><dt>为什么</dt><dd>无法预测某一颗芯片哪一天会坏，但可以从大量样本的测试结果，推算一群芯片的失效概率。</dd><dt>没做会怎样</dt><dd class="q">无法和客户用相同的语言讨论质量，也无法估计产品上市后会有多少失效。</dd><dt>相关章节</dt><dd><a href="17-process-control.html">第 17 章 工艺控制</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>车用芯片的要求更严格</span></h4><dl><dt>情境</dt><dd>同一种工艺，要同时生产消费级芯片和车用芯片。</dd><dt>做法</dt><dd>车用芯片采用更严格的验证标准和更多的筛选测试，也要求更宽的工作温度范围和更长的寿命，目标是「零缺陷」。</dd><dt>为什么</dt><dd>车用芯片要在引擎旁的高温或寒冬的低温下工作十几年，而且一旦失效，可能影响行车安全。</dd><dt>没做会怎样</dt><dd class="q">芯片在车上失效，代价远高于消费级产品，可能导致大规模的召回。</dd><dt>相关章节</dt><dd><a href="14-process-nodes.html">第 14 章 「几纳米」是什么意思</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>J. W. McPherson，《Reliability Physics and Engineering: Time-To-Failure Modeling》</li><li>JEDEC，JESD47《Stress-Test-Driven Qualification of Integrated Circuits》</li><li>Automotive Electronics Council，AEC-Q100</li></ul></section>
+<!-- enriched:end -->
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

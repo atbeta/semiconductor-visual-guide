@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 晶圆测试，已经知道哪些裸片是好的</span><span class="arw">→</span><span><b>本章</b> 封装，把裸片变成可以装到电路板上的芯片</span><span class="arw">→</span><span><b>下一站</b> 最终测试</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>四个任务</h2>
     <div class="grid2">
@@ -175,6 +177,12 @@
       </div>
     </div>
   </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>引线键合（Wire Bonding）</span></h4><dl><dt>定义</dt><dd>用极细的金属线连接裸片焊盘与封装连接点的技术，是最传统、最普遍的封装连接方式。</dd><dt>现场用法</dt><dd>「这批引线键合的拉力测试没过。」</dd><dt>相关名词</dt><dd>焊盘、引线框架、倒装芯片</dd><dt>常见混淆</dt><dd class="q">引线键合虽然是传统技术，但至今仍是数量最多的封装方式，因为成本低、技术成熟。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>倒装芯片（Flip Chip）</span></h4><dl><dt>定义</dt><dd>把裸片正面朝下，通过凸块直接与基板连接的封装方式。</dd><dt>现场用法</dt><dd>「这颗是倒装芯片封装，要确认底部填充有没有空洞。」</dd><dt>相关名词</dt><dd>凸块（Bump）、底部填充、基板、BGA</dd><dt>常见混淆</dt><dd class="q">凸块和锡球不一样。凸块连接裸片和基板，锡球则在封装的底部，连接封装和电路板。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>芯片也会「受潮」</span></h4><dl><dt>情境</dt><dd>封装好的芯片放在一般环境中，封装材料会慢慢吸收空气中的水气。</dd><dt>做法</dt><dd>芯片依照对湿气的敏感程度分级，出货时用防潮袋加干燥剂真空包装。拆封后超过规定时间没用完，焊接前要先烘烤除湿。</dd><dt>为什么</dt><dd>焊接到电路板时温度会急速升高，封装内的水气瞬间汽化膨胀。</dd><dt>没做会怎样</dt><dd class="q">封装内部脱层甚至爆裂，这种现象被形象地称为「爆米花效应」。</dd><dt>相关章节</dt><dd><a href="22-reliability.html">第 22 章 最终测试与可靠性</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>磨薄的晶圆非常脆弱</span></h4><dl><dt>情境</dt><dd>晶圆经过背面研磨后，可能只剩一百微米左右甚至更薄，像纸一样会弯曲。</dd><dt>做法</dt><dd>研磨前先在正面贴上保护胶膜或键合到承载晶圆上，之后的搬运也使用专用的机构支撑。</dd><dt>为什么</dt><dd>薄晶圆很容易破裂和翘曲，内部的应力也会让它弯曲变形。</dd><dt>没做会怎样</dt><dd class="q">晶圆破片，或是产生肉眼看不见的微小裂痕，等到芯片使用一段时间后才失效。</dd><dt>相关章节</dt><dd><a href="21-advanced-packaging.html">第 21 章 先进封装</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>常见异常</h2><div style="overflow-x:auto"><table><thead><tr><th>异常</th><th>可能原因</th><th>结果</th></tr></thead><tbody><tr><td>崩边</td><td>切割刀磨损、切割参数不当</td><td>裸片边缘破损，可能延伸成裂痕</td></tr><tr><td>引线键合粘不上</td><td>焊盘污染、针痕过深</td><td>断路</td></tr><tr><td>冲线</td><td>塑封时的流动把细线推弯</td><td>相邻导线短路</td></tr><tr><td>脱层</td><td>材料之间附着不良、吸湿</td><td>可靠性问题</td></tr><tr><td>空洞</td><td>塑封或底部填充没有填满</td><td>散热变差、可靠性问题</td></tr></tbody></table></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>Rao R. Tummala，《Fundamentals of Microsystems Packaging》</li><li>Peter Van Zant，《Microchip Fabrication》，封装相关章节</li></ul></section>
+<!-- enriched:end -->
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

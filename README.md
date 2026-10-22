@@ -74,6 +74,21 @@ smi-viz/
 - **深链**：`?theme=light`、`?step=4`（光刻）、`?v=2.4&mode=pmos`（晶体管）、`?s=gaa`、`?z=2&burn=1`（可靠性）、`?d=200`（晶棒直径）、`?len=0.7`（长晶进度），方便截图和分享某个状态。
 - **零依赖**：没有构建、没有框架。一个 `<script>`，几张 SVG。
 
+## 内容覆盖
+
+页面不是原书的翻译，而是「可视化改写版」。为了不让它比原书少太多，`scripts/enrich_from_source.py`
+会把原书 `zh-CN` 里的**名词框**、**Know-how 框**、**常见异常表**、**延伸阅读**、**晶圆位置**
+机械抽取成 HTML 卡片补进页面（可重复执行、幂等；`--strip` 可移除）。
+
+按字符数比对原书正文：改写版从 **41%** 提升到 **84%**（25 章合计 52k / 63k 字）。
+剩下的差距主要是原文的过渡段落与重复导航，不是知识点缺失。
+
+```bash
+python3 scripts/enrich_from_source.py            # 全部章节
+python3 scripts/enrich_from_source.py --strip     # 撤掉注入内容
+python3 scripts/enrich_from_source.py --dry chapters/04-lithography.html
+```
+
 ## 已知取舍
 
 - 目前只有简体中文；原书五语同构，但页面文案需要按语种写，不是自动翻译能解决的。

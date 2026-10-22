@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 还没出发</span><span class="arw">→</span><span><b>本章</b> 鸟瞰一颗芯片从设计到出货的完整旅程</span><span class="arw">→</span><span><b>下一站</b> 走进晶圆厂，看看它怎么运行</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>八站，一条线</h2>
     <p class="sub">从设计到出货。点任意一站，看它发生什么、归谁管、对应哪一章。</p>
@@ -100,6 +102,17 @@
     </div>
     <p class="note cyan"><b>注意「前段/后段」有两种含义：</b>产业层面指「晶圆制造 / 封测」；晶圆厂内部则指「做晶体管（FEOL）/ 做金属层（BEOL）」。听到时看上下文。</p>
   </section>
+<section>
+    <h2 class="sec-head"><span class="num">＋</span>晶圆、裸片与芯片</h2>
+    <p class="sub">一片晶圆上整齐排列着很多个相同的电路，每一个叫一个<b>裸片</b>（Die）；裸片之间留窄窄的<b>切割道</b>，最后沿着切割道切开，再把好的裸片封装起来，才是我们平常见到的<b>芯片</b>（Chip）。</p>
+    <p class="note"><b>数量差很大：</b>一片 300 mm 晶圆可以做出几十颗到上万颗裸片，取决于裸片多大——上一节那个计算器算的就是这件事。</p>
+  </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>晶圆代工（Foundry）</span></h4><dl><dt>定义</dt><dd>不设计自己的芯片产品，专门替客户制造芯片的商业模式。</dd><dt>现场用法</dt><dd>「这个产品是客户投片进来的」，代工厂习惯把每个客户的设计称为一个产品。</dd><dt>相关名词</dt><dd>Fabless、IDM、OSAT</dd><dt>常见混淆</dt><dd class="q">IDM 和代工厂都有晶圆厂，差别在于 IDM 主要制造自己设计的产品，代工厂则替别人制造。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>前段与后段</span></h4><dl><dt>定义</dt><dd>前段指晶圆制造，后段指封装与测试。</dd><dt>现场用法</dt><dd>「他在前段做工艺」「这颗芯片卡在后段」。</dd><dt>相关名词</dt><dd>FEOL、BEOL、封测</dd><dt>常见混淆</dt><dd class="q">「前段、后段」有两种意思。除了晶圆制造与封测的分法，晶圆厂内部也会把制造晶体管的步骤叫前段（FEOL），把做金属导线的步骤叫后段（BEOL），见<a href="11-cmos-process-flow.html">第 11 章</a>。听到时要看上下文判断。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>芯片为什么不能说加产就加产？</span></h4><dl><dt>情境</dt><dd>市场对某种芯片的需求突然增加。</dd><dt>做法</dt><dd>芯片通常要提前好几个月下单投片，工厂也要提前规划产能。</dd><dt>为什么</dt><dd>一片晶圆从投片到出货，前段加上后段往往要三、四个月以上，而且生产线上随时都有大量还在半路上的晶圆。</dd><dt>没做会怎样</dt><dd class="q">需求突然增加时，就算立刻投片，也要好几个月后才拿得到芯片。这也是芯片短缺时，供货无法马上恢复的原因之一。</dd><dt>相关章节</dt><dd><a href="01-how-a-fab-works.html">第 1 章 晶圆厂如何运行</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>晶圆是圆的，芯片却是方的</span></h4><dl><dt>情境</dt><dd>晶圆边缘只放得下不完整的裸片。</dd><dt>做法</dt><dd>设计裸片在晶圆上的排列方式时，会尽量让一片晶圆摆进最多颗完整的裸片。</dd><dt>为什么</dt><dd>晶圆是从圆柱状的晶棒切下来的，所以是圆的；裸片则要方形才方便排列和切割。边缘不完整的裸片不能当作产品。</dd><dt>没做会怎样</dt><dd class="q">浪费的面积变多，每颗芯片的成本就变高。这也是产业一直改用更大尺寸晶圆的原因之一。</dd><dt>相关章节</dt><dd><a href="03-sand-to-wafer.html">第 3 章 从沙子到晶圆</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>Peter Van Zant，《Microchip Fabrication》，第 1 章</li><li>Michael Quirk、Julian Serda，《Semiconductor Manufacturing Technology》，第 1 章</li></ul></section>
+<!-- enriched:end -->
+
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

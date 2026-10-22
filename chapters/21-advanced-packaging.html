@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 晶圆测试，挑出了好的裸片</span><span class="arw">→</span><span><b>本章</b> 先进封装，把多颗芯片集成成一个系统</span><span class="arw">→</span><span><b>下一站</b> 最终测试</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>为什么不再「一颗做大」</h2>
     <div class="grid2">
@@ -195,6 +197,26 @@
     </div>
     <p class="note cyan"><b>前后段界线在模糊：</b>先进封装大量使用光刻、电镀、CMP，这些原本是晶圆厂的工艺。所以现在常说「封装在往前走」，和晶圆制造越来越像。</p>
   </section>
+<section>
+    <h2 class="sec-head"><span class="num">＋</span>先进封装的挑战</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>挑战</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td>散热</td><td>芯片紧密排列或叠在一起，热更难散出去</td></tr>
+          <tr><td>翘曲</td><td>不同材料热膨胀程度不同，封装越大越容易弯</td></tr>
+          <tr><td>测试</td><td>芯片叠起来之后，中间那颗很难再单独测</td></tr>
+          <tr><td>良率相乘</td><td>任何一颗芯片或一个连接点失败，整个封装都受影响</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>中介层（Interposer）</span></h4><dl><dt>定义</dt><dd>放在芯片和封装基板之间的一层转接板，上面有细密的导线，让多颗芯片之间能高速连接。</dd><dt>现场用法</dt><dd>「这个产品的中介层超过一个曝光范围，要用拼接的方式做。」</dd><dt>相关名词</dt><dd>2.5D、TSV、微凸块、HBM</dd><dt>常见混淆</dt><dd class="q">中介层不一定是硅，也有使用有机材料，或只在芯片之间埋入一小块硅桥的做法，成本和性能各有取舍。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>混合键合（Hybrid Bonding）</span></h4><dl><dt>定义</dt><dd>不使用凸块，让两颗芯片表面的铜连接点直接键合，同时周围的绝缘层也互相粘合的技术。</dd><dt>现场用法</dt><dd>「改用混合键合之后，连接点密度提高很多。」</dd><dt>相关名词</dt><dd>3D 堆叠、微凸块、CMP、晶圆键合</dd><dt>常见混淆</dt><dd class="q">混合键合的「混合」，指的是金属和绝缘层两种材料同时键合，而不是混合使用两种封装方式。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>一颗坏芯片，拖垮整个封装</span></h4><dl><dt>情境</dt><dd>一个先进封装里放了八颗芯片。</dd><dt>做法</dt><dd>每一颗芯片在封装前都要经过充分测试，确保是已知良好裸片（KGD），封装过程中也尽量安排可以检查的步骤。</dd><dt>为什么</dt><dd>良率会相乘。就算每颗芯片的良率都是 99%，八颗全部都好的概率也只剩大约 92%。</dd><dt>没做会怎样</dt><dd class="q">只要一颗芯片有问题，整个昂贵的封装连同其他好芯片都一起报废。</dd><dt>相关章节</dt><dd><a href="19-wafer-test.html">第 19 章 晶圆测试</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>混合键合需要前段等级的干净和平坦</span></h4><dl><dt>情境</dt><dd>两颗芯片要用混合键合直接键合。</dd><dt>做法</dt><dd>键合面要经过极精密的 CMP，键合前的清洗和环境控制也要达到晶圆厂的等级。</dd><dt>为什么</dt><dd>两个表面之间没有凸块可以缓冲，一颗微粒就会撑出一个空隙，表面稍微不平也会键合不良。</dd><dt>没做会怎样</dt><dd class="q">一颗微粒可能让周围大量连接点同时失效。</dd><dt>相关章节</dt><dd><a href="08-cmp.html">第 8 章 CMP</a>、<a href="09-cleaning.html">第 9 章 清洗与污染控制</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>John H. Lau，《Semiconductor Advanced Packaging》</li><li>IEEE ECTC（Electronic Components and Technology Conference）历年论文</li></ul></section>
+<!-- enriched:end -->
+
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>

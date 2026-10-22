@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <!-- wp:start --><div class="waferpos">📍 <span><b>前一站</b> 知道要制造的是晶体管</span><span class="arw">→</span><span><b>本章</b> 做出一片空白的硅晶圆</span><span class="arw">→</span><span><b>下一站</b> 投片进入晶圆厂，开始一连串的工艺模块</span></div><!-- wp:end -->
+
   <section>
     <h2 class="sec-head"><span class="num">01</span>纯度：从 98% 到 11 个 9</h2>
     <p class="sub">点每一步，看纯度怎么变。注意最后一级——一千亿个硅原子里的杂质不到一个。</p>
@@ -181,6 +183,20 @@
       <div class="card"><h3 style="margin:0 0 4px;font-size:15px">300 mm · 12 吋</h3><p class="caption" style="margin:0">面积是 200 mm 的 2.25 倍，先进逻辑与存储器的主流。450 mm 因设备成本过高没有普及。</p></div>
     </div>
   </section>
+<section>
+    <h2 class="sec-head"><span class="num">＋</span>特殊晶圆：外延与 SOI</h2>
+    <p class="sub">除了一般的抛光晶圆，还有两种常见的特殊晶圆，是为特定需求准备的。</p>
+    <div class="grid2">
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15.5px">外延晶圆</h3><p class="caption" style="margin:0">在抛光晶圆表面再长一层质量更好的单晶硅，器件做在这一层里。</p></div>
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15.5px">SOI 晶圆</h3><p class="caption" style="margin:0">薄硅下面埋一层绝缘层（埋氧），减少漏电，常用在射频等特殊产品。</p></div>
+    </div>
+  </section>
+<!-- enriched:start -->
+<section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>单晶与多晶（Single Crystal / Polycrystalline）</span></h4><dl><dt>定义</dt><dd>单晶是整块材料的原子都依照同一个方向整齐排列；多晶则是由许多排列方向不同的小晶粒组成。</dd><dt>现场用法</dt><dd>「晶圆本身是单晶硅」「这层是 Poly」，Poly 是多晶硅的简称。</dd><dt>相关名词</dt><dd>长晶、晶棒、外延</dd><dt>常见混淆</dt><dd class="q">多晶硅在半导体业有两种用途，一是长晶用的原料，二是芯片里的一层薄膜，例如早期的栅极材料。两者是不同场合的同一种材料。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>晶圆边缘的小缺口</span></h4><dl><dt>情境</dt><dd>仔细看 300 mm 晶圆，边缘有一个很小的 V 形缺口，称为 Notch。</dd><dt>做法</dt><dd>设备在处理晶圆前，会先找到 Notch，把晶圆转到固定的方向。</dd><dt>为什么</dt><dd>硅晶体在不同方向上的性质不同，例如刻蚀速度和晶体管的表现都会受影响。每一层图形都必须以相同的方向对齐晶格。</dd><dt>没做会怎样</dt><dd class="q">晶圆方向放错，图形的方向和位置就会错，后续的对准也会失败。</dd><dt>相关章节</dt><dd><a href="04-lithography.html">第 4 章 光刻</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>工厂里很多晶圆不是产品</span></h4><dl><dt>情境</dt><dd>新人常发现设备里跑着没有任何电路的空白晶圆。</dd><dt>做法</dt><dd>工厂会使用大量<b>控片</b>（Monitor Wafer）检查设备状态，例如测量膜厚或微粒；也会用<b>挡片</b>（Dummy Wafer）填满批式设备的空位。用过的控片和挡片可以研磨后回收再用，称为再生晶圆。</dd><dt>为什么</dt><dd>不能拿产品晶圆去冒险测试设备，而批式设备需要放满晶圆，温度和气流才会均匀。</dd><dt>没做会怎样</dt><dd class="q">设备的问题要等到产品出事才发现，代价是整批产品报废。</dd><dt>相关章节</dt><dd><a href="05-thin-films.html">第 5 章 薄膜</a>、<a href="15-metrology.html">第 15 章 测量与检测</a></dd></dl></div></div></section>
+<section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>Peter Van Zant，《Microchip Fabrication》，晶体生长与晶圆制备章节</li><li>James D. Plummer、Michael D. Deal、Peter B. Griffin，《Silicon VLSI Technology》，晶体生长章节</li></ul></section>
+<!-- enriched:end -->
+
+
 
   <section>
     <h2 class="sec-head">本章重点</h2>
