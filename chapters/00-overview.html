@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 00 章 · 半导体制造全景 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 00 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 0 · 开始之前</div>
+    <h1>半导体制造全景：一颗芯片的一生</h1>
+    <p class="lede">一片晶圆要经过数百到上千个步骤、花好几个月，才能变成能用的芯片。这一章先给一张地图——知道每一步在哪、谁负责、花多久，后面的章节才不会散成碎片。</p>
+    <div class="badges">
+      <span class="badge on">旅程地图可点</span>
+      <span class="badge">晶圆能切多少颗·可算</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>八站，一条线</h2>
+    <p class="sub">从设计到出货。点任意一站，看它发生什么、归谁管、对应哪一章。</p>
+
+    <div class="card">
+      <div class="journey" id="journey"></div>
+
+      <div class="stopDetail" id="stopDetail">
+        <div class="kicker" id="dStage">前段 · 在晶圆厂里</div>
+        <h3 id="dTitle">设计</h3>
+        <p id="dText"></p>
+        <p class="caption" id="dChap"></p>
+      </div>
+    </div>
+
+    <p class="note"><b>地图为什么重要：</b>晶圆厂的每一个工艺模块（光刻、刻蚀、薄膜……）都只是这条线上的一个环节。知道自己在哪一段，才知道这个参数的偏差会影响谁。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>一片晶圆，能切多少颗</h2>
+    <p class="sub">同一片 300 mm 晶圆，裸片越大，能切的颗数越少——而且不是线性变少，因为圆形边缘的浪费会放大。拖动裸片边长看看。</p>
+
+    <div class="card">
+      <div class="grid2 asym">
+        <div>
+          <svg id="waferMap" viewBox="0 0 360 360" role="img" aria-label="300mm 晶圆上的裸片排布"></svg>
+          <p class="caption">灰色圆是 300 mm 晶圆（Ø300，图中半径 150 px ≈ 150 mm），每个方格是一颗裸片。</p>
+        </div>
+        <div>
+          <label class="caption" for="dieSize">裸片边长 <b id="dieLabel">8</b> mm</label>
+          <input id="dieSize" type="range" min="3" max="30" step="0.5" value="8">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--faint)">
+            <span>3 mm</span><span>30 mm</span>
+          </div>
+
+          <div class="stat" style="grid-template-columns:1fr 1fr;margin-top:20px">
+            <div><b id="dieCount">—</b><small>颗裸片 / 片</small></div>
+            <div><b id="dieArea">—</b><small>晶圆面积利用率</small></div>
+          </div>
+
+          <p class="note" id="dieNote" style="font-size:13.5px">
+            裸片从 8 mm 变到 12 mm，面积变成 2.25 倍，但颗数掉得比 2.25 倍更多——因为圆形边缘的浪费变大了。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>前段与后段</h2>
+    <p class="sub">最常见的分法：前段是在晶圆厂里把电路做出来，后段是把晶圆变成一颗颗能焊到板子上的芯片。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="kicker">前段 · Wafer Fab</div>
+        <h3 style="margin:.4em 0 .3em;font-size:17px">2–3 个月</h3>
+        <p class="caption" style="margin:0">数百到上千道工序，全部在洁净室里完成。晶体管、金属导线都在这一段做出来。第 2–4 部讲的就是它。</p>
+      </div>
+      <div class="card">
+        <div class="kicker">后段 · Test &amp; Assembly</div>
+        <h3 style="margin:.4em 0 .3em;font-size:17px">2–4 周</h3>
+        <p class="caption" style="margin:0">晶圆测试、切割、封装、最终测试。第 5 部讲这一段。</p>
+      </div>
+    </div>
+    <p class="note cyan"><b>注意「前段/后段」有两种含义：</b>产业层面指「晶圆制造 / 封测」；晶圆厂内部则指「做晶体管（FEOL）/ 做金属层（BEOL）」。听到时看上下文。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>半导体制造是人类最复杂的制造活动之一：数百到上千步、好几个月。</li>
+      <li>产业分工：Fabless 设计、Foundry 代工、IDM 全包、OSAT 封测、设备材料供应商。</li>
+      <li>旅程八站：设计 → 掩模版 → 投片 → 前段 → 晶圆测试 → 封装 → 最终测试 → 出货。</li>
+      <li>前段在晶圆厂（2–3 个月），后段在封测厂（2–4 周）。</li>
+      <li>裸片越大，一片晶圆能切的颗数掉得越快——这是大芯片贵的根本原因之一。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="../index.html">← 回目录</a>
+    <a class="next" href="01-how-a-fab-works.html">01 晶圆厂如何运行 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+    <p>源码：<a href="https://github.com/atbeta/semiconductor-visual-guide">atbeta/semiconductor-visual-guide</a> · 推 main 自动部署到 Vercel。</p>
+  </footer>
+</main>
+
+<style>
+  .journey{display:flex;gap:0;align-items:flex-start;margin:8px 0 22px;overflow-x:auto;padding-bottom:6px}
+  .journey .stop{
+    flex:1 0 auto;min-width:96px;background:none;border:none;padding:0;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;color:var(--dim);
+  }
+  .journey .stop::before{
+    content:"";position:absolute;top:17px;left:0;right:0;height:2px;background:var(--faint);opacity:.5;z-index:0;
+  }
+  .journey .stop:first-child::before{left:50%}
+  .journey .stop:last-child::before{right:50%}
+  .journey .dot{
+    position:relative;z-index:1;width:34px;height:34px;border-radius:50%;
+    display:grid;place-items:center;background:var(--card);border:1.5px solid var(--line);
+    font-size:11.5px;font-variant-numeric:tabular-nums;transition:.15s;
+  }
+  .journey .stop b{font-size:12.5px;font-weight:500;white-space:nowrap}
+  .journey .stop:hover .dot{border-color:var(--amber);color:var(--amber)}
+  .journey .stop[aria-pressed="true"]{color:var(--fg)}
+  .journey .stop[aria-pressed="true"] .dot{background:var(--amber);border-color:var(--amber);color:#141821;font-weight:700}
+  .journey .stop[aria-pressed="true"] b{color:var(--amber);font-weight:600}
+  .stopDetail{border-top:1px solid var(--line);padding-top:18px}
+  .stopDetail h3{margin:.3em 0 .4em;font-size:19px}
+  .stopDetail p{margin:0 0 .6em;color:var(--dim);font-size:15px;max-width:70ch}
+  @media(max-width:760px){
+    .journey{gap:2px}
+    .journey .stop{min-width:80px}
+    .journey .stop b{font-size:11px}
+  }
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+
+/* ---- 旅程地图 ---- */
+const STOPS = [
+  { n:'01', t:'设计', stage:'旅程起点 · Fabless 公司', short:'设计',
+    text:'工程师用 EDA 软件画出电路，再转成每一层要印的图形。设计决定了后面所有工艺的难度——层数、最小尺寸、允许多少偏差。',
+    chap:'第 14 章「几纳米」稍有提及' },
+  { n:'02', t:'掩模版制作', stage:'旅程第二站 · 光罩厂', short:'掩模版',
+    text:'每一层电路都要做一片掩模版（Reticle）。一片先进产品可能需要几十片，每片都是石英板上刻出的纳米级图形。',
+    chap:'第 4 章 光刻' },
+  { n:'03', t:'投片', stage:'旅程第三站 · 晶圆厂', short:'投片',
+    text:'空白晶圆（第 3 章的做法）装箱进厂，系统给它一个 Lot 编号，从第一站开始跑。',
+    chap:'第 3 章 从沙子到晶圆' },
+  { n:'04', t:'前段工艺', stage:'旅程主体 · 晶圆厂', short:'前段',
+    text:'光刻、刻蚀、薄膜、注入、CMP、清洗轮番上阵，几百道工序，2–3 个月。晶体管和十余层金属导线都在这一段做出来。',
+    chap:'第 4–18 章' },
+  { n:'05', t:'晶圆测试', stage:'后段开始 · CP 测试', short:'晶圆测试',
+    text:'探针卡扎在每一颗裸片的焊垫上，逐颗测电性。结果画成晶圆图（Wafer Map），坏的在图上标出来。',
+    chap:'第 19 章 晶圆测试' },
+  { n:'06', t:'封装', stage:'后段 · 封测厂', short:'封装',
+    text:'把晶圆切成一颗颗裸片，好的那颗贴到基板上、打线或 flip-chip、灌胶、长锡球。先进封装还能把多颗裸片封在一起。',
+    chap:'第 20、21 章' },
+  { n:'07', t:'最终测试', stage:'后段 · 出厂前', short:'最终测试',
+    text:'封装后再测一次（封装会引入新失效），再跑老化与可靠性，确认这颗芯片能用很多年。',
+    chap:'第 22 章 最终测试与可靠性' },
+  { n:'08', t:'出货', stage:'旅程终点', short:'出货',
+    text:'编带、装盘、贴标签，进仓库等客户拉货。到这里，一片沙子终于变成了能焊在板子上的芯片。',
+    chap:'—' }
+];
+
+const journey = $('#journey');
+STOPS.forEach((s, i) => {
+  const b = document.createElement('button');
+  b.className = 'stop';
+  b.innerHTML = `<span class="dot">${s.n}</span><b>${s.short}</b>`;
+  b.onclick = () => pick(i);
+  journey.appendChild(b);
+});
+
+function pick(i) {
+  const s = STOPS[i];
+  journey.querySelectorAll('.stop').forEach((el, k) => el.setAttribute('aria-pressed', k === i));
+  $('#dStage').textContent = s.stage;
+  $('#dTitle').textContent = s.t;
+  $('#dText').textContent = s.text;
+  $('#dChap').innerHTML = s.chap === '—' ? '' : `对应章节：<b>${s.chap}</b>`;
+}
+pick(3);
+
+/* ---- 晶圆裸片计算 ---- */
+const R = 150;            // 半径（mm）
+const svg = $('#waferMap');
+svg.innerHTML = `
+  <circle cx="180" cy="180" r="${R}" fill="var(--card2)" stroke="var(--line)" stroke-width="2"/>
+  <g id="dies"></g>
+  <g id="notch"><path d="M176,30 L184,30 L180,38 Z" fill="var(--bg)"/></g>
+`;
+const g = svg.querySelector('#dies');
+const dieInput = $('#dieSize');
+
+function layout(s) {
+  const cells = [];
+  const n = Math.floor(R / s) + 1;
+  for (let i = -n; i <= n; i++) {
+    for (let j = -n; j <= n; j++) {
+      const x0 = i * s, y0 = j * s;
+      const corners = [[x0,y0],[x0+s,y0],[x0,y0+s],[x0+s,y0+s]];
+      if (corners.every(([x, y]) => x*x + y*y <= R*R)) cells.push([x0, y0]);
+    }
+  }
+  return cells;
+}
+
+function drawDies() {
+  const s = +dieInput.value;
+  const cells = layout(s);
+  g.innerHTML = cells.map(([x, y]) =>
+    `<rect x="${180 + x}" y="${180 + y}" width="${s}" height="${s}"
+       fill="var(--amber)" fill-opacity=".22" stroke="var(--amber)" stroke-width=".7"/>`
+  ).join('');
+  $('#dieCount').textContent = cells.length.toLocaleString();
+  const util = (cells.length * s * s) / (Math.PI * R * R) * 100;
+  $('#dieArea').textContent = util.toFixed(1) + '%';
+  $('#dieLabel').textContent = s;
+  dieInput.style.setProperty('--p', ((s - 3) / 27 * 100) + '%');
+
+  const perWafer = cells.length;
+  $('#dieNote').innerHTML = `边长 <b>${s} mm</b>：一片约 <b>${perWafer}</b> 颗，边缘浪费 ${(100 - util).toFixed(0)}%。
+    裸片再大一点，颗数会掉得比面积增长更快——这就是大芯片贵的结构性原因。`;
+}
+dieInput.oninput = drawDies;
+drawDies();
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

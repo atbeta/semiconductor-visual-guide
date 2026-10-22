@@ -9,6 +9,8 @@
 <title>半导体制造 · 可视化阅读</title>
 <meta name="description" content="《半导体制造概论》的可视化版本：交互剖面、流程图解、参数演示。">
 <link rel="stylesheet" href="assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+
 </head>
 <body>
 
@@ -16,11 +18,9 @@
   <div class="wrap">
     <a class="brand" href="index.html">半导体制造<span>·</span>可视化</a>
     <nav>
-      <a href="index.html" aria-current="page">目录</a>
-      <a href="chapters/02-transistor.html">02 晶体管</a>
-      <a href="chapters/04-lithography.html">04 光刻</a>
-      <a href="chapters/12-advanced-transistors.html">12 先进结构</a>
-      <a href="chapters/22-reliability.html">22 可靠性</a>
+      <a href="index.html">目录</a>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
     </nav>
   </div>
 </header>
@@ -32,7 +32,7 @@
     <h1>把一本书<br>变成可以点的东西</h1>
     <p>一片晶圆从沙子走到芯片，中间是几百道工序。《半导体制造概论》用文字讲清了这条路径；这里补上它讲不清的部分——剖面怎么变、参数偏了会怎样、哪些结构必须立体地看。</p>
     <div class="badges">
-      <span class="badge on">4 章样张</span>
+      <span class="badge on">7 章可读</span>
       <span class="badge">交互剖面</span>
       <span class="badge">参数演示</span>
       <span class="badge">简体中文</span>
@@ -45,19 +45,19 @@
 
   <section>
     <h2 class="sec-head">目录</h2>
-    <p class="sub">原书 25 章。这里先做 4 章——挑的是「静态图最说不清」的那种章节：器件剖面、工艺步骤、立体结构、统计曲线。</p>
+    <p class="sub">原书 25 章。这里先做 7 章——按书的顺序，挑「静态图最说不清」的地方下手：全景地图、厂房剖面、器件剖面、长晶、光刻流程、立体结构、统计曲线。</p>
 
     <div class="card" style="padding:8px 14px">
       <div class="part-title">Part 0 · 开始之前</div>
       <ul class="toc">
-        <li class="disabled"><span class="n">00</span><span>半导体制造全景</span><span class="state">待做</span></li>
-        <li class="disabled"><span class="n">01</span><span>晶圆厂如何运行</span><span class="state">待做</span></li>
+        <li><span class="n">00</span><a href="chapters/00-overview.html">半导体制造全景</a><span class="state done">可读</span></li>
+        <li><span class="n">01</span><a href="chapters/01-how-a-fab-works.html">晶圆厂如何运行</a><span class="state done">可读</span></li>
       </ul>
 
       <div class="part-title">Part 1 · 基础</div>
       <ul class="toc">
         <li><span class="n">02</span><a href="chapters/02-transistor.html">从物理到晶体管</a><span class="state done">可读</span></li>
-        <li class="disabled"><span class="n">03</span><span>从沙子到晶圆</span><span class="state">待做</span></li>
+        <li><span class="n">03</span><a href="chapters/03-sand-to-wafer.html">从沙子到晶圆</a><span class="state done">可读</span></li>
       </ul>
 
       <div class="part-title">Part 2 · 工艺模块</div>
@@ -104,15 +104,33 @@
   </section>
 
   <section>
-    <h2 class="sec-head">这四章分别演示了什么</h2>
+    <h2 class="sec-head">这七章分别演示了什么</h2>
     <p class="sub">不是给每章配张图，而是每章挑一个「静态文字最难传达」的点，做成可操作的东西。</p>
 
     <div class="grid2">
+      <div class="card">
+        <div class="kicker">第 00 章</div>
+        <h3 style="margin:.4em 0 .3em">一颗芯片的八站旅程</h3>
+        <p class="caption" style="margin:0 0 14px">点站名看它发生什么、归谁管；顺便算算一片晶圆能切多少颗。</p>
+        <a class="btn" href="chapters/00-overview.html">打开 →</a>
+      </div>
+      <div class="card">
+        <div class="kicker">第 01 章</div>
+        <h3 style="margin:.4em 0 .3em">晶圆厂的三层与洁净度</h3>
+        <p class="caption" style="margin:0 0 14px">点剖面看上下三层各干什么；切洁净度，看微粒怎么落在晶圆上。</p>
+        <a class="btn" href="chapters/01-how-a-fab-works.html">打开 →</a>
+      </div>
       <div class="card">
         <div class="kicker">第 02 章</div>
         <h3 style="margin:.4em 0 .3em">栅极电压怎么变成开关</h3>
         <p class="caption" style="margin:0 0 14px">拖动电压，看沟道在栅极下方形成；切换 NMOS / PMOS，看极性反过来。</p>
         <a class="btn" href="chapters/02-transistor.html">打开 →</a>
+      </div>
+      <div class="card">
+        <div class="kicker">第 03 章</div>
+        <h3 style="margin:.4em 0 .3em">拉一根单晶晶棒</h3>
+        <p class="caption" style="margin:0 0 14px">纯度从 98% 爬到 11 个 9；按播放，看晶种怎么把晶棒一点点拉出来。</p>
+        <a class="btn" href="chapters/03-sand-to-wafer.html">打开 →</a>
       </div>
       <div class="card">
         <div class="kicker">第 04 章</div>
@@ -138,7 +156,7 @@
   <section>
     <h2 class="sec-head">怎么读</h2>
     <div class="grid3">
-      <div class="card"><b>想快速理解</b><p class="caption" style="margin:.4em 0 0">按 02 → 04 → 12 → 22 走。四章连起来就是「做什么 → 怎么印出来 → 怎么做得更小 → 怎么保证不坏」。</p></div>
+      <div class="card"><b>想快速理解</b><p class="caption" style="margin:.4em 0 0">按 00 → 01 → 02 → 03 → 04 → 12 → 22 走。连起来就是：看全景 → 进厂房 → 认识器件 → 做出晶圆 → 印出图形 → 越做越小 → 保证不坏。</p></div>
       <div class="card"><b>想进这行</b><p class="caption" style="margin:.4em 0 0">先读原书第 1、11 章建立全局，再回来看这里的剖面——文字讲流程，这里讲形状。</p></div>
       <div class="card"><b>只想看图</b><p class="caption" style="margin:.4em 0 0">每章的交互图都可以单独玩，不依赖上一章；页面底部有回目录。</p></div>
     </div>
@@ -153,13 +171,12 @@
 
 <script>
 const PARAMS = new URLSearchParams(location.search);
-(function init(){
-  if (PARAMS.get('theme')) document.documentElement.dataset.theme = PARAMS.get('theme');
-  else if (matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.dataset.theme = 'light';
+(function heroImage(){
   const img = new Image();
   img.onload = () => { document.getElementById('heroImg').style.backgroundImage = `url(${img.src})`; };
   img.src = 'assets/cover.png';
 })();
 </script>
+<script src="assets/site.js"></script>
 </body>
 </html>

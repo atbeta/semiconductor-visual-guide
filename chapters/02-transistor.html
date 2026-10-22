@@ -8,6 +8,8 @@
 
 <title>第 02 章 · 从物理到晶体管 — 半导体制造可视化</title>
 <link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+
 </head>
 <body>
 
@@ -17,11 +19,8 @@
     <span class="chapno">CH 02 / 25</span>
     <nav>
       <a href="../index.html">目录</a>
-      <a href="02-transistor.html" aria-current="page">02 晶体管</a>
-      <a href="04-lithography.html">04 光刻</a>
-      <a href="12-advanced-transistors.html">12 先进结构</a>
-      <a href="22-reliability.html">22 可靠性</a>
-      <button id="themeBtn" title="切换深浅色" style="font-size:13px;padding:4px 10px">◐</button>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
     </nav>
   </div>
 </header>
@@ -216,7 +215,7 @@
   </section>
 
   <nav class="pager">
-    <a href="../index.html">← 回目录</a>
+    <a class="prev" href="../index.html">← 回目录</a>
     <a class="next" href="04-lithography.html">第 04 章 光刻 →</a>
   </nav>
 
@@ -236,16 +235,7 @@ const $ = (s) => document.querySelector(s);
 const PARAMS = new URLSearchParams(location.search);
 
 /* 主题 */
-(function(){
-  const saved = localStorage.getItem('smi-theme');
-  if (saved) document.documentElement.dataset.theme = saved;
-  else if (matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.dataset.theme = 'light';
-  $('#themeBtn').onclick = () => {
-    const now = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = now;
-    localStorage.setItem('smi-theme', now);
-  };
-})();
+
 
 /* MOSFET 交互 */
 const VT = 1.2;
@@ -326,5 +316,6 @@ if (PARAMS.get('mode') === 'pmos') { mode = 'pmos'; $('#btnP').setAttribute('ari
 if (PARAMS.get('v') !== null) el.vgs.value = PARAMS.get('v');
 render(); tick();
 </script>
+<script src="../assets/site.js"></script>
 </body>
 </html>

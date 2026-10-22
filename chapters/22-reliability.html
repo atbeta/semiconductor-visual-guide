@@ -8,6 +8,8 @@
 
 <title>第 22 章 · 最终测试与可靠性 — 半导体制造可视化</title>
 <link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+
 </head>
 <body>
 
@@ -17,11 +19,8 @@
     <span class="chapno">CH 22 / 25</span>
     <nav>
       <a href="../index.html">目录</a>
-      <a href="02-transistor.html">02 晶体管</a>
-      <a href="04-lithography.html">04 光刻</a>
-      <a href="12-advanced-transistors.html">12 先进结构</a>
-      <a href="22-reliability.html" aria-current="page">22 可靠性</a>
-      <button id="themeBtn" title="切换深浅色" style="font-size:13px;padding:4px 10px">◐</button>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
     </nav>
   </div>
 </header>
@@ -179,7 +178,7 @@
   </section>
 
   <nav class="pager">
-    <a href="12-advanced-transistors.html">← 第 12 章 先进结构</a>
+    <a class="prev" href="12-advanced-transistors.html">← 第 12 章 先进结构</a>
     <a class="next" href="../index.html">回目录 →</a>
   </nav>
 
@@ -195,16 +194,7 @@
 
 <script>
 const $ = (s) => document.querySelector(s);
-(function(){
-  const saved = localStorage.getItem('smi-theme');
-  if (saved) document.documentElement.dataset.theme = saved;
-  else if (matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.dataset.theme = 'light';
-  $('#themeBtn').onclick = () => {
-    const now = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = now;
-    localStorage.setItem('smi-theme', now);
-  };
-})();
+
 
 const ZONES = [
   { x: 70, w: 190, title: '早期失效期',
@@ -245,5 +235,6 @@ if (PARAMS.get('z') !== null) sel = Math.max(0, Math.min(2, +PARAMS.get('z')));
 if (PARAMS.get('burn') === '1') burn = true;
 paint();
 </script>
+<script src="../assets/site.js"></script>
 </body>
 </html>
