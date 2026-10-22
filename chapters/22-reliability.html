@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+
+<title>第 22 章 · 最终测试与可靠性 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 22 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <a href="02-transistor.html">02 晶体管</a>
+      <a href="04-lithography.html">04 光刻</a>
+      <a href="12-advanced-transistors.html">12 先进结构</a>
+      <a href="22-reliability.html" aria-current="page">22 可靠性</a>
+      <button id="themeBtn" title="切换深浅色" style="font-size:13px;padding:4px 10px">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 5 · 后段：测试与封装</div>
+    <h1>最终测试与可靠性：确保芯片能用很多年</h1>
+    <p class="lede">封装完还要再测一遍，因为封装本身会引入新的失效。出厂前还要「烤」一遍，把体质不好的先烤坏在工厂里。这一章讲的是：怎么用几周的时间，推断一颗芯片能活十年。</p>
+    <div class="badges">
+      <span class="badge on">浴缸曲线可交互</span>
+      <span class="badge">老化筛选演示</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>失效率的三个阶段</h2>
+    <p class="sub">把一大批芯片的失效率按时间画出来，两端高、中间低，像浴缸。左边是「先天不足」，中间是「稳定工作」，右边是「老化」。</p>
+
+    <div class="card">
+      <figure>
+        <img src="../assets/figures/22-bathtub.svg" alt="浴缸曲线：早期失效期、稳定期、老化期，分别以 1、2、3 标示">
+        <figcaption><b>①</b> 早期失效期（体质不好的先坏）　<b>②</b> 稳定期（失效率低而稳定）　<b>③</b> 老化期（材料老化，失效率回升）</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>点一段，看它为什么坏</h2>
+    <p class="sub">三段的责任人不一样：左边多半是制造缺陷，中间是随机事件，右边是材料与设计寿命。点一下任意一段。</p>
+
+    <div class="card">
+      <svg id="tub" viewBox="0 0 720 380" role="img" aria-label="可交互浴缸曲线">
+        <defs>
+          <pattern id="hatch" width="8" height="8" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="8" stroke="var(--red)" stroke-width="2" opacity=".55"/>
+          </pattern>
+        </defs>
+
+        <!-- 轴 -->
+        <g stroke="#64748b" stroke-width="2" stroke-linecap="round">
+          <line x1="70" y1="300" x2="670" y2="300"/>
+          <line x1="70" y1="300" x2="70" y2="46"/>
+        </g>
+        <text x="676" y="305" class="lbl">时间</text>
+        <text x="58" y="40" class="lbl" text-anchor="end">失效率</text>
+
+        <!-- 区间 -->
+        <rect class="zone" data-z="0" x="70" y="46" width="190" height="254" fill="var(--red)" opacity=".07" style="cursor:pointer"/>
+        <rect class="zone" data-z="1" x="260" y="46" width="250" height="254" fill="var(--green)" opacity=".05" style="cursor:pointer"/>
+        <rect class="zone" data-z="2" x="510" y="46" width="160" height="254" fill="var(--amber)" opacity=".05" style="cursor:pointer"/>
+
+        <!-- 曲线 -->
+        <path id="tubCurve" d="M78,84 C108,196 150,258 210,262 C272,266 330,264 400,262 C470,260 520,256 560,244 C606,230 634,186 660,104"
+              fill="none" stroke="var(--fg)" stroke-width="3.4" stroke-linecap="round"/>
+        <path d="M78,84 C108,196 150,258 210,262 C272,266 330,264 400,262 C470,260 520,256 560,244 C606,230 634,186 660,104 L660,300 L78,300 Z"
+              fill="var(--fg)" opacity=".05"/>
+
+        <!-- 分区标注 -->
+        <g class="zoneLabel" data-z="0" style="cursor:pointer">
+          <circle cx="150" cy="100" r="16" fill="var(--red)"/>
+          <text x="150" y="106" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">1</text>
+        </g>
+        <g class="zoneLabel" data-z="1" style="cursor:pointer">
+          <circle cx="385" cy="100" r="16" fill="var(--green)"/>
+          <text x="385" y="106" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">2</text>
+        </g>
+        <g class="zoneLabel" data-z="2" style="cursor:pointer">
+          <circle cx="590" cy="100" r="16" fill="var(--amber)"/>
+          <text x="590" y="106" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a1a">3</text>
+        </g>
+
+        <!-- 选中框 -->
+        <rect id="selBox" x="70" y="46" width="190" height="254" fill="none" stroke="var(--amber)" stroke-width="1.6" rx="4"/>
+
+        <!-- 老化筛选 -->
+        <g id="burnin" opacity="0">
+          <rect x="70" y="46" width="190" height="254" fill="url(#hatch)"/>
+          <text x="165" y="330" text-anchor="middle" class="lbl" fill="var(--red)">在工厂里被筛掉</text>
+        </g>
+
+        <!-- 分界 -->
+        <g stroke="var(--line)" stroke-dasharray="4 5">
+          <line x1="260" y1="46" x2="260" y2="300"/>
+          <line x1="510" y1="46" x2="510" y2="300"/>
+        </g>
+      </svg>
+
+      <div class="toolbar" style="margin:16px 0 0">
+        <button id="burnBtn">打开「老化筛选」</button>
+        <span class="caption" style="margin:0" id="tubState">当前只看曲线</span>
+      </div>
+
+      <div id="tubText" class="note">
+        <b>早期失效期：</b>制造过程留下的缺陷（微粒、氧化层弱点、封装应力）在最初使用时就暴露。这一段是「先天不足」，不是设计问题。
+      </div>
+    </div>
+
+    <p class="note cyan"><b>老化筛选（Burn-in）在做什么：</b>让芯片在高温、较高电压下跑一段时间，把这段曲线「提前烧完」。客户拿到的芯片，从稳定期开始用。代价是时间和成本，而且它只筛掉早期失效，不会让芯片更耐用。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>怎么在几周内证明能用十年</h2>
+    <p class="sub">不可能真的等十年。做法是加速：用更高的温度、电压、湿度让失效更快发生，再用模型外推正常条件下的寿命。</p>
+
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>测试</th><th>做法</th><th>模拟什么</th></tr></thead>
+        <tbody>
+          <tr><td>高温工作寿命 HTOL</td><td>高温下持续通电运行上千小时</td><td>长期使用造成的老化</td></tr>
+          <tr><td>温度循环</td><td>反复在高温与低温之间切换</td><td>开关机与环境变化的热胀冷缩</td></tr>
+          <tr><td>高加速应力 HAST</td><td>高温、高湿、加压</td><td>湿气入侵封装</td></tr>
+          <tr><td>静电放电 ESD</td><td>施加模拟的静电放电</td><td>人体或机器接触时的静电</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="caption">条件多依照 JEDEC 等标准；车用另有更严格的标准（如 AEC-Q100），目标是「零缺陷」。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">04</span>芯片是怎么老化的</h2>
+    <p class="sub">老化不是「用旧了」，而是几个具体的物理机制在慢慢改变材料。它们都能对应回前面某一章的工艺。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 4px;font-size:15.5px">电迁移 EM</h3>
+        <p class="caption" style="margin:0">电流长期推动金属原子，导线形成空洞而断线。<span class="hl">对应第 10 章金属化</span></p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 4px;font-size:15.5px">时间相关介质击穿 TDDB</h3>
+        <p class="caption" style="margin:0">绝缘层长期承受电场，最后被击穿。<span class="hl">对应第 12 章栅极绝缘层</span></p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 4px;font-size:15.5px">热载流子注入 HCI</h3>
+        <p class="caption" style="margin:0">高能电子撞进栅极绝缘层，晶体管特性慢慢改变。<span class="hl">对应第 2 章器件</span></p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 4px;font-size:15.5px">偏置温度不稳定性 BTI</h3>
+        <p class="caption" style="margin:0">高温加电压，让阈值电压 Vt 随时间漂移。<span class="hl">对应第 17 章工艺控制</span></p>
+      </div>
+    </div>
+
+    <p class="note"><b>可靠性是统计问题：</b>没法预测「这一颗」哪天坏，但可以用大量样本推算一群芯片的失效概率，单位是 FIT——每十亿器件小时失效几次。这是和客户对话的共同语言。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>封装后还要最终测试，因为封装会引入新的失效。</li>
+      <li>失效率随时间呈浴缸曲线：早期失效、稳定期、老化期。</li>
+      <li>老化筛选把早期失效提前到工厂里发生，但不能提升芯片寿命。</li>
+      <li>可靠性靠加速测试加模型外推，不是真的等十年。</li>
+      <li>老化有具体机制：EM、TDDB、HCI、BTI，每一个都对应前面的工艺章节。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a href="12-advanced-transistors.html">← 第 12 章 先进结构</a>
+    <a class="next" href="../index.html">回目录 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+(function(){
+  const saved = localStorage.getItem('smi-theme');
+  if (saved) document.documentElement.dataset.theme = saved;
+  else if (matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.dataset.theme = 'light';
+  $('#themeBtn').onclick = () => {
+    const now = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = now;
+    localStorage.setItem('smi-theme', now);
+  };
+})();
+
+const ZONES = [
+  { x: 70, w: 190, title: '早期失效期',
+    text: '制造过程留下的缺陷（微粒、氧化层弱点、封装应力）在最初使用时就暴露。这一段是「先天不足」，不是设计问题。' },
+  { x: 260, w: 250, title: '稳定期',
+    text: '缺陷已经被筛掉，剩下的失效基本是随机的——偶发的过压、静电、外力。失效率低而稳定，这一段最长，也是产品寿命的主体。' },
+  { x: 510, w: 160, title: '老化期',
+    text: '材料本身开始退化：电迁移让导线空洞、介质层被击穿、阈值电压漂移。这一段由设计和工艺的寿命决定，筛选改变不了它。' }
+];
+
+let sel = 0, burn = false;
+
+function paint() {
+  const z = ZONES[sel];
+  $('#selBox').setAttribute('x', z.x);
+  $('#selBox').setAttribute('width', z.w);
+  $('#tubText').innerHTML = `<b>${z.title}：</b>${z.text}`;
+  document.querySelectorAll('.zone').forEach(el => {
+    el.setAttribute('opacity', +el.dataset.z === sel ? .14 : .07);
+  });
+  $('#burnin').setAttribute('opacity', burn ? 1 : 0);
+  $('#burnBtn').setAttribute('aria-pressed', burn);
+  $('#burnBtn').textContent = burn ? '关闭「老化筛选」' : '打开「老化筛选」';
+  $('#tubState').textContent = burn
+    ? '筛选后：客户拿到的是稳定期开始的芯片'
+    : '当前只看曲线';
+}
+
+document.querySelectorAll('.zoneLabel, .zone').forEach(el => {
+  const z = +el.dataset.z;
+  el.addEventListener('click', () => { sel = z; paint(); });
+  el.addEventListener('mouseenter', () => { if (z !== sel) el.setAttribute('opacity', z === sel ? .12 : .1); });
+});
+
+$('#burnBtn').onclick = () => { burn = !burn; paint(); };
+const PARAMS = new URLSearchParams(location.search);
+if (PARAMS.get('z') !== null) sel = Math.max(0, Math.min(2, +PARAMS.get('z')));
+if (PARAMS.get('burn') === '1') burn = true;
+paint();
+</script>
+</body>
+</html>

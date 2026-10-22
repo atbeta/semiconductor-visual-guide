@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="Lithography flow in three cross-section stages">
+  <!-- 三个阶段的分隔 -->
+  <g stroke="#64748b" stroke-width="1" stroke-dasharray="4 6" opacity=".5">
+    <line x1="253" y1="30" x2="253" y2="270"/>
+    <line x1="506" y1="30" x2="506" y2="270"/>
+  </g>
+
+  <!-- 阶段 1：涂布 -->
+  <g>
+    <rect x="60" y="210" width="180" height="52" rx="2" fill="#94a3b8"/>
+    <rect x="60" y="186" width="180" height="24" fill="#fbbf24"/>
+    <g stroke="#fbbf24" stroke-width="2" fill="none" opacity=".85">
+      <path d="M70,150 q30,14 60,0"/>
+      <path d="M150,150 q30,14 60,0"/>
+    </g>
+    <g fill="#fbbf24">
+      <circle cx="120" cy="128" r="5"/><circle cx="150" cy="116" r="5"/><circle cx="180" cy="128" r="5"/>
+    </g>
+    <circle cx="60" cy="46" r="15" fill="#f59e0b"/>
+    <text x="60" y="52" font-family="ui-monospace,Menlo,monospace" font-size="16" font-weight="700" text-anchor="middle" fill="#1a1a1a">1</text>
+  </g>
+
+  <!-- 阶段 2：曝光 -->
+  <g>
+    <rect x="313" y="234" width="180" height="28" rx="2" fill="#94a3b8"/>
+    <rect x="313" y="210" width="180" height="24" fill="#fbbf24"/>
+    <g fill="#6366f1">
+      <rect x="343" y="210" width="30" height="24"/>
+      <rect x="393" y="210" width="30" height="24"/>
+      <rect x="443" y="210" width="30" height="24"/>
+    </g>
+    <!-- 掩模 -->
+    <rect x="313" y="118" width="180" height="14" fill="#64748b"/>
+    <g fill="#0f172a">
+      <rect x="343" y="118" width="30" height="14"/>
+      <rect x="393" y="118" width="30" height="14"/>
+      <rect x="443" y="118" width="30" height="14"/>
+    </g>
+    <!-- 光 -->
+    <g fill="#f59e0b" opacity=".35">
+      <polygon points="343,132 343,210 373,210 373,132"/>
+      <polygon points="393,132 393,210 423,210 423,132"/>
+      <polygon points="443,132 443,210 473,210 473,132"/>
+    </g>
+    <circle cx="313" cy="46" r="15" fill="#f59e0b"/>
+    <text x="313" y="52" font-family="ui-monospace,Menlo,monospace" font-size="16" font-weight="700" text-anchor="middle" fill="#1a1a1a">2</text>
+  </g>
+
+  <!-- 阶段 3：显影 -->
+  <g>
+    <rect x="566" y="234" width="180" height="28" rx="2" fill="#94a3b8"/>
+    <rect x="566" y="210" width="180" height="24" fill="#fbbf24"/>
+    <g fill="#94a3b8">
+      <rect x="596" y="210" width="30" height="24"/>
+      <rect x="646" y="210" width="30" height="24"/>
+      <rect x="696" y="210" width="30" height="24"/>
+    </g>
+    <circle cx="566" cy="46" r="15" fill="#f59e0b"/>
+    <text x="566" y="52" font-family="ui-monospace,Menlo,monospace" font-size="16" font-weight="700" text-anchor="middle" fill="#1a1a1a">3</text>
+  </g>
+</svg>

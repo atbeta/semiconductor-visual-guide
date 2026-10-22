@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+
+<title>第 12 章 · 先进晶体管结构 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 12 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <a href="02-transistor.html">02 晶体管</a>
+      <a href="04-lithography.html">04 光刻</a>
+      <a href="12-advanced-transistors.html" aria-current="page">12 先进结构</a>
+      <a href="22-reliability.html">22 可靠性</a>
+      <button id="themeBtn" title="切换深浅色" style="font-size:13px;padding:4px 10px">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 3 · 工艺整合</div>
+    <h1>先进晶体管结构：从平面到立体</h1>
+    <p class="lede">平面晶体管缩小到一定程度后，栅极只从上方控制沟道，底下就漏电了。产业的解法是换结构：让沟道站起来，再让栅极把它整个包住。这一章的关键，是「栅极接触几个面」。</p>
+    <div class="badges">
+      <span class="badge on">结构对比</span>
+      <span class="badge">包覆面数可切换</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>问题：闸门只压住一面</h2>
+    <p class="sub">平面晶体管里，栅极只从上方压住沟道。源极和漏极靠得越近，下方越深的地方就越容易有电流「溜过去」——即使栅极关着。另一个麻烦是绝缘层：为了控制得更牢，它被做得越来越薄，最后薄到电子直接穿过去。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">短沟道效应</h3>
+        <p class="caption" style="margin:0">沟道太短，漏极的电场能直接影响源极一侧，栅极失去控制权，关不断。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">栅极漏电</h3>
+        <p class="caption" style="margin:0">氧化层薄到几个原子，电子靠隧穿直接过去，静态功耗压不住。</p>
+      </div>
+    </div>
+
+    <p class="note"><b>两条路：</b>换材料（应变硅、HKMG）和换结构（FinFET、GAA）。这一页讲结构，因为结构最容易用剖面看懂。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>栅极包住几个面</h2>
+    <p class="sub">同一个剖面视角，只换结构。注意黄色栅极和蓝色沟道的接触面：一面、三面、四面——控制力就是这么来的。</p>
+
+    <div class="card">
+      <div class="toolbar">
+        <button id="tPlanar">平面 · 1 面</button>
+        <button id="tFin" aria-pressed="true">FinFET · 3 面</button>
+        <button id="tGaa">GAA · 4 面</button>
+        <span class="caption spacer" id="structName" style="margin:0">FinFET</span>
+      </div>
+
+      <div class="grid2 asym-wide">
+        <div>
+          <!-- 平面 -->
+          <svg id="vPlanar" viewBox="0 0 460 300" role="img" aria-label="平面晶体管剖面" style="display:none">
+            <rect x="50" y="196" width="360" height="70" rx="3" fill="var(--sub)"/>
+            <rect x="86" y="196" width="70" height="30" fill="#38bdf8"/>
+            <rect x="304" y="196" width="70" height="30" fill="#38bdf8"/>
+            <rect x="156" y="196" width="148" height="12" fill="#38bdf8" opacity=".55"/>
+            <rect x="156" y="186" width="148" height="10" fill="#22d3ee"/>
+            <rect x="176" y="146" width="108" height="40" rx="3" fill="#f59e0b"/>
+            <line x1="156" y1="198" x2="304" y2="198" stroke="#fde68a" stroke-width="5" stroke-linecap="round"/>
+            <text x="230" y="130" text-anchor="middle" class="lbl">栅极只压住上表面</text>
+            <text x="121" y="216" text-anchor="middle" class="lbl" fill="#06283d">源</text>
+            <text x="339" y="216" text-anchor="middle" class="lbl" fill="#06283d">漏</text>
+          </svg>
+
+          <!-- FinFET -->
+          <svg id="vFin" viewBox="0 0 460 300" role="img" aria-label="FinFET 剖面：栅极三面包覆">
+            <rect x="50" y="216" width="360" height="50" rx="3" fill="var(--sub)"/>
+            <rect x="180" y="120" width="100" height="96" fill="#38bdf8"/>
+            <rect x="180" y="120" width="100" height="8" fill="#22d3ee"/>
+            <path d="M156,120 L156,216 L304,216 L304,120 Z M180,138 L180,204 L280,204 L280,138 Z"
+                  fill="#f59e0b" fill-rule="evenodd" stroke="#b45309" stroke-width="1.4"/>
+            <g stroke="#fde68a" stroke-width="5" stroke-linecap="round" fill="none">
+              <line x1="182" y1="140" x2="182" y2="204"/>
+              <line x1="278" y1="140" x2="278" y2="204"/>
+              <line x1="184" y1="140" x2="276" y2="140"/>
+            </g>
+            <text x="230" y="106" text-anchor="middle" class="lbl">上表面 + 两侧壁</text>
+            <text x="230" y="228" text-anchor="middle" class="lbl" fill="#06283d">鳍 Fin</text>
+          </svg>
+
+          <!-- GAA -->
+          <svg id="vGaa" viewBox="0 0 460 300" role="img" aria-label="GAA 纳米片剖面：栅极四面环绕" style="display:none">
+            <rect x="50" y="216" width="360" height="50" rx="3" fill="var(--sub)"/>
+            <rect x="140" y="86" width="180" height="130" rx="8" fill="#f59e0b" stroke="#b45309" stroke-width="1.4"/>
+            <g fill="#38bdf8">
+              <rect x="160" y="100" width="140" height="20" rx="2"/>
+              <rect x="160" y="140" width="140" height="20" rx="2"/>
+              <rect x="160" y="180" width="140" height="20" rx="2"/>
+            </g>
+            <g stroke="#fde68a" stroke-width="2.5" fill="none">
+              <rect x="158" y="98" width="144" height="24" rx="4"/>
+              <rect x="158" y="138" width="144" height="24" rx="4"/>
+              <rect x="158" y="178" width="144" height="24" rx="4"/>
+            </g>
+            <text x="230" y="72" text-anchor="middle" class="lbl">每一片都被四面环绕</text>
+            <text x="230" y="228" text-anchor="middle" class="lbl" fill="#06283d">纳米片 ×3</text>
+          </svg>
+        </div>
+
+        <div>
+          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:8px">
+            <span style="font-size:34px;font-weight:700;color:var(--amber);font-variant-numeric:tabular-nums" id="faceNum">3</span>
+            <span style="color:var(--dim);font-size:14px">个接触面</span>
+          </div>
+          <div style="display:flex;gap:6px;margin-bottom:16px" id="faceBars"></div>
+          <p class="caption" id="structDesc" style="margin:0">
+            沟道做成竖立的薄鳍，栅极从三面围住它。控制面积变大，漏电大幅减少；但驱动能力只能靠「用几根鳍」来调，设计上不连续。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p class="note"><b>为什么「面数」是关键词：</b>栅极对沟道的控制，本质是电场能覆盖多少沟道表面。包围的面越多，关断时越能把沟道里的载流子赶干净，漏电就越小——这也是为什么结构从平面一路走到 GAA。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>GAA 的关键一步：把硅锗挖掉</h2>
+    <p class="sub">纳米片的做法是「先堆叠、再释放」：交替长硅和硅锗，做出鳍状结构，然后选择性刻蚀掉硅锗，让硅片悬空，最后用 ALD 把栅极填进每一道缝里。</p>
+
+    <div class="card">
+      <svg viewBox="0 0 640 220" role="img" aria-label="GAA 沟道释放流程">
+        <g font-size="12" fill="var(--dim)" text-anchor="middle">
+          <text x="110" y="24">1 交替外延</text>
+          <text x="320" y="24">2 挖掉硅锗</text>
+          <text x="530" y="24">3 填入栅极</text>
+        </g>
+
+        <!-- 1 堆叠 -->
+        <g>
+          <rect x="60" y="150" width="100" height="40" fill="var(--sub)"/>
+          <g fill="#38bdf8">
+            <rect x="70" y="60" width="80" height="14"/>
+            <rect x="70" y="92" width="80" height="14"/>
+            <rect x="70" y="124" width="80" height="14"/>
+          </g>
+          <g fill="#a78bfa" opacity=".8">
+            <rect x="70" y="76" width="80" height="14"/>
+            <rect x="70" y="108" width="80" height="14"/>
+          </g>
+        </g>
+
+        <!-- 2 释放 -->
+        <g>
+          <rect x="270" y="150" width="100" height="40" fill="var(--sub)"/>
+          <g fill="#38bdf8">
+            <rect x="280" y="60" width="80" height="14"/>
+            <rect x="280" y="92" width="80" height="14"/>
+            <rect x="280" y="124" width="80" height="14"/>
+          </g>
+          <g stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4 4" fill="none">
+            <rect x="280" y="76" width="80" height="14"/>
+            <rect x="280" y="108" width="80" height="14"/>
+          </g>
+        </g>
+
+        <!-- 3 栅极 -->
+        <g>
+          <rect x="480" y="150" width="100" height="40" fill="var(--sub)"/>
+          <rect x="470" y="46" width="120" height="106" rx="6" fill="#f59e0b"/>
+          <g fill="#38bdf8">
+            <rect x="482" y="60" width="96" height="12" rx="2"/>
+            <rect x="482" y="90" width="96" height="12" rx="2"/>
+            <rect x="482" y="120" width="96" height="12" rx="2"/>
+          </g>
+        </g>
+
+        <g stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 5">
+          <line x1="200" y1="106" x2="262" y2="106"/>
+          <line x1="410" y1="106" x2="462" y2="106"/>
+        </g>
+      </svg>
+    </div>
+    <p class="note"><b>难点：</b>「只挖硅锗、不动硅」需要极高的刻蚀选择比。这也是为什么先进结构的工艺窗口，往往就卡在几道刻蚀上。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">04</span>结构演进一览</h2>
+    <div class="card">
+      <figure>
+        <img src="../assets/figures/12-transistor-evolution.svg" alt="平面、FinFET、GAA 三种结构并排对比，数字 1、3、4 表示栅极接触面数">
+        <figcaption>依次为平面（<b>1</b> 面）、FinFET（<b>3</b> 面）、GAA 纳米片（<b>4</b> 面）。黄色是栅极，蓝色是沟道。</figcaption>
+      </figure>
+    </div>
+
+    <div style="overflow-x:auto;margin-top:18px">
+      <table>
+        <thead><tr><th>结构</th><th>栅极包覆</th><th>开始量产</th><th>主要工艺挑战</th></tr></thead>
+        <tbody>
+          <tr><td>平面晶体管</td><td class="num-cell">1 面</td><td>很早期，成熟工艺仍广泛使用</td><td>漏电、短沟道效应</td></tr>
+          <tr><td>FinFET</td><td class="num-cell">3 面</td><td>2010 年代</td><td>鳍的形状与均匀度</td></tr>
+          <tr><td>GAA 纳米片</td><td class="num-cell">4 面</td><td>2020 年代</td><td>选择性刻蚀、内侧墙</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>平面晶体管缩小后，栅极控制力不足，漏电越来越严重。</li>
+      <li>解法分两路：换材料（应变硅、HKMG）和换结构（FinFET、GAA）。</li>
+      <li>FinFET 用三面包覆，GAA 用四面环绕，控制力逐级提升。</li>
+      <li>GAA 的核心工艺是「牺牲层」：先长硅锗，再把它挖掉，释放悬空的沟道。</li>
+      <li>结构越立体，量测越困难——量不到，就控不住。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a href="04-lithography.html">← 第 04 章 光刻</a>
+    <a class="next" href="22-reliability.html">第 22 章 可靠性 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+  .lbl-strong{font-size:12px;fill:var(--fg);font-weight:600;font-family:inherit}
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+(function(){
+  const saved = localStorage.getItem('smi-theme');
+  if (saved) document.documentElement.dataset.theme = saved;
+  else if (matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.dataset.theme = 'light';
+  $('#themeBtn').onclick = () => {
+    const now = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = now;
+    localStorage.setItem('smi-theme', now);
+  };
+})();
+
+const STRUCTS = {
+  planar: {
+    name: '平面晶体管', faces: 1, view: '#vPlanar', btn: '#tPlanar',
+    desc: '栅极只贴在沟道上表面。结构最简单、成本最低，但沟道一短，下面的电流就关不干净。'
+  },
+  fin: {
+    name: 'FinFET', faces: 3, view: '#vFin', btn: '#tFin',
+    desc: '沟道做成竖立的薄鳍，栅极从三面围住它。控制面积变大，漏电大幅减少；但驱动能力只能靠「用几根鳍」来调，设计上不连续。'
+  },
+  gaa: {
+    name: 'GAA 纳米片', faces: 4, view: '#vGaa', btn: '#tGaa',
+    desc: '几片水平堆叠的纳米片，每一片都被栅极四面环绕。控制力最强，而且片宽可以连续调整，设计弹性回来了。'
+  }
+};
+
+function showStruct(key) {
+  const s = STRUCTS[key];
+  Object.keys(STRUCTS).forEach(k => {
+    document.querySelector(STRUCTS[k].view).style.display = k === key ? 'block' : 'none';
+    document.querySelector(STRUCTS[k].btn).setAttribute('aria-pressed', k === key);
+  });
+  $('#structName').textContent = s.name;
+  $('#faceNum').textContent = s.faces;
+  $('#structDesc').textContent = s.desc;
+  const bars = [1, 2, 3, 4].map(i =>
+    `<span style="flex:1;height:6px;border-radius:99px;background:${i <= s.faces ? 'var(--amber)' : 'var(--line)'}"></span>`
+  ).join('');
+  $('#faceBars').innerHTML = bars;
+}
+
+$('#tPlanar').onclick = () => showStruct('planar');
+$('#tFin').onclick = () => showStruct('fin');
+$('#tGaa').onclick = () => showStruct('gaa');
+
+const PARAMS = new URLSearchParams(location.search);
+showStruct(PARAMS.get('s') || 'fin');
+</script>
+</body>
+</html>

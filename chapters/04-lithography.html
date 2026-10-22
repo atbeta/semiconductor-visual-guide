@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+
+<title>第 4 章 光刻 · 可视化样章</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<style>
+  :root{
+    --bg:#0d0f14; --bg2:#141821; --card:#171c26; --line:#2a3140;
+    --fg:#e8ecf4; --dim:#9aa5b8; --amber:#ffc247; --amber2:#ff9c1a;
+    --purple:#8b7cf6; --cyan:#4fd1c5; --red:#ff6b6b; --green:#4ade80;
+    --sub:#3b4a63; --film:#2f6f8f; --pr:#f0b428; --wafer:#1f2836;
+  }
+  html[data-theme="light"]{
+    --bg:#f6f4ef; --bg2:#efece4; --card:#ffffff; --line:#dcd6c8;
+    --fg:#1d2230; --dim:#5b6478; --amber:#b8730a; --amber2:#d98600;
+    --purple:#6d5bd0; --cyan:#0e8f86; --red:#c0392b; --green:#1e8449;
+    --sub:#c8d0dc; --film:#8fb8ca; --pr:#e0a52a; --wafer:#aab4c2;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+    line-height:1.75; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  header.hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line);background:var(--bg2)}
+  .hero-img{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.5;filter:saturate(.85)}
+  .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--bg2) 45%,transparent) 0%,color-mix(in srgb,var(--bg2) 78%,transparent) 55%,var(--bg2) 100%);pointer-events:none}
+  .hero-inner{z-index:1}
+  html[data-theme="light"] .hero-img{opacity:.35}
+  .hero-inner{position:relative;padding-top:88px;padding-bottom:56px}
+  .kicker{font-size:13px;letter-spacing:.18em;color:var(--amber);text-transform:uppercase}
+  h1{font-size:clamp(30px,4.6vw,46px);margin:.35em 0 .2em;letter-spacing:-.01em}
+  .lede{color:var(--dim);max-width:62ch;font-size:17px}
+  .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+  .badge{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 12px;color:var(--dim);background:rgba(255,255,255,.03)}
+  h2{font-size:24px;margin:0 0 6px;letter-spacing:.01em}
+  h2 .num{color:var(--amber);font-variant-numeric:tabular-nums;margin-right:.5em;font-size:.8em}
+  section{padding:56px 0;border-bottom:1px solid var(--line)}
+  .sub{color:var(--dim);margin:0 0 26px;max-width:70ch}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:820px){.grid2{grid-template-columns:1fr}}
+  .caption{font-size:13px;color:var(--dim);margin-top:10px}
+  svg{display:block;width:100%;height:auto;overflow:visible}
+  .lbl{font-size:11px;fill:var(--dim);font-family:inherit}
+  .lbl-strong{font-size:12px;fill:var(--fg);font-weight:600;font-family:inherit}
+  button{
+    font:inherit;font-size:13px;color:var(--fg);background:transparent;border:1px solid var(--line);
+    border-radius:999px;padding:6px 14px;cursor:pointer;transition:.15s;
+  }
+  button:hover{border-color:var(--amber);color:var(--amber)}
+  button[aria-pressed="true"]{background:var(--amber);border-color:var(--amber);color:#141821;font-weight:600}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+  .steps{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .steps button{font-size:12.5px;padding:5px 11px}
+  .note{font-size:14px;color:var(--dim);border-left:2px solid var(--amber);padding-left:14px;margin:16px 0 0}
+  .note b{color:var(--fg)}
+  .stepHead{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+  .stepHead h3{margin:0;font-size:17px;display:flex;align-items:baseline;gap:10px}
+  .stepCount{margin-left:auto;font-size:12px;color:var(--dim);font-weight:400;letter-spacing:.04em}
+  .stepCount b{color:var(--amber);font-variant-numeric:tabular-nums}
+  .stepHead p{margin:4px 0 10px;color:var(--dim);font-size:14px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--dim);font-weight:500;font-size:12.5px;letter-spacing:.04em}
+  .num-cell{font-variant-numeric:tabular-nums;color:var(--amber);white-space:nowrap}
+  .pairs{display:grid;gap:8px;margin-top:16px}
+  .pair{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;cursor:pointer;transition:.15s}
+  .pair:hover,.pair.on{border-color:var(--amber);background:rgba(255,194,71,.06)}
+  .pair .eq{color:var(--dim);font-size:12px}
+  .pair .r{text-align:right}
+  .swatches{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+  .sw{width:64px;height:38px;border-radius:8px;border:1px solid var(--line);cursor:pointer;position:relative}
+  .sw span{position:absolute;bottom:-20px;left:0;right:0;text-align:center;font-size:10.5px;color:var(--dim)}
+  footer{padding:40px 0 64px;color:var(--dim);font-size:13px}
+  a{color:var(--amber)}
+  .pill-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+  .stat{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+  @media(max-width:720px){.stat{grid-template-columns:repeat(2,1fr)}}
+  .stat div{border:1px solid var(--line);border-radius:12px;padding:14px}
+  .stat b{display:block;font-size:22px;color:var(--amber);font-variant-numeric:tabular-nums}
+  .stat small{color:var(--dim);font-size:12px}
+</style>
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 04 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <a href="02-transistor.html">02 晶体管</a>
+      <a href="04-lithography.html" aria-current="page">04 光刻</a>
+      <a href="12-advanced-transistors.html">12 先进结构</a>
+      <a href="22-reliability.html">22 可靠性</a>
+      <button id="themeBtn" title="切换深浅色" style="font-size:13px;padding:4px 10px">◐</button>
+    </nav>
+  </div>
+</header>
+
+<header class="hero">
+  <div class="hero-img" id="heroImg"></div>
+  <div class="wrap hero-inner">
+    <div class="kicker">Semiconductor Manufacturing · Ch.04</div>
+    <h1>光刻：把电路图「印」到晶圆上</h1>
+    <p class="lede">一章一个交互页面。所有剖面、流程、参数都可以点、可以拖、可以看它怎么变——静态图说不清的地方，用动效和交互补上。</p>
+    <div class="badges">
+      <span class="badge">交互剖面</span>
+      <span class="badge">8 步流程</span>
+      <span class="badge">对准误差可拖</span>
+      <span class="badge">本地 ComfyUI 配图</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- 1. 摄影 vs 光刻 -->
+<section>
+  <h2><span class="num">01</span>同一个原理，两种尺度</h2>
+  <p class="sub">书里说「光刻很像摄影」。这不是修辞：把两套系统叠在一起，部件是一一对应的，差别只在精度。</p>
+
+  <div class="card">
+    <div class="toolbar">
+      <button id="modePhoto" aria-pressed="false">摄影模式</button>
+      <button id="modeLitho" aria-pressed="true">光刻模式</button>
+      <span class="caption" style="margin:0 0 0 auto">点按钮切换标注</span>
+    </div>
+
+    <div class="scrollx"><svg viewBox="0 0 720 320" role="img" aria-label="摄影与光刻的光路对照">
+      <defs>
+        <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffd97a" stop-opacity=".95"/>
+          <stop offset="1" stop-color="#ffb020" stop-opacity=".25"/>
+        </linearGradient>
+        <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+
+      <!-- 光源 -->
+      <circle cx="84" cy="74" r="19" fill="url(#beam)" stroke="#ffc247" stroke-width="1.2"/>
+      <circle cx="84" cy="74" r="6.5" fill="#fff3cf"/>
+      <text class="lbl-strong" x="84" y="112" text-anchor="middle"
+            data-photo="光源" data-litho="光源 · 激光 / EUV 等离子体">光源</text>
+
+      <!-- 光锥：光源 → 掩模 -->
+      <path d="M100,64 L250,116 L250,129 L100,86 Z" fill="url(#beam)" opacity=".26"/>
+      <path d="M101,66 L250,118" stroke="#ffc247" stroke-width="1" stroke-dasharray="6 8" opacity=".75"/>
+      <path d="M101,84 L250,127" stroke="#ffc247" stroke-width="1" stroke-dasharray="6 8" opacity=".75"/>
+
+      <!-- 掩模 / 底片 -->
+      <rect x="250" y="118" width="220" height="10" rx="3" fill="#8b93a7"/>
+      <g>
+        <rect x="286" y="118" width="14" height="10" fill="var(--bg)"/><rect x="330" y="118" width="14" height="10" fill="var(--bg)"/>
+        <rect x="374" y="118" width="14" height="10" fill="var(--bg)"/><rect x="418" y="118" width="14" height="10" fill="var(--bg)"/>
+      </g>
+      <text class="lbl-strong" x="250" y="108" text-anchor="start"
+            data-photo="底片（负片）" data-litho="掩模版 Reticle">底片</text>
+      <text class="lbl" x="478" y="126" text-anchor="start" data-photo="银盐感光层"
+            data-litho="石英 + 铬图形">载体</text>
+
+      <!-- 透镜 / 物镜 -->
+      <ellipse cx="360" cy="186" rx="54" ry="15" fill="#4fd1c5" opacity=".1"/>
+      <ellipse cx="360" cy="186" rx="54" ry="15" fill="none" stroke="#4fd1c5" stroke-width="1.4"/>
+      <text class="lbl-strong" x="430" y="190" text-anchor="start"
+            data-photo="镜头" data-litho="投影物镜 · 缩小 4×">镜头</text>
+
+      <!-- 光锥：掩模 → 晶圆 -->
+      <path d="M300,129 L332,250 L392,250 L424,129 Z" fill="url(#beam)" opacity=".3"/>
+      <path d="M314,129 L340,250" stroke="#ffc247" stroke-width=".8" opacity=".45"/>
+      <path d="M360,129 L360,250" stroke="#ffc247" stroke-width=".8" opacity=".45"/>
+      <path d="M408,129 L382,250" stroke="#ffc247" stroke-width=".8" opacity=".45"/>
+
+      <!-- 晶圆 / 相纸 -->
+      <rect x="250" y="250" width="220" height="14" fill="var(--sub)"/>
+      <rect x="250" y="264" width="220" height="26" fill="var(--wafer)"/>
+      <g fill="var(--pr)">
+        <rect x="300" y="247" width="18" height="4" rx="1"/>
+        <rect x="344" y="247" width="18" height="4" rx="1"/>
+        <rect x="388" y="247" width="18" height="4" rx="1"/>
+      </g>
+      <text class="lbl-strong" x="360" y="310" text-anchor="middle"
+            data-photo="相纸 · 银盐颗粒" data-litho="晶圆 + 光刻胶 PR">相纸</text>
+
+      <!-- 尺度 -->
+      <g color="#ff8a5c">
+        <line x1="500" y1="262" x2="660" y2="262" stroke="#ff8a5c" stroke-width="1.2"
+              marker-start="url(#arr)" marker-end="url(#arr)"/>
+        <text class="lbl" x="580" y="254" text-anchor="middle" fill="#ff8a5c"
+              data-photo="银盐颗粒 ≈ 1 µm" data-litho="图形线宽 ≈ 10 nm">尺度</text>
+        <text class="lbl" x="580" y="280" text-anchor="middle">差 3 个数量级</text>
+      </g>
+    </svg></div>
+
+    <div class="pairs" id="pairs">
+      <div class="pair" data-k="0"><span>光源</span><span class="eq">对应</span><span class="r">光源 · 激光 / EUV 等离子体</span></div>
+      <div class="pair" data-k="1"><span>底片</span><span class="eq">对应</span><span class="r">掩模版 Reticle · 石英 + 铬</span></div>
+      <div class="pair" data-k="2"><span>镜头 + 快门</span><span class="eq">对应</span><span class="r">投影物镜 + 扫描台</span></div>
+      <div class="pair" data-k="3"><span>相纸</span><span class="eq">对应</span><span class="r">晶圆 + 光刻胶</span></div>
+    </div>
+    <p class="note"><b>差在哪：</b>相机一次拍一张；曝光机把掩模缩小 4 倍、逐块扫描，一片晶圆要曝上百次。图形线宽从银盐颗粒的微米级压到纳米级，所以它是最贵、最关键的站点。</p>
+  </div>
+</section>
+
+<!-- 2. 八步流程 -->
+<section>
+  <h2><span class="num">02</span>光刻不是「曝光」一个动作</h2>
+  <p class="sub">从表面处理到显影检查，每一步都改变晶圆剖面。点步骤按钮，或让它自己往下走。</p>
+
+  <div class="card">
+    <div class="steps" id="stepBtns"></div>
+
+    <div class="stepHead">
+      <h3><span id="stepTitle">表面处理</span><span class="stepCount"><b id="stepIdx">1</b> / 7</span></h3>
+      <p id="stepDesc">用 HMDS 让表面更容易附着光刻胶。</p>
+    </div>
+
+    <div class="scrollx"><svg viewBox="0 0 760 260" role="img" aria-label="光刻流程剖面">
+      <!-- 台面 -->
+      <rect x="40" y="243" width="680" height="8" rx="4" fill="var(--line)"/>
+
+      <!-- 硅基底 -->
+      <rect x="110" y="196" width="540" height="47" rx="2" fill="var(--sub)"/>
+      <text class="lbl" x="126" y="226">硅晶圆</text>
+
+      <!-- 氧化层 -->
+      <rect x="110" y="180" width="540" height="16" fill="var(--film)"/>
+      <text class="lbl" x="126" y="192" fill="#eaf6ff">氧化层 / 待图形材料</text>
+
+      <!-- HMDS 附着层 -->
+      <g id="gHmds" opacity="0">
+        <rect x="110" y="175" width="540" height="5" fill="#7ee787" opacity=".6"/>
+        <text class="lbl" id="hmdsLabel" x="660" y="170" fill="#7ee787" text-anchor="end" opacity="0">HMDS 附着层</text>
+      </g>
+
+      <!-- 光刻胶 满铺 -->
+      <g id="gPrFull" opacity="0">
+        <rect x="110" y="136" width="540" height="39" fill="var(--pr)" opacity=".85"/>
+        <g id="gExposed" opacity="0">
+          <rect x="190" y="136" width="70" height="39" fill="var(--purple)" opacity=".95"/>
+          <rect x="310" y="136" width="70" height="39" fill="var(--purple)" opacity=".95"/>
+          <rect x="430" y="136" width="70" height="39" fill="var(--purple)" opacity=".95"/>
+        </g>
+      </g>
+
+      <!-- 光刻胶 显影后的图形 -->
+      <g id="gPrPattern" opacity="0">
+        <rect x="190" y="136" width="70" height="39" fill="var(--pr)" opacity=".9"/>
+        <rect x="310" y="136" width="70" height="39" fill="var(--pr)" opacity=".9"/>
+        <rect x="430" y="136" width="70" height="39" fill="var(--pr)" opacity=".9"/>
+      </g>
+      <text class="lbl" id="prLabel" x="110" y="130" text-anchor="start" opacity="0">光刻胶 PR</text>
+
+      <!-- 掩模 -->
+      <g id="gMask" opacity=".62" transform="translate(0,18)">
+        <rect x="140" y="56" width="480" height="14" rx="2" fill="#8b93a7" opacity=".55"/>
+        <rect x="139" y="55" width="482" height="16" rx="3" fill="none" stroke="#8b93a7" stroke-width="1" stroke-dasharray="6 4"/>
+        <g>
+          <rect x="190" y="56" width="70" height="14" fill="var(--bg)"/>
+          <rect x="310" y="56" width="70" height="14" fill="var(--bg)"/>
+          <rect x="430" y="56" width="70" height="14" fill="var(--bg)"/>
+        </g>
+        <text class="lbl" x="140" y="46">掩模版 Reticle · 缩小 4× 投影</text>
+      </g>
+
+      <!-- 曝光光锥 -->
+      <g id="gLight" opacity="0">
+        <path d="M190,88 L190,136 L260,136 L260,88 Z" fill="url(#beam)" opacity=".5"/>
+        <path d="M310,88 L310,136 L380,136 L380,88 Z" fill="url(#beam)" opacity=".5"/>
+        <path d="M430,88 L430,136 L500,136 L500,88 Z" fill="url(#beam)" opacity=".5"/>
+      </g>
+
+      <!-- 烘烤热浪 -->
+      <g id="gBake" opacity="0">
+        <g stroke="#ff8c42" stroke-width="2" fill="none" opacity=".75">
+          <path d="M170,124 q10,-13 0,-26 q-10,-13 0,-26"/>
+          <path d="M250,124 q10,-13 0,-26 q-10,-13 0,-26"/>
+          <path d="M330,124 q10,-13 0,-26 q-10,-13 0,-26"/>
+          <path d="M410,124 q10,-13 0,-26 q-10,-13 0,-26"/>
+          <path d="M490,124 q10,-13 0,-26 q-10,-13 0,-26"/>
+          <path d="M570,124 q10,-13 0,-26 q-10,-13 0,-26"/>
+        </g>
+        <text class="lbl" x="660" y="60" text-anchor="end">加热 · 赶走溶剂 / 完成反应</text>
+      </g>
+
+      <!-- 旋转涂布 -->
+      <g id="gSpin" opacity="0">
+        <ellipse cx="380" cy="126" rx="140" ry="9" fill="none" stroke="#4fd1c5" stroke-width="2" stroke-dasharray="10 8"/>
+        <text class="lbl" x="380" y="108" text-anchor="middle">旋涂 · 高速旋转摊平</text>
+      </g>
+
+      <!-- 测量 -->
+      <g id="gMeasure" opacity="0">
+        <line x1="190" y1="124" x2="260" y2="124" stroke="#4ade80" stroke-width="1.4" color="#4ade80"
+              marker-start="url(#arr)" marker-end="url(#arr)"/>
+        <line x1="190" y1="124" x2="190" y2="136" stroke="#4ade80" stroke-width="1"/>
+        <line x1="260" y1="124" x2="260" y2="136" stroke="#4ade80" stroke-width="1"/>
+        <text class="lbl" x="225" y="118" text-anchor="middle" fill="#4ade80">CD</text>
+        <line x1="260" y1="155" x2="310" y2="155" stroke="#ff6b6b" stroke-width="1" stroke-dasharray="3 3"/>
+        <text class="lbl" x="285" y="150" text-anchor="middle" fill="#ff6b6b">间距</text>
+      </g>
+    </svg></div>
+
+    <div class="toolbar" style="margin-top:14px">
+      <button id="playBtn">▶ 自动播放</button>
+      <span class="caption" style="margin:0">按原书顺序：表面处理 → 涂布 → 软烘 → 曝光 → 后烘 → 显影 → 检查</span>
+    </div>
+    <p class="note" id="stepNote"><b>现场提示：</b>表面处理如果做不好，后面的胶会在显影时整片翘起（peeling），这一片就废了。</p>
+  </div>
+</section>
+
+<!-- 3. 对准误差 -->
+<section>
+  <h2><span class="num">03</span>对准：几纳米的容错</h2>
+  <p class="sub">金属层必须准确落在下面的接触点上。拖动滑块，看偏一点点会发生什么——这是静态剖面图最难表达的部分。</p>
+
+  <div class="card">
+    <div class="grid2">
+      <div>
+        <svg viewBox="0 0 380 260" role="img" aria-label="对准误差示意">
+          <rect x="30" y="180" width="320" height="40" rx="3" fill="var(--sub)"/>
+          <text class="lbl" x="40" y="205">硅 · 底层电路</text>
+          <!-- 接触点 -->
+          <g fill="#4fd1c5">
+            <rect x="90" y="168" width="24" height="14"/>
+            <rect x="190" y="168" width="24" height="14"/>
+            <rect x="290" y="168" width="24" height="14"/>
+          </g>
+          <!-- 层间介质 -->
+          <rect x="30" y="150" width="320" height="20" fill="var(--film)" opacity=".35"/>
+          <!-- 上层金属（可移动） -->
+          <g id="metalLayer">
+            <g fill="var(--amber)">
+              <rect x="96" y="118" width="12" height="34"/>
+              <rect x="196" y="118" width="12" height="34"/>
+              <rect x="296" y="118" width="12" height="34"/>
+              <rect x="70" y="104" width="284" height="14" rx="2"/>
+            </g>
+          </g>
+          <text class="lbl" x="30" y="92">上层金属 · 可拖动</text>
+          <!-- 尺寸线 -->
+          <line x1="118" y1="200" x2="196" y2="200" stroke="var(--line)" stroke-dasharray="2 3"/>
+        </svg>
+        <input id="overlay" type="range" min="-40" max="40" value="0" step="1" style="width:100%">
+        <div class="toolbar" style="margin-top:8px">
+          <span class="caption" style="margin:0">偏移 <b id="ovVal" style="font-variant-numeric:tabular-nums">0</b> nm（示例刻度）</span>
+          <span id="ovStatus" class="badge" style="margin-left:auto;border-color:var(--green);color:var(--green)">合格</span>
+        </div>
+      </div>
+      <div>
+        <table>
+          <thead><tr><th>现象</th><th>原因</th><th>结果</th></tr></thead>
+          <tbody>
+            <tr><td>局部失焦</td><td>晶圆背面有颗粒把它顶高</td><td>局部图形模糊</td></tr>
+            <tr><td>CD 偏大 / 偏小</td><td>曝光能量偏移、烘烤异常</td><td>线宽不合格</td></tr>
+            <tr><td>Overlay 超规</td><td>设备对准误差、晶圆变形</td><td>上下层接不上</td></tr>
+            <tr><td>光刻胶缺陷</td><td>涂布气泡或颗粒</td><td>图形缺损</td></tr>
+          </tbody>
+        </table>
+        <p class="note"><b>关键区别：</b>CD 管「一条线多宽」，Overlay 管「这一层对上一层偏了多少」。两个指标都合格，这一层才算过。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. 波长 -->
+<section>
+  <h2><span class="num">04</span>想印得更小：先换更短的光</h2>
+  <p class="sub">横轴是波长（对数），越往右越短、能印的图形越细。点一根柱子看它对应什么年代与能力。</p>
+
+  <div class="card">
+    <svg id="wavelengthChart" viewBox="0 0 760 350" role="img" aria-label="光源波长对比"></svg>
+    <p class="caption" id="wlCaption">汞灯 436 nm 是早期接触式 / 接近式曝光的主力，今天只用于较粗的层。</p>
+  </div>
+</section>
+
+<!-- 5. 黄色灯光 -->
+<section>
+  <h2><span class="num">05</span>为什么光刻区是黄色的</h2>
+  <p class="sub">光刻胶对紫外和蓝光敏感，普通白光就足以让它起反应。切换灯色，看未曝光的光刻胶会发生什么。</p>
+
+  <div class="card">
+    <div class="grid2" style="align-items:center">
+      <div>
+        <svg viewBox="0 0 380 200" role="img" aria-label="黄光与白光下的光刻胶">
+          <rect id="roomLight" x="20" y="10" width="340" height="180" rx="12" fill="#fff6da" opacity=".16"/>
+          <rect x="60" y="150" width="260" height="26" rx="2" fill="var(--sub)"/>
+          <rect id="prRect" x="60" y="128" width="260" height="22" fill="var(--pr)" opacity=".9"/>
+          <circle id="lamp" cx="190" cy="46" r="16" fill="#ffe9a8"/>
+          <g id="rays" stroke="#ffe9a8" stroke-width="1" opacity=".5">
+            <line x1="190" y1="64" x2="150" y2="128"/><line x1="190" y1="64" x2="190" y2="128"/>
+            <line x1="190" y1="64" x2="230" y2="128"/>
+          </g>
+          <g id="damage" opacity="0">
+            <g fill="var(--red)">
+              <circle cx="120" cy="139" r="4"/><circle cx="168" cy="133" r="3.4"/>
+              <circle cx="214" cy="141" r="4.4"/><circle cx="262" cy="134" r="3.2"/>
+              <circle cx="292" cy="142" r="3.8"/>
+            </g>
+          </g>
+          <text class="lbl" x="60" y="178">未曝光光刻胶</text>
+        </svg>
+        <div class="swatches" style="margin-top:22px">
+          <button class="sw" id="btnYellow" style="background:#f5c542" aria-pressed="true" title="黄光"></button>
+          <button class="sw" id="btnWhite" style="background:#f2f2f2" aria-pressed="false" title="白光"></button>
+        </div>
+      </div>
+      <div>
+        <p class="note" style="margin-top:0"><b>做法：</b>光刻区的照明滤掉短波长，只留黄光（约 500–600 nm）。</p>
+        <p class="note"><b>为什么：</b>光刻胶的感光波段在紫外 / 蓝光；黄光能量不够，几乎不会让它反应。</p>
+        <p class="note"><b>没做会怎样：</b>还没曝光的胶被环境光「预曝光」，图形边缘变糊、CD 失控。</p>
+        <p class="caption">这也是为什么第一次进晶圆厂的人，会记得那一片黄。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <nav class="pager">
+    <a href="02-transistor.html">← 第 02 章 晶体管</a>
+    <a class="next" href="12-advanced-transistors.html">第 12 章 先进结构 →</a>
+  </nav>
+
+<footer class="wrap">
+  <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">chenwei810/Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。
+  本可视化非商用、同协议共享，仅供学习。图片由本地 ComfyUI（192.168.5.103）生成，示意图为手绘 SVG。</p>
+</footer>
+</main>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const $$ = (s) => [...document.querySelectorAll(s)];
+
+/* ---------- 主题 ---------- */
+const PARAMS = new URLSearchParams(location.search);
+(function theme(){
+  const forced = PARAMS.get('theme');
+  const saved = localStorage.getItem('smi-theme');
+  const pref = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  document.documentElement.dataset.theme = forced || saved || pref;
+  const btn = document.getElementById('themeBtn');
+  if (btn) btn.onclick = () => {
+    const now = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = now;
+    localStorage.setItem('smi-theme', now);
+  };
+})();
+
+/* ---------- hero 图（本地生成，存在则用） ---------- */
+(function hero(){
+  const img = new Image();
+  img.onload = () => { $('#heroImg').style.backgroundImage = `url(${img.src})`; };
+  img.src = '../assets/smi-ch04-hero.png';
+})();
+
+/* ---------- 01 摄影 / 光刻 ---------- */
+const modePhoto = $('#modePhoto'), modeLitho = $('#modeLitho');
+function setMode(mode){
+  const isPhoto = mode === 'photo';
+  modePhoto.setAttribute('aria-pressed', isPhoto);
+  modeLitho.setAttribute('aria-pressed', !isPhoto);
+  $$('[data-photo]').forEach(el => {
+    el.textContent = isPhoto ? el.dataset.photo : el.dataset.litho;
+  });
+}
+modePhoto.onclick = () => setMode('photo');
+modeLitho.onclick = () => setMode('litho');
+setMode('litho');
+$$('.pair').forEach(p => p.onclick = () => {
+  $$('.pair').forEach(x => x.classList.remove('on'));
+  p.classList.add('on');
+});
+
+/* ---------- 02 流程 ---------- */
+const STEPS = [
+  {t:'表面处理', d:'用 HMDS 让表面更容易附着光刻胶。', s:{hmds:1},
+   n:'表面处理如果做不好，后面的胶会在显影时整片翘起（ peeling ），这一片就废了。'},
+  {t:'涂布光刻胶', d:'滴在晶圆中心，高速旋转摊平。', s:{hmds:1, pr:1, spin:1},
+   n:'膜厚由转速决定，通常在一微米量级；厚一点抗刻蚀，但分辨率会变差。'},
+  {t:'软烘', d:'加热赶走溶剂，让胶膜稳定。', s:{hmds:1, pr:1, bake:1},
+   n:'温度太高会让感光剂分解，直接损失分辨率——所以这一步是「温和地烤」。'},
+  {t:'对准与曝光', d:'先找前一层留下的对准标记，再曝光。', s:{pr:1, light:1, exposed:1},
+   n:'掩模上的图形被缩小 4 倍投影；一片晶圆要曝上百个曝光区。'},
+  {t:'曝光后烘烤', d:'让光化学反应完成，图形才定下来。', s:{pr:1, exposed:1, bake:1},
+   n:'PEB 的温度与时间会直接影响线宽，是光刻工程师每天盯的参数。'},
+  {t:'显影', d:'显影液溶掉不要的胶，图形出现。', s:{pattern:1},
+   n:'曝光区被溶掉（正胶）。此时还能 Rework：去掉胶重来，底下材料没动过。'},
+  {t:'检查（ADI）', d:'量 CD、量 Overlay、找缺陷。', s:{pattern:1, measure:1},
+   n:'检查不合格会触发 Rework；一旦进了刻蚀，错误图形就永久留在材料里。'}
+];
+
+const g = {
+  hmds: $('#gHmds'), full: $('#gPrFull'), exposed: $('#gExposed'), pattern: $('#gPrPattern'),
+  mask: $('#gMask'), light: $('#gLight'), bake: $('#gBake'), spin: $('#gSpin'), measure: $('#gMeasure'),
+  label: $('#prLabel'), title: $('#stepTitle'), desc: $('#stepDesc'), note: $('#stepNote'), idx: $('#stepIdx')
+};
+const setOp = (el, on) => el.setAttribute('opacity', on ? 1 : 0);
+
+function render(i){
+  const st = STEPS[i], s = st.s || {};
+  setOp(g.hmds, !!s.hmds);
+  setOp(g.full, !!s.pr);
+  setOp(g.exposed, !!s.exposed);
+  setOp(g.pattern, !!s.pattern);
+  g.mask.setAttribute('opacity', s.light ? 1 : 0.62);
+  $('#hmdsLabel').setAttribute('opacity', i === 0 ? 1 : 0);
+  setOp(g.light, !!s.light);
+  setOp(g.bake, !!s.bake);
+  setOp(g.spin, !!s.spin);
+  setOp(g.measure, !!s.measure);
+  g.label.textContent = s.pr || s.exposed || s.pattern ? '光刻胶' : '';
+  g.label.setAttribute('opacity', (s.pr || s.pattern) ? 1 : 0);
+  g.title.textContent = st.t;
+  g.desc.textContent = st.d;
+  g.note.innerHTML = '<b>现场提示：</b>' + st.n;
+  g.idx.textContent = i + 1;
+  $$('#stepBtns button').forEach((b, k) => b.setAttribute('aria-pressed', k === i));
+}
+
+const btns = $('#stepBtns');
+STEPS.forEach((st, i) => {
+  const b = document.createElement('button');
+  b.textContent = (i + 1) + ' ' + st.t;
+  b.onclick = () => { stop(); render(i); };
+  btns.appendChild(b);
+});
+
+let timer = null, cur = 0;
+const playBtn = $('#playBtn');
+function stop(){ clearInterval(timer); timer = null; playBtn.textContent = '▶ 自动播放'; playBtn.setAttribute('aria-pressed','false'); }
+playBtn.onclick = () => {
+  if (timer) { stop(); return; }
+  playBtn.textContent = '❚❚ 暂停'; playBtn.setAttribute('aria-pressed','true');
+  timer = setInterval(() => { cur = (cur + 1) % STEPS.length; render(cur); }, 1600);
+};
+render(0);
+const pStep = +PARAMS.get('step');
+if (pStep >= 1 && pStep <= STEPS.length) { cur = pStep - 1; render(cur); }
+
+/* ---------- 03 对准 ---------- */
+const ov = $('#overlay'), metal = $('#metalLayer'), ovVal = $('#ovVal'), ovStatus = $('#ovStatus');
+function updateOverlay(){
+  const v = +ov.value;
+  metal.setAttribute('transform', `translate(${v * 0.9}, 0)`);
+  ovVal.textContent = v;
+  const over = Math.abs(v) > 18;
+  ovStatus.textContent = over ? '超规 · 断路/短路风险' : '合格';
+  ovStatus.style.borderColor = over ? 'var(--red)' : 'var(--green)';
+  ovStatus.style.color = over ? 'var(--red)' : 'var(--green)';
+}
+ov.oninput = updateOverlay; updateOverlay();
+
+/* ---------- 04 波长 ---------- */
+const WL = [
+  {nm:436, name:'汞灯 g-line', note:'早期接触式 / 接近式曝光的主力，今天只用于较粗的层。', frac:.95},
+  {nm:365, name:'汞灯 i-line', note:'0.35 µm 时代的关键层；现在仍在一些非关键层使用。', frac:.78},
+  {nm:248, name:'KrF 准分子激光', note:'DUV 起点，0.25–0.13 µm；配合相移掩模还能再缩。', frac:.6},
+  {nm:193, name:'ArF 准分子激光', note:'用了很多年的主力；浸没式 + 多重曝光把它推到 7 nm 附近。', frac:.42},
+  {nm:13.5, name:'EUV 极紫外', note:'最先进工艺的关键层；光路必须在真空中，用反射镜而不是透镜。', frac:.22}
+];
+(function drawWL(){
+  const svg = $('#wavelengthChart');
+  const x0 = 120, w = 560, baseY = 268, maxH = 190;
+  let html = '';
+  WL.forEach((d, i) => {
+    const bw = 62, gap = (w - bw * WL.length) / (WL.length + 1);
+    const x = x0 + gap + i * (bw + gap);
+    const h = maxH * d.frac;
+    html += `<g class="wlbar" data-i="${i}" style="cursor:pointer">
+      <rect x="${x}" y="${baseY - h}" width="${bw}" height="${h}" rx="6" fill="var(--amber)" opacity=".22" stroke="var(--amber)" stroke-width="1.2"/>
+      <text x="${x + bw/2}" y="${baseY - h - 12}" text-anchor="middle" class="lbl-strong">${d.nm} nm</text>
+      <text x="${x + bw/2}" y="${baseY + 22}" text-anchor="middle" class="lbl">${d.name}</text>
+    </g>`;
+  });
+  html += `<line x1="${x0}" y1="${baseY}" x2="${x0 + w}" y2="${baseY}" stroke="var(--line)"/>`;
+  html += `<text x="${x0}" y="${baseY + 52}" class="lbl">← 波长长（图形粗）</text>`;
+  html += `<text x="${x0 + w}" y="${baseY + 52}" text-anchor="end" class="lbl">波长短（图形细）→</text>`;
+  html += `<text x="${x0}" y="${baseY + 74}" class="lbl" opacity=".7">柱高只表示世代先后，不代表数值大小</text>`;
+  svg.innerHTML = html;
+  svg.querySelectorAll('.wlbar').forEach(el => {
+    el.onclick = () => {
+      const d = WL[+el.dataset.i];
+      $('#wlCaption').textContent = `${d.nm} nm · ${d.name} — ${d.note}`;
+      svg.querySelectorAll('.wlbar rect').forEach(r => r.setAttribute('opacity', .22));
+      el.querySelector('rect').setAttribute('opacity', .65);
+    };
+  });
+})();
+
+/* ---------- 05 黄光 ---------- */
+const roomLight = $('#roomLight'), prRect = $('#prRect'), damage = $('#damage'),
+      rays = $('#rays'), lamp = $('#lamp');
+function setLight(kind){
+  const yellow = kind === 'yellow';
+  $('#btnYellow').setAttribute('aria-pressed', yellow);
+  $('#btnWhite').setAttribute('aria-pressed', !yellow);
+  roomLight.setAttribute('fill', yellow ? '#f5c542' : '#ffffff');
+  roomLight.setAttribute('opacity', yellow ? .18 : .30);
+  lamp.setAttribute('fill', yellow ? '#ffe9a8' : '#ffffff');
+  rays.setAttribute('stroke', yellow ? '#ffe9a8' : '#ffffff');
+  damage.setAttribute('opacity', yellow ? 0 : 1);
+  prRect.setAttribute('opacity', yellow ? .9 : .55);
+}
+$('#btnYellow').onclick = () => setLight('yellow');
+$('#btnWhite').onclick = () => setLight('white');
+</script>
+</body>
+</html>

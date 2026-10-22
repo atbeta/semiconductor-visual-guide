@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+
+<title>第 02 章 · 从物理到晶体管 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 02 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <a href="02-transistor.html" aria-current="page">02 晶体管</a>
+      <a href="04-lithography.html">04 光刻</a>
+      <a href="12-advanced-transistors.html">12 先进结构</a>
+      <a href="22-reliability.html">22 可靠性</a>
+      <button id="themeBtn" title="切换深浅色" style="font-size:13px;padding:4px 10px">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 1 · 基础</div>
+    <h1>从物理到晶体管：认识我们要制造的东西</h1>
+    <p class="lede">芯片上所有工艺，最后都是为了做出两样东西：晶体管和导线。这一章先把晶体管拆开看——它长什么样，以及栅极上的一点电压为什么能让它开和关。</p>
+    <div class="badges">
+      <span class="badge on">结构图解</span>
+      <span class="badge">电压可拖</span>
+      <span class="badge">NMOS / PMOS 切换</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>五个名字，一个开关</h2>
+    <p class="sub">MOSFET 的构造可以想成一个水闸门：源极是进水口，漏极是出水口，栅极是闸门。闸门和硅之间隔着极薄的一层绝缘层，闸门下方那片硅就是沟道。</p>
+
+    <div class="card">
+      <figure>
+        <img src="../assets/figures/02-mosfet.svg" alt="MOSFET 剖面图，以编号标示源极、漏极、栅极、栅极氧化层、沟道">
+        <figcaption>
+          <b>①</b> 源极 Source（电流入口）　<b>②</b> 漏极 Drain（电流出口）　<b>③</b> 栅极 Gate（闸门）　
+          <b>④</b> 栅极氧化层（几个原子厚的绝缘层）　<b>⑤</b> 沟道 Channel（栅极下方、源漏之间的通路）
+        </figcaption>
+      </figure>
+    </div>
+    <p class="note"><b>为什么叫「金属氧化物半导体」：</b>这名字来自早期结构。后来栅极改用多晶硅，现在又改回金属；绝缘层也不只是氧化硅。名字一直沿用，但三层材料的实际做法已经换过好几轮。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>加电压，沟道就出现</h2>
+    <p class="sub">下面这个可以拖。栅极电压超过阈值（Vt）时，栅极下方的硅里会形成一层反型层，把源极和漏极接通；拿掉电压，通路消失。这就是数字电路里的 1 和 0。</p>
+
+    <div class="card">
+      <div class="grid2 asym">
+        <div>
+          <svg id="mos" viewBox="0 0 600 340" role="img" aria-label="可交互 MOSFET 剖面：拖动电压看沟道形成">
+            <defs>
+              <linearGradient id="chanGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#38bdf8" stop-opacity=".15"/>
+                <stop offset=".5" stop-color="#38bdf8" stop-opacity=".9"/>
+                <stop offset="1" stop-color="#38bdf8" stop-opacity=".15"/>
+              </linearGradient>
+            </defs>
+
+            <!-- 基底 -->
+            <rect x="70" y="196" width="460" height="104" rx="3" fill="var(--sub)"/>
+            <text x="86" y="284" class="lbl">硅基底（P 型）</text>
+
+            <!-- 源漏 -->
+            <rect x="108" y="196" width="88" height="44" fill="#38bdf8" opacity=".9" id="srcWell"/>
+            <rect x="404" y="196" width="88" height="44" fill="#38bdf8" opacity=".9" id="drnWell"/>
+            <text x="152" y="224" text-anchor="middle" class="lbl-strong" fill="#06283d">N+</text>
+            <text x="448" y="224" text-anchor="middle" class="lbl-strong" fill="#06283d">N+</text>
+
+            <!-- 沟道 -->
+            <rect id="chan" x="196" y="198" width="208" height="16" rx="2" fill="url(#chanGrad)" stroke="#e2e8f0" stroke-width="1.2" opacity="0"/>
+            <rect id="chanEdge" x="196" y="198" width="208" height="16" rx="2" fill="none" stroke="#dbeafe" stroke-width="2" opacity="0"/>
+
+            <!-- 氧化层 -->
+            <rect x="196" y="186" width="208" height="10" fill="#22d3ee"/>
+            <rect x="196" y="186" width="208" height="10" fill="none" stroke="#0e7490" stroke-width="1"/>
+
+            <!-- 栅极 -->
+            <rect id="gate" x="216" y="144" width="168" height="42" rx="3" fill="#f59e0b"/>
+            <rect x="216" y="144" width="168" height="42" rx="3" fill="none" stroke="#b45309" stroke-width="1.4"/>
+
+            <!-- 引脚 -->
+            <g stroke="#64748b" stroke-width="3" stroke-linecap="round">
+              <line x1="300" y1="144" x2="300" y2="114"/>
+            </g>
+            <circle cx="300" cy="110" r="5" fill="#64748b"/>
+            <text x="300" y="98" class="lbl" text-anchor="middle">V<tspan font-size="9" dy="3">gs</tspan></text>
+
+            <!-- 电流粒子 -->
+            <g id="dots" opacity="0"></g>
+
+            <!-- 标签 -->
+            <g class="lbl">
+              <text x="152" y="176" text-anchor="middle">源极</text>
+              <text x="448" y="176" text-anchor="middle">漏极</text>
+              <text x="300" y="170" text-anchor="middle" fill="#432e05" font-weight="600">栅极</text>
+              <text x="300" y="240" text-anchor="middle" id="chanLabel" opacity="0" fill="#7dd3fc">沟道</text>
+            </g>
+
+            <!-- 电压指示 -->
+            <text id="vgsText" x="300" y="78" class="lbl-strong" text-anchor="middle" style="font-size:14px">0.0 V</text>
+          </svg>
+          <p class="caption" style="margin-top:6px">剖面示意，尺寸不成比例。蓝色是电子流（NMOS），橘色是空穴流（PMOS）。</p>
+        </div>
+
+        <div>
+          <div class="toolbar" style="margin-bottom:10px">
+            <button id="btnN" aria-pressed="true">NMOS</button>
+            <button id="btnP" aria-pressed="false">PMOS</button>
+          </div>
+
+          <label class="caption" style="display:block;margin-bottom:2px">栅极电压 V<sub>gs</sub></label>
+          <input id="vgs" type="range" min="-3" max="3" step="0.1" value="0" style="--p:50%">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--faint)">
+            <span>−3 V</span><span>0</span><span>+3 V</span>
+          </div>
+
+          <div style="margin-top:18px;display:grid;gap:10px">
+            <div style="display:flex;justify-content:space-between;font-size:14px">
+              <span style="color:var(--dim)">状态</span><b id="stateTxt" style="color:var(--dim)">关断</b>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:14px">
+              <span style="color:var(--dim)">阈值 V<sub>t</sub></span><span class="mono">±1.2 V（示意）</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:14px">
+              <span style="color:var(--dim)">沟道</span><b id="chanTxt" style="color:var(--dim)">未形成</b>
+            </div>
+          </div>
+
+          <p class="note" id="mosNote" style="font-size:13.5px">
+            <b>NMOS：</b>栅极加高电压，电子被吸引到界面，形成 N 型沟道，源漏导通。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p class="note"><b>为什么这叫「开关」而不是「放大器」：</b>数字电路只用它的两个极端——完全导通、完全关断。中间那段连续变化的区域是模拟电路的地盘，数字设计会刻意快速穿过它，因为停留越久越费电。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>NMOS、PMOS 与 CMOS</h2>
+    <p class="sub">把两种极性的晶体管成对使用，就是 CMOS。它省电的原因很朴素：不切换的时候，总有一个是关着的，电流没有通路。</p>
+
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">NMOS</h3>
+        <p class="caption" style="margin:0">靠电子导电。栅极加<b>高</b>电压时打开。速度快，但关断时有漏电。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">PMOS</h3>
+        <p class="caption" style="margin:0">靠空穴导电。栅极加<b>低</b>电压时打开。速度慢一些，但和 NMOS 配对后静态几乎不耗电。</p>
+      </div>
+    </div>
+
+    <p class="note cyan"><b>对制造意味着什么：</b>同一片晶圆上要同时做出两种晶体管——NMOS 做在 P 井里，PMOS 做在 N 井里。这就需要多次光刻和离子注入，分别处理不同区域。CMOS 的省电是设计换来的，代价压在工艺上。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">04</span>从晶体管到芯片</h2>
+    <p class="sub">几个晶体管组成逻辑门，许多逻辑门组成运算电路，再用好几层金属导线把它们连起来——这才是芯片。所以晶圆厂的工作分两大段：先做晶体管（FEOL），再盖金属层（BEOL）。</p>
+
+    <div class="card">
+      <svg viewBox="0 0 640 220" role="img" aria-label="晶体管层与多层金属导线">
+        <!-- 晶体管层 -->
+        <rect x="60" y="150" width="520" height="46" fill="var(--sub)"/>
+        <g fill="#38bdf8">
+          <rect x="100" y="136" width="26" height="14"/><rect x="170" y="136" width="26" height="14"/>
+          <rect x="280" y="136" width="26" height="14"/><rect x="350" y="136" width="26" height="14"/>
+          <rect x="460" y="136" width="26" height="14"/><rect x="530" y="136" width="26" height="14"/>
+        </g>
+        <g fill="#f59e0b">
+          <rect x="132" y="118" width="32" height="20" rx="2"/><rect x="312" y="118" width="32" height="20" rx="2"/>
+          <rect x="492" y="118" width="32" height="20" rx="2"/>
+        </g>
+        <text x="66" y="186" class="lbl">FEOL</text>
+
+        <!-- 金属层 -->
+        <g fill="#cbd5e1" opacity=".9">
+          <rect x="90" y="96" width="460" height="8" rx="3"/>
+          <rect x="90" y="68" width="460" height="8" rx="3"/>
+          <rect x="90" y="40" width="460" height="8" rx="3"/>
+        </g>
+        <g fill="#94a3b8">
+          <rect x="150" y="104" width="8" height="14"/><rect x="330" y="104" width="8" height="14"/>
+          <rect x="510" y="104" width="8" height="14"/>
+          <rect x="230" y="76" width="8" height="20"/><rect x="420" y="76" width="8" height="20"/>
+        </g>
+        <text x="66" y="62" class="lbl">BEOL</text>
+        <text x="90" y="24" class="lbl">金属层数越多，连线越自由，工艺也越复杂</text>
+      </svg>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>芯片由晶体管和金属导线组成，所有工艺都是为了做出这两样东西。</li>
+      <li>半导体的导电能力可以控制，掺杂让硅变成 N 型或 P 型。</li>
+      <li>MOSFET 是用栅极电压控制的开关，阈值电压 Vt 是最重要的参数之一。</li>
+      <li>CMOS 把 NMOS 和 PMOS 成对使用，非常省电，但制造时要分别处理两种区域。</li>
+      <li>晶体管越做越小，漏电问题促使结构从平面走向立体（见第 12 章）。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a href="../index.html">← 回目录</a>
+    <a class="next" href="04-lithography.html">第 04 章 光刻 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+  .lbl-strong{font-size:12px;fill:var(--fg);font-weight:600;font-family:inherit}
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const PARAMS = new URLSearchParams(location.search);
+
+/* 主题 */
+(function(){
+  const saved = localStorage.getItem('smi-theme');
+  if (saved) document.documentElement.dataset.theme = saved;
+  else if (matchMedia('(prefers-color-scheme: light)').matches) document.documentElement.dataset.theme = 'light';
+  $('#themeBtn').onclick = () => {
+    const now = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = now;
+    localStorage.setItem('smi-theme', now);
+  };
+})();
+
+/* MOSFET 交互 */
+const VT = 1.2;
+let mode = 'nmos';
+const el = {
+  vgs: $('#vgs'), chan: $('#chan'), chanEdge: $('#chanEdge'), dots: $('#dots'),
+  state: $('#stateTxt'), chanTxt: $('#chanTxt'), vgsText: $('#vgsText'),
+  note: $('#mosNote'), chanLabel: $('#chanLabel'), gate: $('#gate'),
+  srcWell: $('#srcWell'), drnWell: $('#drnWell')
+};
+
+/* 粒子 */
+const N = 7, dots = [];
+for (let i = 0; i < N; i++) {
+  const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+  c.setAttribute('r', 4); c.setAttribute('cy', 206);
+  el.dots.appendChild(c); dots.push(c);
+}
+let phase = 0;
+
+function isOn(vgs) {
+  return mode === 'nmos' ? vgs >= VT : vgs <= -VT;
+}
+
+function render() {
+  const v = +el.vgs.value;
+  const on = isOn(v);
+  const accent = mode === 'nmos' ? '#38bdf8' : '#f59e0b';
+
+  el.vgsText.textContent = (v > 0 ? '+' : '') + v.toFixed(1) + ' V';
+  el.vgs.style.setProperty('--p', ((v + 3) / 6 * 100) + '%');
+
+  /* 沟道 */
+  el.chan.setAttribute('opacity', on ? 1 : 0);
+  el.chanEdge.setAttribute('opacity', on ? 1 : 0);
+  el.chanLabel.setAttribute('opacity', on ? 1 : 0);
+  el.chan.setAttribute('fill', mode === 'nmos' ? '#3b82f6' : '#f59e0b');
+  el.chan.style.opacity = on ? 1 : 0;
+  el.chan.style.transition = 'opacity .25s';
+
+  /* 栅极着色：电压越大越亮 */
+  const k = Math.min(1, Math.abs(v) / 3);
+  el.gate.setAttribute('fill', on ? '#ffd166' : '#b9a06a');
+  el.gate.setAttribute('opacity', 0.55 + 0.45 * k);
+
+  /* 电流 */
+  el.dots.setAttribute('opacity', on ? 1 : 0);
+  dots.forEach(d => { d.setAttribute('fill', '#ffffff'); d.setAttribute('opacity', .95); });
+
+  el.state.textContent = on ? '导通' : '关断';
+  el.state.style.color = on ? 'var(--green)' : 'var(--dim)';
+  el.chanTxt.textContent = on ? '已形成' : '未形成';
+  el.chanTxt.style.color = on ? 'var(--green)' : 'var(--dim)';
+
+  el.note.innerHTML = mode === 'nmos'
+    ? '<b>NMOS：</b>栅极加高电压，电子被吸引到界面，形成 N 型沟道，源漏导通。'
+    : '<b>PMOS：</b>栅极加低电压（相对源极），空穴被吸引到界面，形成 P 型沟道，源漏导通。';
+}
+
+function tick() {
+  const on = isOn(+el.vgs.value);
+  if (on) {
+    phase = (phase + 2.2) % 240;
+    dots.forEach((d, i) => {
+      const x = 200 + ((phase + i * 34) % 200);
+      d.setAttribute('cx', x);
+      d.setAttribute('cy', 206);
+    });
+  }
+  requestAnimationFrame(tick);
+}
+
+el.vgs.oninput = render;
+$('#btnN').onclick = () => { mode = 'nmos'; $('#btnN').setAttribute('aria-pressed', true); $('#btnP').setAttribute('aria-pressed', false); render(); };
+$('#btnP').onclick = () => { mode = 'pmos'; $('#btnP').setAttribute('aria-pressed', true); $('#btnN').setAttribute('aria-pressed', false); render(); };
+
+if (PARAMS.get('mode') === 'pmos') { mode = 'pmos'; $('#btnP').setAttribute('aria-pressed', true); $('#btnN').setAttribute('aria-pressed', false); }
+if (PARAMS.get('v') !== null) el.vgs.value = PARAMS.get('v');
+render(); tick();
+</script>
+</body>
+</html>
