@@ -22,10 +22,10 @@
     { n: '18', t: '异常处理与工程变更', f: '18-abnormality-handling.html' },
     { n: '19', t: '晶圆测试', f: '19-wafer-test.html' },
     { n: '20', t: '封装', f: '20-packaging.html' },
-    { n: '21', t: '先进封装', f: null },
+    { n: '21', t: '先进封装', f: '21-advanced-packaging.html' },
     { n: '22', t: '最终测试与可靠性', f: '22-reliability.html' },
-    { n: '23', t: '工厂如何被系统管理', f: null },
-    { n: '24', t: '工艺如何影响固件', f: null }
+    { n: '23', t: '工厂如何被系统管理', f: '23-fab-systems.html' },
+    { n: '24', t: '工艺如何影响固件', f: '24-process-and-firmware.html' }
   ];
   window.SMI_CHAPTERS = CHAPTERS;
 

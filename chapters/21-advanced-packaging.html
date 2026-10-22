@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 21 章 · 先进封装 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 21 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 5 · 后段：测试与封装</div>
+    <h1>先进封装：把大芯片拆开，再拼回去</h1>
+    <p class="lede">微缩越来越贵，裸片又不能无限大。于是产业换了思路：把一颗大芯片拆成几颗小芯片，各自用最合适的工艺做，再用先进封装把它们紧到像一颗芯片。</p>
+    <div class="badges">
+      <span class="badge on">2.5D / 扇出 / 3D</span>
+      <span class="badge">连接密度可算</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>为什么不再「一颗做大」</h2>
+    <div class="grid2">
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15.5px">裸片有尺寸上限</h3><p class="caption" style="margin:0">受曝光机单次曝光范围限制，大约 26 × 33 mm，再大就要拼接。</p></div>
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15.5px">大裸片良率低</h3><p class="caption" style="margin:0">面积越大，被缺陷打中的概率越高——坏一颗就整颗丢。</p></div>
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15.5px">异质工艺更划算</h3><p class="caption" style="margin:0">运算用最先进节点，模拟/IO 用成熟节点，存储用专门工艺。</p></div>
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15.5px">带宽需求暴增</h3><p class="caption" style="margin:0">AI 要在处理器与存储之间搬大量数据，靠封装把距离缩到最短。</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>三种拼法</h2>
+    <p class="sub">并排、扇出、往上叠。切换看剖面，注意导线和连接点在哪一层。</p>
+
+    <div class="card">
+      <div class="toolbar">
+        <button id="m25" aria-pressed="true">2.5D · 中介层</button>
+        <button id="mfo">扇出 · RDL</button>
+        <button id="m3d">3D · 堆叠</button>
+        <span class="caption spacer" id="mName" style="margin:0">2.5D 封装</span>
+      </div>
+
+      <div class="grid2 asym">
+        <div>
+          <!-- 2.5D -->
+          <svg id="v25" viewBox="0 0 620 360" role="img" aria-label="2.5D 封装剖面">
+            <rect x="60" y="286" width="500" height="40" rx="4" fill="var(--card2)" stroke="var(--line)"/>
+            <text x="310" y="344" class="lbl" text-anchor="middle">封装基板</text>
+
+            <rect x="90" y="196" width="440" height="90" rx="6" fill="var(--purple)" opacity=".18" stroke="var(--purple)"/>
+            <text x="106" y="280" class="lbl">硅中介层 Interposer</text>
+
+            <!-- 芯片 -->
+            <rect x="190" y="130" width="150" height="66" rx="3" fill="var(--sub)"/>
+            <text x="265" y="168" class="lbl" text-anchor="middle" fill="#dbeafe">处理器</text>
+
+            <g>
+              <rect x="370" y="110" width="46" height="86" rx="2" fill="var(--card2)" stroke="var(--line)"/>
+              <rect x="424" y="110" width="46" height="86" rx="2" fill="var(--card2)" stroke="var(--line)"/>
+              <rect x="478" y="110" width="46" height="86" rx="2" fill="var(--card2)" stroke="var(--line)"/>
+            </g>
+            <text x="447" y="98" class="lbl" text-anchor="middle">HBM ×3</text>
+
+            <!-- 凸块 -->
+            <g fill="var(--amber)">
+              <circle cx="210" cy="204" r="5"/><circle cx="250" cy="204" r="5"/><circle cx="290" cy="204" r="5"/>
+              <circle cx="330" cy="204" r="5"/>
+              <circle cx="385" cy="204" r="5"/><circle cx="440" cy="204" r="5"/><circle cx="495" cy="204" r="5"/>
+            </g>
+            <!-- TSV -->
+            <g stroke="var(--cyan)" stroke-width="2">
+              <line x1="150" y1="210" x2="150" y2="286"/><line x1="310" y1="240" x2="310" y2="286"/>
+              <line x1="470" y1="210" x2="470" y2="286"/>
+            </g>
+            <text x="500" y="262" class="lbl">TSV ↓</text>
+          </svg>
+
+          <!-- 扇出 -->
+          <svg id="vFO" viewBox="0 0 620 360" role="img" aria-label="扇出型封装剖面" style="display:none">
+            <rect x="60" y="286" width="500" height="40" rx="4" fill="var(--card2)" stroke="var(--line)"/>
+            <text x="310" y="344" class="lbl" text-anchor="middle">电路板</text>
+
+            <!-- 重组晶圆 -->
+            <rect x="110" y="170" width="400" height="116" rx="8" fill="var(--purple)" opacity=".14" stroke="var(--purple)" stroke-dasharray="6 5"/>
+            <text x="126" y="188" class="lbl">塑封（重组晶圆）</text>
+
+            <rect x="170" y="200" width="90" height="60" fill="var(--sub)"/>
+            <rect x="300" y="200" width="90" height="60" fill="var(--sub)"/>
+            <text x="215" y="236" class="lbl" text-anchor="middle" fill="#dbeafe">裸片 A</text>
+            <text x="345" y="236" class="lbl" text-anchor="middle" fill="#dbeafe">裸片 B</text>
+
+            <!-- RDL -->
+            <g stroke="var(--amber)" stroke-width="2.5" fill="none">
+              <path d="M200,200 L200,178 L260,178 L260,286"/>
+              <path d="M330,200 L330,182 L400,182 L400,286"/>
+              <path d="M245,200 L245,190 L360,190 L360,286"/>
+            </g>
+            <text x="430" y="176" class="lbl">重布线层 RDL</text>
+            <text x="126" y="282" class="lbl">扇出：把接点摊到比裸片更大</text>
+          </svg>
+
+          <!-- 3D -->
+          <svg id="v3D" viewBox="0 0 620 360" role="img" aria-label="3D 堆叠剖面" style="display:none">
+            <rect x="60" y="290" width="500" height="40" rx="4" fill="var(--card2)" stroke="var(--line)"/>
+            <text x="310" y="348" class="lbl" text-anchor="middle">基板</text>
+
+            <g>
+              <rect x="200" y="230" width="220" height="54" rx="3" fill="var(--card2)" stroke="var(--line)"/>
+              <rect x="200" y="170" width="220" height="54" rx="3" fill="var(--card2)" stroke="var(--line)"/>
+              <rect x="200" y="110" width="220" height="54" rx="3" fill="var(--sub)"/>
+            </g>
+            <text x="310" y="98" class="lbl" text-anchor="middle">逻辑die</text>
+            <text x="440" y="146" class="lbl">DRAM</text>
+            <text x="440" y="206" class="lbl">DRAM</text>
+            <text x="440" y="266" class="lbl">DRAM</text>
+
+            <g stroke="var(--amber)" stroke-width="3">
+              <line x1="245" y1="116" x2="245" y2="284"/>
+              <line x1="310" y1="116" x2="310" y2="284"/>
+              <line x1="375" y1="116" x2="375" y2="284"/>
+            </g>
+            <text x="140" y="120" class="lbl">TSV 贯穿</text>
+            <text x="140" y="140" class="lbl">每颗芯片</text>
+          </svg>
+        </div>
+
+        <div>
+          <p class="caption" id="mDesc" style="font-size:14px;margin:0 0 14px">
+            多颗芯片并排放在一片硅中介层上，中介层上有极细的导线，让芯片之间高速互连，再通过 TSV 连到下方基板。
+          </p>
+          <div class="stat" style="grid-template-columns:1fr">
+            <div><b id="k1">并排</b><small>芯片相对位置</small></div>
+            <div><b id="k2">中介层</b><small>互连靠什么</small></div>
+            <div><b id="k3">数十 µm</b><small>连接点间距</small></div>
+          </div>
+          <p class="note" id="mNote" style="font-size:13.5px">
+            <b>最典型的例子：</b>处理器 + 多组 HBM 并排。中介层可以拼接做到比一次曝光还大。
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>连接点越密，带宽越大</h2>
+    <p class="sub">芯片之间能传多少数据，很大程度取决于「每平方毫米能放多少个连接点」。拖动间距看数量怎么变。</p>
+
+    <div class="card">
+      <div class="grid2 asym">
+        <div><svg id="pitchChart" viewBox="0 0 560 300" role="img" aria-label="连接点密度随间距变化"></svg></div>
+        <div>
+          <label class="caption" for="pitch">连接点间距 <b id="pitchV">40</b> µm</label>
+          <input id="pitch" type="range" min="5" max="120" step="5" value="40">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--faint)">
+            <span>5 µm（混合键合）</span><span>120 µm（倒装凸块）</span>
+          </div>
+
+          <div class="stat" style="grid-template-columns:1fr;margin-top:16px">
+            <div><b id="density">—</b><small>每 mm² 连接点数（理想化）</small></div>
+            <div><b id="relative">—</b><small>相对 100 µm 凸块的倍数</small></div>
+          </div>
+          <p class="note" id="pitchNote" style="font-size:13.5px"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">04</span>Chiplet：把芯片做成积木</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">良率相乘</h3>
+        <p class="caption" style="margin:0">8 颗芯片封装在一起，每颗良率 99%，整体也只有 0.99⁸ ≈ 92%。所以封装前必须充分测试，确保是 KGD。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">混合键合</h3>
+        <p class="caption" style="margin:0">不用凸块，铜对铜直接键合，间距可以做到 10 µm 以下。代价是表面必须极平极净——一颗微粒就能撑出空隙。</p>
+      </div>
+    </div>
+    <p class="note cyan"><b>前后段界线在模糊：</b>先进封装大量使用光刻、电镀、CMP，这些原本是晶圆厂的工艺。所以现在常说「封装在往前走」，和晶圆制造越来越像。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>微缩变贵、裸片有尺寸上限、异质工艺更划算，推动先进封装。</li>
+      <li>2.5D：并排放在中介层上；扇出：用 RDL 把接点摊开；3D：往上叠。</li>
+      <li>连接点间距越小，单位面积连接越多，带宽越大。</li>
+      <li>Chiplet 让不同工艺的芯片像积木一样组合。</li>
+      <li>多芯片封装的良率相乘，KGD 与混合键合的洁净度都是关键。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="20-packaging.html">← 20 封装</a>
+    <a class="next" href="22-reliability.html">22 最终测试与可靠性 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+    <p>源码：<a href="https://github.com/atbeta/semiconductor-visual-guide">atbeta/semiconductor-visual-guide</a> · 推 main 自动部署到 Vercel。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+
+const MODES = {
+  m25: { name:'2.5D 封装', view:'#v25', btn:'#m25',
+    desc:'多颗芯片并排放在一片硅中介层上，中介层上有极细的导线，让芯片之间高速互连，再通过 TSV 连到下方基板。',
+    k:['并排','中介层','数十 µm'],
+    note:'<b>最典型的例子：</b>处理器 + 多组 HBM 并排。中介层可以拼接做到比一次曝光还大。' },
+  mfo: { name:'扇出型封装', view:'#vFO', btn:'#mfo',
+    desc:'先把裸片排在承载板上，用塑封包成「重组晶圆」，再在上面做重布线层（RDL），把接点从裸片往外扇出去。',
+    k:['并排','RDL 重布线','数十 µm'],
+    note:'<b>为什么手机爱用：</b>又薄又小，封装尺寸接近裸片本身，还能把多颗裸片包在一起。' },
+  m3d: { name:'3D 堆叠', view:'#v3D', btn:'#m3d',
+    desc:'芯片直接叠在另一颗芯片上，用贯穿每颗芯片的 TSV 上下连通，HBM 就是典型代表。',
+    k:['上下叠','TSV','< 10 µm（混合键合）'],
+    note:'<b>关键演进：</b>从倒装凸块（>100 µm）到微凸块（数十 µm）再到混合键合（<10 µm），间距每小一档，带宽就上一个台阶。' }
+};
+
+function pick(k) {
+  const m = MODES[k];
+  Object.keys(MODES).forEach(x => {
+    document.querySelector(MODES[x].view).style.display = x === k ? 'block' : 'none';
+    document.querySelector(MODES[x].btn).setAttribute('aria-pressed', x === k);
+  });
+  $('#mName').textContent = m.name;
+  $('#mDesc').textContent = m.desc;
+  $('#k1').textContent = m.k[0]; $('#k2').textContent = m.k[1]; $('#k3').textContent = m.k[2];
+  $('#mNote').innerHTML = m.note;
+}
+$('#m25').onclick = () => pick('m25');
+$('#mfo').onclick = () => pick('mfo');
+$('#m3d').onclick = () => pick('m3d');
+
+/* 连接密度 */
+function drawPitch() {
+  const p = +$('#pitch').value;
+  const perMM2 = Math.pow(1000 / p, 2);          // 每 mm²
+  const rel = Math.pow(100 / p, 2);              // 相对 100 µm
+
+  const W = 560, H = 300, X0 = 70, X1 = 520, Y0 = 250, Y1 = 40;
+  const x = v => X0 + (Math.log10(v) - Math.log10(5)) / (Math.log10(120) - Math.log10(5)) * (X1 - X0);
+  const y = n => Y0 - (Math.log10(n) - 1) / (Math.log10(40000) - 1) * (Y0 - Y1);
+
+  const pts = [];
+  for (let v = 5; v <= 120; v += 1) pts.push([x(v), y(Math.pow(1000 / v, 2))]);
+
+  $('#pitchChart').innerHTML = `
+    <line x1="${X0}" y1="${Y0}" x2="${X1}" y2="${Y0}" stroke="var(--line)"/>
+    <line x1="${X0}" y1="${Y0}" x2="${X0}" y2="${Y1}" stroke="var(--line)"/>
+    <path d="${pts.map(([px, py], i) => (i ? 'L' : 'M') + px.toFixed(1) + ',' + py.toFixed(1)).join(' ')}"
+          fill="none" stroke="var(--cyan)" stroke-width="2.5"/>
+    <circle cx="${x(p)}" cy="${y(perMM2)}" r="6" fill="var(--amber)"/>
+    <line x1="${x(p)}" y1="${y(perMM2)}" x2="${x(p)}" y2="${Y0}" stroke="var(--amber)" stroke-dasharray="4 4"/>
+    <text x="${x(p)}" y="${y(perMM2) - 14}" class="lbl" fill="var(--amber)" text-anchor="middle">${p} µm</text>
+    <text x="${X0}" y="${Y0 + 22}" class="lbl">5 µm</text>
+    <text x="${X1}" y="${Y0 + 22}" class="lbl" text-anchor="end">120 µm</text>
+    <text x="${X0 - 8}" y="${Y1}" class="lbl" text-anchor="end">4万</text>
+    <text x="${X0 - 8}" y="${Y0}" class="lbl" text-anchor="end">10</text>
+    <text x="${X0 - 8}" y="${(Y0 + Y1) / 2}" class="lbl" text-anchor="end">连接数/mm²</text>
+  `;
+
+  $('#pitchV').textContent = p;
+  $('#density').textContent = perMM2 >= 1000 ? (perMM2 / 1000).toFixed(1) + 'k' : perMM2.toFixed(0);
+  $('#relative').textContent = rel >= 1 ? '×' + rel.toFixed(0) : '×' + rel.toFixed(2);
+  $('#pitch').style.setProperty('--p', ((p - 5) / 115 * 100) + '%');
+
+  $('#pitchNote').innerHTML = p <= 10
+    ? '<b>混合键合区间：</b>没有凸块，铜直接键合。密度高出一个数量级，但对平坦度和洁净度的要求也到了晶圆厂的等级。'
+    : p <= 50
+      ? '<b>微凸块区间：</b>2.5D 与 HBM 堆叠的典型值。密度与工艺难度之间比较平衡。'
+      : '<b>传统倒装凸块：</b>便宜、成熟，但同样面积能放的连接点少得多。';
+}
+
+$('#pitch').oninput = drawPitch;
+const q = new URLSearchParams(location.search);
+if (q.get('p')) $('#pitch').value = q.get('p');
+drawPitch();
+pick(q.get('m') === 'fo' ? 'mfo' : q.get('m') === '3d' ? 'm3d' : 'm25');
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
