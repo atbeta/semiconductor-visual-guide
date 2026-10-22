@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 06 章 · 刻蚀 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 06 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 2 · 工艺模块</div>
+    <h1>刻蚀：把光刻胶上的图形「转印」进材料</h1>
+    <p class="lede">光刻只是定义了图形，真正把材料挖掉的是刻蚀。挖得直不直、只挖想挖的、什么时候停——这三件事决定了这一层能不能用。</p>
+    <div class="badges">
+      <span class="badge on">各向异性可拖</span>
+      <span class="badge">终点检测</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>湿法 vs 干法：钻不钻到胶底下</h2>
+    <p class="sub">湿法刻蚀往各个方向速度一样，会从侧面「吃」进光刻胶底下；干法用等离子体，离子几乎垂直撞下来，侧壁能做得很直。拖动滑块看差别。</p>
+
+    <div class="card">
+      <div class="grid2 asym">
+        <div>
+          <svg id="etch" viewBox="0 0 520 340" role="img" aria-label="刻蚀剖面：各向异性可调">
+            <!-- 基底 -->
+            <rect x="30" y="180" width="460" height="140" fill="var(--sub)"/>
+            <!-- 停止层 -->
+            <rect x="30" y="262" width="460" height="6" fill="var(--cyan)" opacity=".55"/>
+            <text x="42" y="278" class="lbl">刻蚀停止层</text>
+
+            <!-- 被挖掉的空腔 -->
+            <path id="cavity" d="" fill="var(--bg)"/>
+            <!-- 光刻胶 -->
+            <rect x="30" y="158" width="190" height="22" fill="var(--pr)" opacity=".9"/>
+            <rect x="300" y="158" width="190" height="22" fill="var(--pr)" opacity=".9"/>
+            <text x="42" y="150" class="lbl">光刻胶</text>
+
+            <!-- 侧蚀标注 -->
+
+            <!-- CD 标注 -->
+            <g stroke="var(--green)" stroke-width="1.4" color="var(--green)">
+              <line x1="220" y1="170" x2="300" y2="170" marker-start="url(#arr2)" marker-end="url(#arr2)"/>
+              <text x="260" y="150" class="lbl" fill="var(--green)" text-anchor="middle" id="cdText">设计 CD</text>
+            </g>
+            <g stroke="var(--amber)" stroke-width="1.4" color="var(--amber)" id="cd2" opacity="0">
+              <line id="cd2line" x1="220" y1="300" x2="300" y2="300" marker-start="url(#arr2)" marker-end="url(#arr2)"/>
+              <text id="cd2text" x="260" y="294" class="lbl" fill="var(--amber)" text-anchor="middle">实际 CD</text>
+            </g>
+            <defs>
+              <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+              </marker>
+            </defs>
+          </svg>
+        </div>
+
+        <div>
+          <label class="caption" for="aniso">各向异性 <b id="anisoLabel">0.85</b></label>
+          <input id="aniso" type="range" min="0" max="1" step="0.01" value="0.85">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--faint)">
+            <span>0 · 各向同性（湿法）</span><span>1 · 完全各向异性</span>
+          </div>
+
+          <div class="stat" style="grid-template-columns:1fr 1fr;margin-top:18px">
+            <div><b id="latVal">8</b><small>侧蚀（nm，示意）</small></div>
+            <div><b id="angleVal">85°</b><small>侧壁角度</small></div>
+          </div>
+
+          <p class="note" id="anisoNote" style="font-size:13.5px">
+            侧壁几乎垂直：离子被电场加速后垂直撞下来，化学活性基团只负责「吃掉」被撞松的材料。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p class="note cyan"><b>干法不一定各向异性：</b>同一台设备，改变气体配比和偏压，就能把干法刻蚀调成各向同性（比如从侧面去除牺牲层）。反过来，湿法也可以靠添加剂做出一定方向性，只是不如干法。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>什么时候该停：终点检测</h2>
+    <p class="sub">挖穿目标层、碰到下层时，等离子体里参与反应的东西变了，发出的光也跟着变。设备盯着这束光，就能知道什么时候到底。</p>
+
+    <div class="card">
+      <svg viewBox="0 0 720 240" role="img" aria-label="终点检测信号曲线">
+        <line x1="60" y1="200" x2="690" y2="200" stroke="var(--line)"/>
+        <line x1="60" y1="200" x2="60" y2="30" stroke="var(--line)"/>
+        <text x="46" y="34" class="lbl" text-anchor="end">强度</text>
+        <text x="690" y="222" class="lbl" text-anchor="end">时间</text>
+
+        <!-- 曲线 -->
+        <path d="M70,70 L300,72 L360,74 L420,150 L640,152"
+              fill="none" stroke="var(--amber)" stroke-width="2.6" stroke-linejoin="round"/>
+        <path d="M70,70 L300,72 L360,74 L420,150 L640,152 L640,200 L70,200 Z"
+              fill="var(--amber)" opacity=".08"/>
+
+        <!-- 终点 -->
+        <line x1="420" y1="40" x2="420" y2="200" stroke="var(--red)" stroke-dasharray="5 5"/>
+        <text x="428" y="56" class="lbl" fill="var(--red)">终点 Endpoint</text>
+
+        <!-- 过刻蚀 -->
+        <rect x="420" y="46" width="90" height="154" fill="var(--cyan)" opacity=".07"/>
+        <text x="465" y="222" class="lbl" fill="var(--cyan)" text-anchor="middle">过刻蚀</text>
+
+        <text x="200" y="100" class="lbl">正在刻目标层</text>
+        <text x="560" y="176" class="lbl">下层暴露，信号掉下来</text>
+      </svg>
+      <p class="caption" style="margin-top:8px">终点之后还会多刻一点（过刻蚀），确保整片晶圆都清干净——但挖太多会伤到下层。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>刻蚀要看什么</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>指标</th><th>含义</th><th>出问题的后果</th></tr></thead>
+        <tbody>
+          <tr><td>刻蚀速率</td><td>每分钟挖多深</td><td>产能与深度控制</td></tr>
+          <tr><td>均匀度</td><td>晶圆上不同位置挖得是否一样</td><td>同一片里有的过刻、有的没刻透</td></tr>
+          <tr><td>选择比</td><td>目标材料 vs 不想挖的材料，速度差多少</td><td>停止层被吃穿，下层受损</td></tr>
+          <tr><td>轮廓</td><td>侧壁直不直、有没有内缩或外凸</td><td>线宽失控、后续填充困难</td></tr>
+          <tr><td>CD 变化</td><td>刻完的线宽相对光刻后变了多少</td><td>电学特性偏移</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><b>选择比一定要说「对什么」：</b>对光刻胶的选择比和对下层材料的选择比是两个完全不同的数字，现场说「选择比不够」时必须问清楚对象。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">04</span>越挖越深：高深宽比</h2>
+    <p class="sub">存储器要在硅里挖出深宽比几十倍的孔。越深，离子越难到达底部——刻蚀会变慢，孔可能弯曲、扭曲，或者中段被挖得比上下都宽（bowing）。</p>
+
+    <div class="card">
+      <svg viewBox="0 0 640 220" role="img" aria-label="不同深宽比的孔形">
+        <rect x="40" y="60" width="560" height="140" fill="var(--sub)"/>
+        <g fill="var(--bg)">
+          <path d="M100,60 L100,150 L150,150 L150,60 Z"/>
+          <path d="M250,60 L250,190 L300,190 L300,60 Z"/>
+          <path d="M400,60 L400,196 L450,196 L450,60 Z" opacity=".95"/>
+        </g>
+        <!-- bowing -->
+        <path d="M400,60 L392,120 L400,196 L450,196 L458,120 L450,60 Z" fill="var(--red)" opacity=".18"/>
+        <g class="lbl" text-anchor="middle">
+          <text x="125" y="46">深宽比 2</text>
+          <text x="275" y="46">深宽比 8</text>
+          <text x="425" y="46">深宽比 30 · 弯曲</text>
+        </g>
+      </svg>
+    </div>
+    <p class="note red"><b>刻蚀做坏了不能重来：</b>材料已经被挖掉，不像光刻还能 Rework。所以刻蚀的参数管控和终点判断，比光刻更依赖设备与实时监测。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>刻蚀把光刻胶上的图形转印到材料里，是「减法」工艺。</li>
+      <li>湿法各向同性，会侧蚀；干法用等离子体，能做出垂直侧壁。</li>
+      <li>等离子体里，活性基团负责化学去除，离子负责方向。</li>
+      <li>终点检测靠等离子体发光的变化判断「挖到底了」，之后再加一点过刻蚀。</li>
+      <li>深宽比越高，离子越难到底部，孔会变慢、弯曲、扭曲。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="05-thin-films.html">← 05 薄膜</a>
+    <a class="next" href="07-ion-implantation.html">07 离子注入与热处理 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+    <p>源码：<a href="https://github.com/atbeta/semiconductor-visual-guide">atbeta/semiconductor-visual-guide</a> · 推 main 自动部署到 Vercel。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const OPEN_L = 220, OPEN_R = 300, TOP = 180, BOT = 262;
+
+function update() {
+  const a = +$('#aniso').value;
+  const lat = (1 - a) * 42;              // 最大侧蚀 42px
+  const bl = OPEN_L - lat, br = OPEN_R + lat;
+
+  $('#cavity').setAttribute('d', `M${OPEN_L},${TOP} L${bl},${BOT} L${br},${BOT} L${OPEN_R},${TOP} Z`);
+  $('#anisoLabel').textContent = a.toFixed(2);
+  $('#aniso').style.setProperty('--p', (a * 100) + '%');
+
+  const nm = Math.round(lat * 1.4);
+  $('#latVal').textContent = nm;
+  const angle = Math.round(90 - Math.atan(lat / (BOT - TOP)) * 180 / Math.PI);
+  $('#angleVal').textContent = angle + '°';
+
+  $('#cd2').setAttribute('opacity', 1);
+  $('#cd2line').setAttribute('x1', bl); $('#cd2line').setAttribute('x2', br);
+  $('#cd2line').setAttribute('y1', 252); $('#cd2line').setAttribute('y2', 252);
+  $('#cd2text').setAttribute('x', (bl + br) / 2);
+  $('#cd2text').setAttribute('y', 246);
+  $('#cd2text').textContent = `实际 CD +${Math.round(lat * 2 * 1.4)} nm`;
+
+  $('#anisoNote').innerHTML = a > .9
+    ? '<b>接近完全各向异性：</b>侧壁几乎垂直，线宽基本不变。干法刻蚀在低气压、高偏压下能做到这样。'
+    : a > .5
+      ? '<b>有一定侧蚀：</b>离子方向性不够，侧壁开始往外斜，CD 变大。'
+      : '<b>接近各向同性：</b>像湿法一样四面开花，图形会从胶底下被「掏空」，细线条甚至会被整条掀掉。';
+}
+
+$('#aniso').oninput = update;
+const q = new URLSearchParams(location.search);
+if (q.get('a') !== null) $('#aniso').value = q.get('a');
+update();
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

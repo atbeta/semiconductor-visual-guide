@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 07 章 · 离子注入与热处理 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 07 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 2 · 工艺模块</div>
+    <h1>离子注入与热处理：把杂质精准「打」进硅里</h1>
+    <p class="lede">掺杂决定一块硅是 N 型还是 P 型、电阻多大。早期的扩散法像「泡在染料里」，现代改用离子注入——像一把能控制速度和弹量的枪，把杂质打进指定深度。</p>
+    <div class="badges">
+      <span class="badge on">能量/剂量可调</span>
+      <span class="badge">沟道效应与退火</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>五段：从气体到晶圆</h2>
+    <p class="sub">离子源 → 质量分析 → 加速 → 扫描 → 晶圆。每一段解决一个问题。</p>
+
+    <div class="card">
+      <svg viewBox="0 0 760 240" role="img" aria-label="离子注入机示意">
+        <!-- 离子源 -->
+        <rect x="40" y="96" width="96" height="64" rx="6" fill="var(--card2)" stroke="var(--line)" stroke-width="1.5"/>
+        <circle cx="88" cy="128" r="16" fill="var(--purple)" opacity=".7"/>
+        <text x="88" y="182" class="lbl" text-anchor="middle">① 离子源</text>
+
+        <!-- 束流 -->
+        <line x1="136" y1="128" x2="250" y2="128" stroke="var(--amber)" stroke-width="2" stroke-dasharray="8 6"/>
+
+        <!-- 质量分析磁铁 -->
+        <path d="M250,88 q60,40 0,80" fill="none" stroke="var(--cyan)" stroke-width="10" opacity=".55"/>
+        <path d="M250,88 q60,40 0,80" fill="none" stroke="var(--cyan)" stroke-width="2"/>
+        <text x="290" y="182" class="lbl" text-anchor="middle">② 质量分析</text>
+
+        <!-- 加速段 -->
+        <g stroke="var(--line)" stroke-width="2">
+          <line x1="340" y1="106" x2="340" y2="150"/>
+          <line x1="366" y1="106" x2="366" y2="150"/>
+          <line x1="392" y1="106" x2="392" y2="150"/>
+        </g>
+        <line x1="340" y1="128" x2="420" y2="128" stroke="var(--amber)" stroke-width="2" stroke-dasharray="8 6"/>
+        <text x="366" y="182" class="lbl" text-anchor="middle">③ 加速</text>
+
+        <!-- 扫描 -->
+        <path d="M420,128 q40,-36 80,0 q40,36 80,0" fill="none" stroke="var(--amber)" stroke-width="2" opacity=".8"/>
+        <text x="500" y="182" class="lbl" text-anchor="middle">④ 扫描</text>
+
+        <!-- 晶圆 -->
+        <ellipse cx="640" cy="128" rx="18" ry="52" fill="var(--sub)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="640" y="196" class="lbl" text-anchor="middle">⑤ 晶圆</text>
+
+        <!-- 光刻胶挡住的区域 -->
+        <g fill="var(--pr)" opacity=".85">
+          <rect x="622" y="76" width="8" height="30" rx="2"/>
+          <rect x="622" y="150" width="8" height="30" rx="2"/>
+        </g>
+      </svg>
+      <p class="caption" style="margin-top:8px">光刻胶挡住的地方离子进不去，所以注入前一定要先做一次光刻——这一步是「用胶当掩模」。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>能量管深度，剂量管浓度</h2>
+    <p class="sub">两个旋钮，两个后果。拖动看浓度随深度的分布怎么变；打开「退火」，看杂质怎么扩散开。</p>
+
+    <div class="card">
+      <div class="grid2 asym">
+        <div>
+          <svg id="chart" viewBox="0 0 640 320" role="img" aria-label="注入浓度随深度的分布"></svg>
+        </div>
+
+        <div>
+          <label class="caption" for="energy">能量 <b id="eLabel">80</b> keV</label>
+          <input id="energy" type="range" min="10" max="300" step="5" value="80">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--faint)">
+            <span>10 keV</span><span>300 keV</span>
+          </div>
+
+          <label class="caption" for="dose" style="display:block;margin-top:16px">剂量 <b id="dLabel">1×10¹⁴</b> /cm²</label>
+          <input id="dose" type="range" min="12" max="16" step="0.1" value="14">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--faint)">
+            <span>1e12</span><span>1e16</span>
+          </div>
+
+          <div class="toolbar" style="margin-top:16px">
+            <button id="tiltBtn" aria-pressed="true">倾斜 7°</button>
+            <button id="annealBtn" aria-pressed="false">退火</button>
+          </div>
+
+          <div class="stat" style="grid-template-columns:1fr;margin-top:14px">
+            <div><b id="rpVal">—</b><small>峰值深度 Rp（投影射程）</small></div>
+            <div><b id="xjVal">—</b><small>结深 Xj（浓度降到 1e15 处）</small></div>
+          </div>
+        </div>
+      </div>
+      <p class="caption" style="margin-top:12px">示意曲线，非真实工艺数据。纵轴是对数浓度，横轴是深度（µm）。</p>
+    </div>
+
+    <p class="note"><b>为什么倾斜 7°：</b>硅晶体里有排列整齐的「通道」。如果离子正好沿着通道射入，会滑得特别深、分布拖出一条长尾（沟道效应）。倾斜几度就能打乱这个对准，让分布更可控。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>退火：修复晶格，也让杂质扩散</h2>
+    <p class="sub">离子撞进硅里会把晶格撞乱，杂质也没「就位」，所以要加热。但热量是双刃剑：温度越高、时间越长，杂质跑得越远。</p>
+
+    <div class="grid3">
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15px">炉管退火</h3><p class="caption" style="margin:0">数十分钟以上，最温和也最慢，热预算消耗大。</p></div>
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15px">快速热退火 RTA</h3><p class="caption" style="margin:0">强光几秒内升到高温，扩散少，是目前主流。</p></div>
+      <div class="card"><h3 style="margin:0 0 4px;font-size:15px">毫秒级退火</h3><p class="caption" style="margin:0">激光或闪光灯只加热表面，几乎不扩散，用于最先进节点。</p></div>
+    </div>
+
+    <p class="note cyan"><b>热预算：</b>晶圆经历的高温总量是有限额的。每一次高温都会让前面注入的杂质再扩散一点——所以工艺顺序要把高温步骤尽量排前面，金属层出现之后就必须降温。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>注入把杂质离子加速打进硅里，位置和浓度都要精准控制。</li>
+      <li>能量决定打多深，剂量决定打多少——两者不是一回事。</li>
+      <li>光刻胶当掩模，所以注入前必须先光刻。</li>
+      <li>倾斜几度可以避开晶体的通道，抑制沟道效应。</li>
+      <li>退火修复晶格并激活杂质，但也会让杂质扩散，所以要控制热预算。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="06-etching.html">← 06 刻蚀</a>
+    <a class="next" href="08-cmp.html">08 CMP →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+    <p>源码：<a href="https://github.com/atbeta/semiconductor-visual-guide">atbeta/semiconductor-visual-guide</a> · 推 main 自动部署到 Vercel。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+
+const X0 = 80, X1 = 600, Y0 = 270, Y1 = 40;
+const DEPTH_MAX = 0.9;      // µm
+const C_MIN = 1e14, C_MAX = 1e20;
+const xOf = d => X0 + (d / DEPTH_MAX) * (X1 - X0);
+const yOf = c => Y0 - (Math.log10(Math.max(c, C_MIN)) - Math.log10(C_MIN)) / (Math.log10(C_MAX) - Math.log10(C_MIN)) * (Y0 - Y1);
+
+function profile(E, dose, tilt, anneal) {
+  const Rp = 0.012 * Math.sqrt(E) * 1.6;            // µm，示意
+  let sig = 0.34 * Rp;
+  if (anneal) sig *= 1.55;
+  const peak = dose / (Math.sqrt(2 * Math.PI) * sig * 1e-4) * (anneal ? 0.85 : 1);
+  const f = d => {
+    const g = Math.exp(-Math.pow(d - Rp, 2) / (2 * sig * sig));
+    const tail = tilt ? 0 : 0.22 * Math.exp(-d / (Rp * 1.6));
+    return peak * (g + tail) + C_MIN;
+  };
+  return { Rp, sig, f, peak };
+}
+
+function draw() {
+  const E = +$('#energy').value, dose = Math.pow(10, +$('#dose').value);
+  const tilt = $('#tiltBtn').getAttribute('aria-pressed') === 'true';
+  const anneal = $('#annealBtn').getAttribute('aria-pressed') === 'true';
+  const p = profile(E, dose, tilt, anneal);
+
+  const pts = [];
+  for (let i = 0; i <= 180; i++) {
+    const d = i / 180 * DEPTH_MAX;
+    pts.push([xOf(d), yOf(p.f(d))]);
+  }
+  const line = pts.map(([x, y], i) => (i ? 'L' : 'M') + x.toFixed(1) + ',' + y.toFixed(1)).join(' ');
+
+  // 结深：浓度降到 1e15
+  let xj = DEPTH_MAX;
+  for (let d = 0; d < DEPTH_MAX; d += 0.002) {
+    if (p.f(d) < 1e15) { xj = d; break; }
+  }
+
+  const ticks = [0, 0.2, 0.4, 0.6, 0.8].map(d =>
+    `<line x1="${xOf(d)}" y1="${Y0}" x2="${xOf(d)}" y2="${Y0 + 5}" stroke="var(--line)"/>
+     <text x="${xOf(d)}" y="${Y0 + 20}" class="lbl" text-anchor="middle">${d}</text>`).join('');
+
+  const yl = [16, 18, 20].map(e =>
+    `<line x1="${X0 - 5}" y1="${yOf(Math.pow(10, e))}" x2="${X0}" y2="${yOf(Math.pow(10, e))}" stroke="var(--line)"/>
+     <text x="${X0 - 10}" y="${yOf(Math.pow(10, e)) + 4}" class="lbl" text-anchor="end">1e${e}</text>`).join('');
+
+  $('#chart').innerHTML = `
+    <line x1="${X0}" y1="${Y0}" x2="${X1}" y2="${Y0}" stroke="var(--line)"/>
+    <line x1="${X0}" y1="${Y0}" x2="${X0}" y2="${Y1}" stroke="var(--line)"/>
+    ${ticks}${yl}
+    <text x="${(X0 + X1) / 2}" y="${Y0 + 42}" class="lbl" text-anchor="middle">深度（µm）</text>
+    <text x="${X0 - 76}" y="${Y1 - 8}" class="lbl">浓度 /cm³</text>
+
+    <path d="${line} L${X1},${Y0} L${X0},${Y0} Z" fill="var(--amber)" opacity=".1"/>
+    <path d="${line}" fill="none" stroke="var(--amber)" stroke-width="2.6"/>
+
+    <line x1="${xOf(p.Rp)}" y1="${Y1}" x2="${xOf(p.Rp)}" y2="${Y0}" stroke="var(--cyan)" stroke-dasharray="4 4" opacity=".7"/>
+    <text x="${xOf(p.Rp) + 6}" y="${Y1 + 14}" class="lbl" fill="var(--cyan)">Rp</text>
+
+    <line x1="${xOf(xj)}" y1="${Y1}" x2="${xOf(xj)}" y2="${Y0}" stroke="var(--red)" stroke-dasharray="4 4" opacity=".7"/>
+    <text x="${xOf(xj) + 6}" y="${Y1 + 32}" class="lbl" fill="var(--red)">结深 Xj</text>
+  `;
+
+  $('#eLabel').textContent = E;
+  $('#dLabel').textContent = '1×10' + sup(+$('#dose').value);
+  $('#rpVal').textContent = p.Rp.toFixed(3) + ' µm';
+  $('#xjVal').textContent = xj.toFixed(3) + ' µm';
+
+  ['#energy', '#dose'].forEach(sel => {
+    const el = $(sel);
+    const min = +el.min, max = +el.max;
+    el.style.setProperty('--p', ((el.value - min) / (max - min) * 100) + '%');
+  });
+}
+
+function sup(v) {
+  const map = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹' };
+  return String(v).split('').map(c => map[c] || c).join('');
+}
+
+$('#energy').oninput = draw;
+$('#dose').oninput = draw;
+$('#tiltBtn').onclick = e => { const b = e.currentTarget; b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); draw(); };
+$('#annealBtn').onclick = e => { const b = e.currentTarget; b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); draw(); };
+
+const q = new URLSearchParams(location.search);
+if (q.get('e')) $('#energy').value = q.get('e');
+if (q.get('d')) $('#dose').value = q.get('d');
+if (q.get('anneal') === '1') $('#annealBtn').setAttribute('aria-pressed', 'true');
+if (q.get('tilt') === '0') $('#tiltBtn').setAttribute('aria-pressed', 'false');
+draw();
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

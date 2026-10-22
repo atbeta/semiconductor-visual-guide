@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>第 05 章 · 薄膜 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">CH 05 / 25</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <select id="chapJump" aria-label="跳到某一章"></select>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Part 2 · 工艺模块</div>
+    <h1>薄膜：一层一层把芯片堆起来</h1>
+    <p class="lede">芯片不是「做」出来的，是「长」出来的：每一层绝缘、导电、辅助材料，都要铺到纳米级均匀。铺的方法有四种，差别全在——能不能盖住沟槽的侧壁和底部。</p>
+    <div class="badges">
+      <span class="badge on">四种沉积对比</span>
+      <span class="badge">台阶覆盖率看得见</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>同一个沟槽，四种盖法</h2>
+    <p class="sub">真实的结构从来不是平的。切换四种方法，看同一个深沟里，薄膜在顶部、侧壁、底部各有多厚。</p>
+
+    <div class="card">
+      <div class="toolbar" id="methods">
+        <button data-m="thermal">热氧化</button>
+        <button data-m="cvd" aria-pressed="true">CVD</button>
+        <button data-m="pvd">PVD</button>
+        <button data-m="ald">ALD</button>
+        <span class="caption spacer" id="mName" style="margin:0">CVD · 化学气相沉积</span>
+      </div>
+
+      <svg id="trench" viewBox="0 178 520 178" role="img" aria-label="四种沉积方式在沟槽上的覆盖对比">
+        <!-- 硅基底（带沟槽） -->
+        <path d="M30,210 L200,210 L200,285 L320,285 L320,210 L490,210 L490,345 L30,345 Z"
+              fill="var(--sub)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="42" y="336" class="lbl">硅基底</text>
+
+        <!-- 原始表面参考线 -->
+        <line x1="30" y1="210" x2="490" y2="210" stroke="var(--faint)" stroke-width="1" stroke-dasharray="5 6" opacity=".7"/>
+
+        <!-- 热氧化 -->
+        <g class="filmSet" id="l-thermal" opacity="0">
+          <rect x="30" y="196" width="170" height="14" fill="#7dd3fc"/>
+          <rect x="320" y="196" width="170" height="14" fill="#7dd3fc"/>
+          <rect x="186" y="210" width="14" height="75" fill="#7dd3fc"/>
+          <rect x="320" y="210" width="14" height="75" fill="#7dd3fc"/>
+          <rect x="200" y="285" width="120" height="14" fill="#7dd3fc"/>
+          <line x1="200" y1="210" x2="200" y2="285" stroke="var(--bg)" stroke-width="1" stroke-dasharray="3 4" opacity=".6"/>
+          <line x1="320" y1="210" x2="320" y2="285" stroke="var(--bg)" stroke-width="1" stroke-dasharray="3 4" opacity=".6"/>
+        </g>
+
+        <!-- CVD -->
+        <g class="filmSet" id="l-cvd" opacity="1">
+          <rect x="30" y="194" width="170" height="16" fill="#a78bfa"/>
+          <rect x="320" y="194" width="170" height="16" fill="#a78bfa"/>
+          <rect x="188" y="210" width="12" height="75" fill="#a78bfa"/>
+          <rect x="320" y="210" width="12" height="75" fill="#a78bfa"/>
+          <rect x="200" y="282" width="120" height="6" fill="#a78bfa"/>
+        </g>
+
+        <!-- PVD -->
+        <g class="filmSet" id="l-pvd" opacity="0">
+          <rect x="30" y="192" width="170" height="18" fill="#cbd5e1"/>
+          <rect x="320" y="192" width="170" height="18" fill="#cbd5e1"/>
+          <!-- 悬垂 -->
+          <path d="M200,210 L200,222 L212,210 Z" fill="#cbd5e1"/>
+          <path d="M320,210 L320,222 L308,210 Z" fill="#cbd5e1"/>
+          <rect x="200" y="210" width="3" height="75" fill="#cbd5e1" opacity=".85"/>
+          <rect x="317" y="210" width="3" height="75" fill="#cbd5e1" opacity=".85"/>
+          <rect x="203" y="289" width="114" height="3" fill="#cbd5e1" opacity=".7"/>
+        </g>
+
+        <!-- ALD -->
+        <g class="filmSet" id="l-ald" opacity="0">
+          <rect x="30" y="198" width="170" height="12" fill="#34d399"/>
+          <rect x="320" y="198" width="170" height="12" fill="#34d399"/>
+          <rect x="188" y="210" width="12" height="75" fill="#34d399"/>
+          <rect x="320" y="210" width="12" height="75" fill="#34d399"/>
+          <rect x="200" y="285" width="120" height="12" fill="#34d399"/>
+        </g>
+      </svg>
+
+      <div class="stat" style="grid-template-columns:repeat(3,1fr);margin-top:18px">
+        <div><b id="covTop">100%</b><small>顶部厚度（相对）</small></div>
+        <div><b id="covSide">70%</b><small>侧壁厚度</small></div>
+        <div><b id="covBottom">50%</b><small>底部厚度</small></div>
+      </div>
+
+      <p class="note" id="mNote">
+        <b>CVD：</b>气体在表面反应成膜。深孔的顶部气体最充足，底部气体被消耗、扩散又慢，所以「上厚下薄」；深宽比越大差距越明显。
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>四种方法，四种脾气</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">热氧化 · 硅自己长出来</h3>
+        <p class="caption" style="margin:0">高温炉管里通氧或水蒸气，硅表面变成二氧化硅。它「吃掉」一部分硅，所以界面质量特别好。干氧慢而致密，湿氧快而厚。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">CVD · 气体在表面反应</h3>
+        <p class="caption" style="margin:0">用途最广：氧化硅、氮化硅、多晶硅、钨。LPCVD 靠高温，膜质好；PECVD 靠等离子体，温度低，适合已有金属的晶圆。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">PVD · 把原子撞下来</h3>
+        <p class="caption" style="margin:0">氩离子轰击靶材，溅出的原子飞到晶圆上。适合金属，但方向性强，深孔侧壁和底部很难盖住，开口还容易「封口」留空洞。</p>
+      </div>
+      <div class="card">
+        <h3 style="margin:0 0 6px;font-size:16px">ALD · 一次一层原子</h3>
+        <p class="caption" style="margin:0">两种气体轮流通入，每轮只长一层原子，铺满自停。覆盖最完美，连深孔底部都一样厚——代价是慢，所以只用在极薄、极关键的地方（如栅极绝缘层）。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>薄膜要看什么</h2>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>指标</th><th>在问什么</th><th>不达标会怎样</th></tr></thead>
+        <tbody>
+          <tr><td>膜厚</td><td>厚度对不对</td><td>电学特性偏移、后续刻蚀时间算错</td></tr>
+          <tr><td>均匀度</td><td>一片上不同位置、片与片之间是否一致</td><td>同一片晶圆不同区域表现不同</td></tr>
+          <tr><td>台阶覆盖率</td><td>顶部、侧壁、底部厚度是否一致</td><td>深孔底部太薄 → 漏电、断线</td></tr>
+          <tr><td>应力</td><td>薄膜内部的拉扯有多大</td><td>晶圆翘曲、薄膜剥落</td></tr>
+          <tr><td>微粒</td><td>沉积过程带进颗粒没有</td><td>局部缺陷、图形缺损</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note cyan"><b>反直觉的一点：</b>填窄沟时，覆盖「越均匀」反而越糟——两侧同时长厚，开口会先被封住，里面留下空洞。所以填沟工艺常常要刻意做成「从底部往上长」。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head">本章重点</h2>
+    <ol style="color:var(--dim);font-size:15px;line-height:2;padding-left:22px;margin:0">
+      <li>芯片是多层薄膜叠出来的：绝缘、导电、辅助工艺各有分工。</li>
+      <li>热氧化靠硅自身反应，界面质量最好，但需要高温。</li>
+      <li>CVD 用途最广；PECVD 低温，适合金属之后的步骤。</li>
+      <li>PVD 适合金属，但台阶覆盖差；ALD 覆盖最好但最慢。</li>
+      <li>台阶覆盖率、均匀度、应力、微粒，是薄膜的四个关键指标。</li>
+    </ol>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="04-lithography.html">← 04 光刻</a>
+    <a class="next" href="06-etching.html">06 刻蚀 →</a>
+  </nav>
+
+  <footer>
+    <p>内容改编自 <a href="https://github.com/chenwei810/Semiconductor_Manufacturing_Introduction">Semiconductor_Manufacturing_Introduction</a>（CC BY-NC-SA 4.0）。图为本项目手绘 SVG。</p>
+    <p>源码：<a href="https://github.com/atbeta/semiconductor-visual-guide">atbeta/semiconductor-visual-guide</a> · 推 main 自动部署到 Vercel。</p>
+  </footer>
+</main>
+
+<style>
+  .lbl{font-size:12px;fill:var(--dim);font-family:inherit}
+  .filmSet rect,.filmSet path{transition:opacity .2s}
+</style>
+
+<script>
+const $ = (s) => document.querySelector(s);
+
+const M = {
+  thermal: { name:'热氧化 · Thermal Oxidation', top:100, side:92, bottom:90,
+    note:'<b>热氧化：</b>氧扩散到硅表面反应，氧化层「吃掉」一部分硅，所以界面在原始表面之下。氧化过程受扩散限制，侧壁和底部会略薄，但整体很均匀。' },
+  cvd: { name:'CVD · 化学气相沉积', top:100, side:70, bottom:50,
+    note:'<b>CVD：</b>气体在表面反应成膜。深孔的顶部气体最充足，底部气体被消耗、扩散又慢，所以「上厚下薄」；深宽比越大差距越明显。' },
+  pvd: { name:'PVD · 物理气相沉积（溅射）', top:100, side:20, bottom:6,
+    note:'<b>PVD：</b>原子从靶材直线飞来，方向性强。顶部厚、侧壁薄、底部几乎没有，开口还会「悬垂」——所以填深孔时容易在中间留下空洞。' },
+  ald: { name:'ALD · 原子层沉积', top:100, side:100, bottom:100,
+    note:'<b>ALD：</b>每轮只长一层原子，铺满自停，气体能进到最深处。所以顶部、侧壁、底部厚度完全一致——代价是慢，通常只做几纳米。' }
+};
+
+function pick(m) {
+  const d = M[m];
+  document.querySelectorAll('.filmSet').forEach(g => g.setAttribute('opacity', g.id === 'l-' + m ? 1 : 0));
+  document.querySelectorAll('#methods button').forEach(b => b.setAttribute('aria-pressed', b.dataset.m === m));
+  $('#mName').textContent = d.name;
+  $('#covTop').textContent = d.top + '%';
+  $('#covSide').textContent = d.side + '%';
+  $('#covBottom').textContent = d.bottom + '%';
+  $('#mNote').innerHTML = d.note;
+}
+
+document.querySelectorAll('#methods button').forEach(b => b.onclick = () => pick(b.dataset.m));
+const q = new URLSearchParams(location.search);
+pick(q.get('m') && M[q.get('m')] ? q.get('m') : 'cvd');
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>
