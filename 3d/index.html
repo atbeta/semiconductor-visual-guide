@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D 图库 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/></svg>">
+<meta name="color-scheme" content="dark light">
+<style>
+  .gal{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+  @media(max-width:860px){.gal{grid-template-columns:1fr}}
+  .gi{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;text-decoration:none;color:inherit;transition:.15s}
+  .gi:hover{border-color:var(--amber);transform:translateY(-2px)}
+  .gi img{width:100%;height:150px;object-fit:contain;background:var(--card2);display:block}
+  .gi .body{padding:12px 14px 14px}
+  .gi .ch{font-size:11px;color:var(--amber);letter-spacing:.08em}
+  .gi b{display:block;font-size:15px;margin:4px 0 6px}
+  .gi p{margin:0;font-size:12.5px;color:var(--dim);line-height:1.55}
+</style>
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">3D</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <a href="viewer.html">交互模型</a>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">3D 图库 · 12 张</div>
+    <h1>用 Blender 渲染的那批图</h1>
+    <p class="lede">全部由 <code>3d/</code> 下的脚本生成：正交相机、三点光、透明背景，配色与站点一致。点任意一张跳到对应章节；想看能转的版本，去「交互模型」。</p>
+    <div class="badges">
+      <span class="badge on">12 张静态图</span>
+      <span class="badge">11 个 glTF 模型</span>
+      <span class="badge">可重渲</span>
+    </div>
+  </div>
+
+  <div class="gal">
+
+    <a class="gi" href="../chapters/01-how-a-fab-works.html">
+      <img src="../assets/3d/thumbs/fab-section.webp" alt="厂房剖面">
+      <div class="body"><span class="ch">CH 01 · 晶圆厂</span><b>厂房剖面</b>
+      <p>半透明天花板下的送风口、天车与 FOUP、地板下的管线，三层关系一次看清。</p></div>
+    </a>
+
+    <a class="gi" href="../chapters/02-transistor.html">
+      <img src="../assets/3d/thumbs/mosfet.webp" alt="MOSFET 透视">
+      <div class="body"><span class="ch">CH 02 · 晶体管</span><b>MOSFET 透视</b>
+      <p>栅极半透明，露出它底下那条薄薄的沟道——栅极正是隔着氧化层控制它。</p></div>
+    </a>
+
+    <a class="gi" href="../chapters/04-lithography.html">
+      <img src="../assets/3d/thumbs/litho-column.webp" alt="光刻光路">
+      <div class="body"><span class="ch">CH 04 · 光刻</span><b>光刻机光路</b>
+      <p>光源、照明镜组、掩模版、投影物镜、晶圆，一根竖直的光路柱。</p></div>
+    </a>
+
+    <a class="gi" href="../chapters/06-etching.html">
+      <img src="../assets/3d/thumbs/etch-chamber.webp" alt="刻蚀腔">
+      <div class="body"><span class="ch">CH 06 · 刻蚀</span><b>等离子刻蚀腔</b>
+      <p>透明腔壁里，气体从顶部喷下、等离子体在中间发光、晶圆躺在下电极上。</p></div>
+    </a>
+
+    <a class="gi" href="../chapters/08-cmp.html">
+      <img src="../assets/3d/thumbs/cmp-platen.webp" alt="CMP 抛光台">
+      <div class="body"><span class="ch">CH 08 · CMP</span><b>CMP 抛光台</b>
+      <p>承片头半透明，看见晶圆正面朝下压在旋转的抛光垫上；旁边是修整器。</p></div>
+    </a>
+
+    <a class="gi" href="../chapters/11-cmos-process-flow.html">
+      <img src="../assets/3d/thumbs/feol-stack.webp" alt="FEOL 立体剖面">
+      <div class="body"><span class="ch">CH 11 · 工艺整合</span><b>FEOL 立体剖面</b>
+      <p>源漏嵌在阱里、栅极压在沟道上、STI 插在器件之间——三个方位关系。</p></div>
+    </a>
+
+    <a class="gi" href="../chapters/12-advanced-transistors.html">
+      <img src="../assets/3d/thumbs/transistors.webp" alt="三代晶体管">
+      <div class="body"><span class="ch">CH 12 · 先进结构</span><b>平面 / FinFET / GAA</b>
+      <p>栅极包住 1 面、3 面、4 面的差别，摆在同一个视角下比。</p></div>
+    </a>
+
+    <a class="gi" href="../chapters/13-memory.html">
+      <img src="../assets/3d/thumbs/dram-cell.webp" alt="DRAM 单元">
+      <div class="body"><span class="ch">CH 13 · 存储器</span><b>DRAM 1T1C</b>
+      <p>电容剖开一半，露出杯里的内电极；下面是埋入式字线与晶体管。</p></div>
+    </a>
+
+    <a class="gi" href="../chapters/19-wafer-test.html">
+      <img src="../assets/3d/thumbs/cp-test.webp" alt="CP 探针测试">
+      <div class="body"><span class="ch">CH 19 · 晶圆测试</span><b>CP 探针测试</b>
+      <p>探针卡半透明，几十根针压在晶圆的裸片阵列上。</p></div>
+    </a>
+
+    <a class="gi" href="../chapters/20-packaging.html">
+      <img src="../assets/3d/thumbs/packaging.webp" alt="打线 vs 覆晶">
+      <div class="body"><span class="ch">CH 20 · 封装</span><b>打线 vs 覆晶</b>
+      <p>金线从边缘打弧出去，对比凸块铺满整个底面。</p></div>
+    </a>
+
+    <a class="gi" href="../chapters/21-advanced-packaging.html">
+      <img src="../assets/3d/thumbs/advpack.webp" alt="2.5D 封装">
+      <div class="body"><span class="ch">CH 21 · 先进封装</span><b>2.5D 封装</b>
+      <p>半透明中介层里的 TSV、逻辑 die 与三组 HBM 堆叠。</p></div>
+    </a>
+
+    <a class="gi" href="../chapters/23-fab-systems.html">
+      <img src="../assets/3d/thumbs/fab-route.webp" alt="工厂流转">
+      <div class="body"><span class="ch">CH 23 · 工厂系统</span><b>工厂流转路径</b>
+      <p>地面那条发光的折线是系统算出来的路线，不是画上去的装饰。</p></div>
+    </a>
+
+  </div>
+
+  <section style="margin-top:34px">
+    <h2 class="sec-head">怎么重新生成</h2>
+    <p class="sub">每张图一个脚本，共用 <code>3d/kit.py</code>。Blender 要用 app 里的二进制，homebrew 那个软链接在本机是坏的。</p>
+    <pre style="background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow-x:auto;font-size:12.5px;line-height:1.7"><code>/Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup \
+  --python 3d/fig_transistors.py -- assets/3d/transistors.png assets/3d/transistors.glb</code></pre>
+    <p class="note cyan"><b>一个必须记住的坑：</b>Blender 默认走 AgX 色调映射，颜色会偏。必须在脚本里设 <code>view_settings.view_transform = "Standard"</code>，否则渲出来的颜色和调色板对不上。</p>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="../index.html">← 回目录</a>
+    <a class="next" href="viewer.html">交互模型 →</a>
+  </nav>
+
+  <footer>
+    <p>模型与渲染脚本：本项目 <code>3d/</code> 目录。图由 Blender 生成，网页端由 three.js 渲染。</p>
+  </footer>
+</main>
+
+<script>
+document.getElementById('themeBtn').onclick = () => {
+  const cur = document.documentElement.dataset.theme;
+  const next = cur === 'light' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('smi-theme', next); } catch (e) {}
+};
+</script>
+</body>
+</html>
