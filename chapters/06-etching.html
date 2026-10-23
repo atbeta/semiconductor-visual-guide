@@ -170,6 +170,17 @@
     </div>
     <p class="note red"><b>刻蚀做坏了不能重来：</b>材料已经被挖掉，不像光刻还能 Rework。所以刻蚀的参数管控和终点判断，比光刻更依赖设备与实时监测。</p>
   </section>
+<section>
+    <h2 class="sec-head"><span class="num">05</span>3D 剖面：腔体里发生了什么</h2>
+    <p class="sub">刻蚀不是「把晶圆泡进药水」，而是在一个真空腔里：气体从顶部喷下来，被射频打成等离子体，才去啃晶圆表面。腔壁做成透明，才看得见这三件事的相对位置。</p>
+    <figure style="margin:0">
+      <img src="../assets/3d/etch-chamber.png" alt="等离子刻蚀腔的 3D 剖面" style="width:100%;height:auto;display:block;border-radius:12px;background:var(--card2)">
+      <figcaption style="margin-top:10px;font-size:13px;color:var(--dim)">
+        顶部圆盘是喷淋头（气体从这里下来）；中间发紫光的是等离子体；下面深色圆盘是下电极，上面那片浅色圆片就是晶圆；右下角的管子是抽气口。
+      </figcaption>
+    </figure>
+    <p class="note cyan"><b>为什么腔壁要透明：</b>真实腔体是不锈钢的，什么都看不见。做成玻璃只是为了讲清楚「气体在上、等离子在中、晶圆在下」这个上下顺序——而这正是刻蚀均匀性最难控制的地方。</p>
+  </section>
 <!-- enriched:start -->
 <section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>各向同性与各向异性（Isotropic / Anisotropic）</span></h4><dl><dt>定义</dt><dd>各向同性刻蚀往各方向的速度相同；各向异性刻蚀主要往单一方向（通常是往下）进行。</dd><dt>现场用法</dt><dd>「这道要各向异性，侧壁要直。」</dd><dt>相关名词</dt><dd>干法刻蚀、湿法刻蚀、侧蚀、轮廓</dd><dt>常见混淆</dt><dd class="q">干法刻蚀不一定都是各向异性。有些干法刻蚀会刻意调成各向同性，用来从侧面去除材料，结果取决于工艺条件。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>选择比（Selectivity）</span></h4><dl><dt>定义</dt><dd>目标材料的刻蚀速度，和其他材料刻蚀速度的比值。选择比越高，越能只挖想挖的材料。</dd><dt>现场用法</dt><dd>「这道对氮化硅的选择比不够，停止层被吃穿了。」</dd><dt>相关名词</dt><dd>刻蚀停止层、过度刻蚀、光刻胶消耗</dd><dt>常见混淆</dt><dd class="q">讲选择比时一定要说清楚是「对什么材料」。对光刻胶的选择比和对下层材料的选择比，是两个不同的数字。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>清洁完的腔体要先「养」一下</span></h4><dl><dt>情境</dt><dd>刻蚀腔体刚做完保养，内壁被清洁得干干净净。</dd><dt>做法</dt><dd>先跑一些挡片，让腔体内壁盖上一层稳定的沉积物，再开始跑产品。这个步骤现场叫 <b>Seasoning</b>。</dd><dt>为什么</dt><dd>等离子体会和腔体内壁互相作用。内壁的状态不同，等离子体的成分就不同，刻蚀速率也会跟着变。</dd><dt>没做会怎样</dt><dd class="q">保养后的前几批晶圆刻蚀结果偏移，可能造成线宽或深度异常。</dd><dt>相关章节</dt><dd><a href="01-how-a-fab-works.html">第 1 章 晶圆厂如何运行</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>同一台设备，不同腔体也要比对</span></h4><dl><dt>情境</dt><dd>一台刻蚀机通常有好几个腔体，同一批晶圆会分散到不同腔体处理。</dd><dt>做法</dt><dd>工程师会定期比对各腔体的结果，让它们尽量一致，系统也会记录每片晶圆是在哪个腔体做的。</dd><dt>为什么</dt><dd>腔体之间的微小差异，会让晶圆之间出现系统性的差异。</dd><dt>没做会怎样</dt><dd class="q">同一批晶圆中有几片表现特别差，却查不出原因。有腔体记录，才能找出「问题都出在同一个腔体」。</dd><dt>相关章节</dt><dd><a href="16-yield-analysis.html">第 16 章 良率与失效分析</a></dd></dl></div></div></section>
 <section><h2 class="sec-head"><span class="num">＋</span>常见异常</h2><div style="overflow-x:auto"><table><thead><tr><th>异常</th><th>可能原因</th><th>结果</th></tr></thead><tbody><tr><td>刻蚀不足</td><td>时间或功率不足、终点判断错误</td><td>残留材料，造成断路</td></tr><tr><td>过度刻蚀</td><td>选择比不足、时间太长</td><td>伤到下层材料</td></tr><tr><td>CD 偏移</td><td>侧壁轮廓改变、光刻胶消耗太多</td><td>线宽不合格</td></tr><tr><td>微粒</td><td>腔体内壁的沉积物剥落</td><td>缺陷、短路</td></tr><tr><td>负载效应</td><td>图形密的地方和疏的地方刻蚀速度不同</td><td>同一颗裸片内深度不一致</td></tr></tbody></table></div></section>

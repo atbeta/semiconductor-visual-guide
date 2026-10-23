@@ -47,6 +47,7 @@
         <button class="mbtn" data-m="route" aria-pressed="false">工厂流转</button>
         <button class="mbtn" data-m="mosfet" aria-pressed="false">MOSFET</button>
         <button class="mbtn" data-m="litho" aria-pressed="false">光刻光路</button>
+        <button class="mbtn" data-m="etch" aria-pressed="false">刻蚀腔</button>
       </div>
       <div class="viewbar">
         <button id="bFront" aria-pressed="false">正视图</button>
@@ -126,7 +127,8 @@ const MODELS = {
   feol:        { file: '../assets/3d/feol-stack.glb',  title: 'FEOL 立体剖面' },
   route:       { file: '../assets/3d/fab-route.glb',   title: '工厂流转路径' },
   mosfet:      { file: '../assets/3d/mosfet.glb',      title: 'MOSFET 透视' },
-  litho:       { file: '../assets/3d/litho-column.glb', title: '光刻光路' }
+  litho:       { file: '../assets/3d/litho-column.glb', title: '光刻光路' },
+  etch:        { file: '../assets/3d/etch-chamber.glb', title: '刻蚀腔' }
 };
 const loader = new GLTFLoader();
 
