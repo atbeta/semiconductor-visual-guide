@@ -154,6 +154,17 @@
     </div>
   </section>
 <section>
+    <h2 class="sec-head"><span class="num">04</span>3D 剖面：切开一栋厂房</h2>
+    <p class="sub">把厂房从中间切开：上面是半透明的天花板，挂着一格一格的送风口；中间是设备和天车；地板下面是回风空间与管线。三层的相对位置，平面图画不出来。</p>
+    <figure style="margin:0">
+      <img src="../assets/3d/fab-section.png" alt="晶圆厂剖面：送风层、洁净室、地板下管线" style="width:100%;height:auto;display:block;border-radius:12px;background:var(--card2)">
+      <figcaption style="margin-top:10px;font-size:13px;color:var(--dim)">
+        天花板上一格一格的是送风口（FFU）；轨道上挂着的小盒子是装着 25 片晶圆的 FOUP，正被天车吊着送进设备的装载口；地板下方是回风通道、管线和泵。
+      </figcaption>
+    </figure>
+    <p class="note cyan"><b>可以转着看：</b><a href="../3d/viewer.html?m=fab">打开 3D 交互版</a>——转到侧面，看天车轨道和地板的关系。</p>
+  </section>
+<section>
     <h2 class="sec-head"><span class="num">＋</span>谁在晶圆厂里工作</h2>
     <p class="sub">晶圆厂 24 小时全年无休，技术员与部分工程师要轮班。常见职务大致是这样分工的：</p>
     <div style="overflow-x:auto">
@@ -172,11 +183,11 @@
       </table>
     </div>
   </section>
+
 <!-- enriched:start -->
 <section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>洁净室（Cleanroom）</span></h4><dl><dt>定义</dt><dd>严格控制微粒、温度、湿度与气流的生产空间，正式名称是洁净室。</dd><dt>现场用法</dt><dd>「进洁净室前记得换无尘衣」「这区是 Class 1」。</dd><dt>相关名词</dt><dd>无尘衣、风淋室、迷你环境</dd><dt>常见混淆</dt><dd class="q">洁净室不是完全没有灰尘，而是依每单位体积的微粒数量分级。现场仍常用旧标准的「Class 1」「Class 10」来称呼等级，数字越小越干净。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>FOUP（Front Opening Unified Pod，前开式晶圆传送盒）</span></h4><dl><dt>定义</dt><dd>300 mm 晶圆厂用来装载、保护与搬运晶圆的密封盒，最多装 25 片。</dd><dt>现场用法</dt><dd>「那个 FOUP 还在 Stocker 里，要先叫下来。」</dd><dt>相关名词</dt><dd>Lot、OHT、Stocker、Load Port</dd><dt>常见混淆</dt><dd class="q">FOUP 是「盒子」，Lot 是「一批晶圆」。通常一个 Lot 装在一个 FOUP 里，但两者不是同一件事，晶圆也可能换盒。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>保养完的设备不能马上跑产品</span></h4><dl><dt>情境</dt><dd>设备完成保养，零件换新、腔体清洁过。</dd><dt>做法</dt><dd>先跑测试用的晶圆，检查微粒、膜厚、刻蚀速率等是否正常，确认合格后才开放生产。这个确认过程现场常叫「Qual」。</dd><dt>为什么</dt><dd>保养会改变设备内部的状态，新零件和刚清洁过的腔体不一定马上稳定。</dd><dt>没做会怎样</dt><dd class="q">如果设备其实有问题，第一批跑进去的产品晶圆可能整批报废。</dd><dt>相关章节</dt><dd><a href="06-etching.html">第 6 章 刻蚀</a>、<a href="15-metrology.html">第 15 章 测量与检测</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>急件越多，工厂越慢</span></h4><dl><dt>情境</dt><dd>有些晶圆被设定为急件（Hot Lot），在每一站都可以优先使用设备。</dd><dt>做法</dt><dd>工厂会严格限制急件的数量。</dd><dt>为什么</dt><dd>每一批急件插队，其他晶圆就得多等一下；批式设备还可能为了急件不等凑满就开机，降低效率。</dd><dt>没做会怎样</dt><dd class="q">如果每批都是急件，就等于没有急件，整座工厂的生产周期反而变长。</dd><dt>相关章节</dt><dd><a href="23-fab-systems.html">第 23 章 工厂如何被系统管理</a></dd></dl></div></div></section>
 <section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>Peter Van Zant，《Microchip Fabrication》，污染控制相关章节</li><li>Wallace J. Hopp、Mark L. Spearman，《Factory Physics》，生产周期与在制品的观念</li></ul></section>
 <!-- enriched:end -->
-
 
 
   <section>
