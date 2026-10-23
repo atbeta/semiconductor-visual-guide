@@ -59,7 +59,7 @@
         <button id="bPlay" aria-pressed="false">▶ 播放</button>
       </div>
       <canvas id="stage"></canvas>
-      <p class="hint">左键拖动旋转 · 滚轮缩放 · 右键平移。三个模型从左到右：平面、FinFET、GAA。</p>
+      <p class="hint">左键拖动旋转 · 滚轮缩放 · 右键平移。<b>厂房剖面、工厂流转、CP 测试、CMP、光刻光路</b>这五个模型带动画，点「▶ 播放」看；其余模型只能转。</p>
     </div>
   </section>
 
@@ -117,8 +117,92 @@ const rim = new THREE.DirectionalLight(0xffe8cc, 0.8); rim.position.set(-2, 5, -
 scene.add(new THREE.HemisphereLight(0xdfe9ff, 0x1b2230, 0.55));
 
 let model = null, spinning = false, playing = false;
-let movers = [];          // 天车 / 吊带 / FOUP：整组一起沿轨道滑
-let animT = 0;
+let animT = 0, anim = null;      // anim(t)：当前模型的动画函数
+const TQ = parseFloat(new URLSearchParams(location.search).get('t') || '0');
+const clock = new THREE.Clock();
+
+/* ---------- 动画小工具 ---------- */
+const ease = p => p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+const lerp = (a, b, u) => a + (b - a) * u;
+
+function collect(root, re) {
+  const out = [];
+  root.traverse(o => { if (re.test(o.name)) out.push(o); });
+  return out;
+}
+
+/* ---------- 每个模型的动画：返回 anim(t) 或 null ---------- */
+const ANIMS = {
+  // 厂房剖面 / 工厂流转：天车带着 FOUP 在两站之间往返，端点停顿
+  convoy(root) {
+    const g = collect(root, /^(oht|hoist|foup|wafer)/i);
+    if (!g.length) return null;
+    const base = g.map(o => o.position.x);
+    const A = -2.6, B = 2.6, T = 7;      // 一趟 7 秒：走 3 秒、停 0.5 秒
+    return t => {
+      const c = t % T, half = T / 2;
+      let u;
+      if (c < 0.5) u = 0;
+      else if (c < half - 0.5) u = ease((c - 0.5) / (half - 1));
+      else if (c < half) u = 1;
+      else if (c < T - 0.5) u = 1 - ease((c - half) / (half - 1));
+      else u = 0;
+      const d = lerp(A, B, u);
+      g.forEach((o, i) => { o.position.x = base[i] + d * 0.35; });
+    };
+  },
+
+  // CMP：抛光盘与承片头以不同转速转
+  spin(root) {
+    const platen = collect(root, /^(platen|pad)/i);
+    const head = collect(root, /^(head|shaft|wafer)/i);
+    const cond = collect(root, /^(arm|cond)/i);      // 修整器，横向摆动才看得见
+    if (!platen.length && !head.length && !cond.length) return null;
+    const p0 = platen.map(o => o.rotation.y), h0 = head.map(o => o.rotation.y);
+    const c0 = cond.map(o => o.position.x);
+    return t => {
+      platen.forEach((o, i) => { o.rotation.y = p0[i] + t * 0.9; });
+      head.forEach((o, i) => { o.rotation.y = h0[i] + t * 0.55; });
+      cond.forEach((o, i) => { o.position.x = c0[i] + Math.sin(t * 0.7) * 0.55; });
+    };
+  },
+
+  // 光刻：一束光脉冲沿光路往下走到晶圆，循环
+  pulse(root) {
+    const beam = collect(root, /^beam$/i)[0];
+    if (!beam) return null;
+    const mat = new THREE.MeshBasicMaterial({ color: 0xffd27a, transparent: true, opacity: 0.75 });
+    const disc = new THREE.Mesh(new THREE.CircleGeometry(0.38, 40), mat);
+    disc.rotation.x = -Math.PI / 2;
+    disc.position.set(0, 2.9, 0);
+    root.add(disc);
+    return t => {
+      const p = (t % 2.4) / 2.4;
+      disc.position.y = lerp(2.95, 0.42, p);
+      mat.opacity = 0.75 * (1 - Math.pow(p, 6));
+      beam.material.opacity = 0.12 + 0.10 * Math.sin(t * 3);
+    };
+  },
+
+  // CP：探针卡下压—抬起，模拟逐颗测试
+  probe(root) {
+    const head = collect(root, /^(pcb|ring|probe|head)/i);
+    if (!head.length) return null;
+    const y0 = head.map(o => o.position.y);
+    return t => {
+      const p = (t % 2.0) / 2.0;
+      const d = p < 0.55 ? -0.35 * ease(p / 0.55) : -0.35 * (1 - ease((p - 0.55) / 0.45));
+      head.forEach((o, i) => { o.position.y = y0[i] + d; });
+    };
+  }
+};
+
+const ANIM_FOR = { fab: 'convoy', route: 'convoy', cmp: 'spin', litho: 'pulse', cptest: 'probe' };
+
+function buildAnim(key, root) {
+  const fn = ANIM_FOR[key];
+  return fn && ANIMS[fn] ? ANIMS[fn](root) : null;
+}
 
 const MODELS = {
   transistors: { file: '../assets/3d/transistors.glb', title: '平面 / FinFET / GAA' },
@@ -148,10 +232,16 @@ function loadModel(key) {
     }
   });
   scene.add(model);
-  movers = [];
-  model.traverse(o => {
-    if (/^(oht|hoist|foup|wafer)/i.test(o.name)) movers.push({ o, x0: o.position.x });
-  });
+  anim = buildAnim(key, model);
+  animT = TQ;
+  if (TQ && anim) anim(TQ);
+  if (location.search.includes('debug')) {
+    console.log('ANIM?', !!anim, 'platen', collect(model, /^(platen|pad)/i).length,
+                'head', collect(model, /^(head|shaft|wafer)/i).length,
+                'cond', collect(model, /^(arm|cond)/i).length);
+  }
+  const hasAnim = !!anim;
+  document.getElementById('bPlay').style.opacity = hasAnim ? '1' : '.4';
   controls.enableDamping = false;
   resize();          // 先让 buffer / viewport 跟上画布尺寸
   frame();
@@ -253,11 +343,11 @@ document.getElementById('bSpin').onclick = (e) => {
 
 function tick() {
   requestAnimationFrame(tick);
+  const dt = Math.min(clock.getDelta(), 0.05);
   if (spinning && model) model.rotation.y += 0.005;
-  if (playing && movers.length) {
-    animT += 1 / 60;
-    const dx = Math.sin(animT * 0.9) * 1.6;
-    movers.forEach(m => { m.o.position.x = m.x0 + dx; });
+  if (playing && anim) {
+    animT += dt;
+    anim(animT);
   }
   controls.update();
   renderer.render(scene, camera);
@@ -267,15 +357,6 @@ document.getElementById('bPlay').onclick = (e) => {
   playing = !playing;
   e.currentTarget.setAttribute('aria-pressed', playing);
 };
-
-// 供截图/调试：?t=秒 直接定到某一帧
-const tq = parseFloat(new URLSearchParams(location.search).get('t') || '0');
-if (tq) {
-  animT = tq;
-  const dx = Math.sin(animT * 0.9) * 1.6;
-  const apply = () => movers.forEach(m => { m.o.position.x = m.x0 + dx; });
-  const iv = setInterval(() => { if (movers.length) { apply(); clearInterval(iv); } }, 120);
-}
 
 resize();
 tick();
