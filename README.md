@@ -74,6 +74,21 @@ smi-viz/
 - **深链**：`?theme=light`、`?step=4`（光刻）、`?v=2.4&mode=pmos`（晶体管）、`?s=gaa`、`?z=2&burn=1`（可靠性）、`?d=200`（晶棒直径）、`?len=0.7`（长晶进度），方便截图和分享某个状态。
 - **零依赖**：没有构建、没有框架。一个 `<script>`，几张 SVG。
 
+## 3D 图（实验）
+
+部分图开始用 Blender 建模 + 正交相机渲染，替代纯手绘 SVG：
+
+```bash
+# 渲染第 12 章的三代晶体管（同时导出 glb 给网页用）
+/Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup \
+  --python 3d/fig_transistors.py -- assets/3d/transistors.png assets/3d/transistors.glb
+```
+
+- `3d/kit.py`：材质（sRGB→线性）、基本体、正交相机、三点光、渲染设置
+- `3d/viewer.html`：three.js 正交相机实时渲染，可旋转/切视角（three.js 已 vendor 到 `assets/vendor/`）
+- **坑**：Blender 5.x 默认走 AgX 色调映射，颜色会偏；必须设 `view_settings.view_transform = "Standard"`，
+  否则渲染结果和调色板对不上（用一块纯色标定过：Standard 下 #f59e0b 输出正好是 245,158,10）。
+
 ## 内容覆盖
 
 页面不是原书的翻译，而是「可视化改写版」。为了不让它比原书少太多，`scripts/enrich_from_source.py`
