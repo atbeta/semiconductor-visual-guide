@@ -233,3 +233,16 @@ footer a{color:var(--dim)}
 .cc dt{color:var(--dim);white-space:nowrap}
 .cc dd{margin:0;color:var(--fg)}
 .cc dd.q{color:var(--dim)}
+
+/* ---- 附录页（量检测图鉴） ---- */
+.fig{margin:20px 0}
+.fig img{width:100%;height:auto;max-height:540px;object-fit:contain;display:block;border-radius:var(--radius);background:transparent}
+.fig figcaption{font-size:13.5px;color:var(--dim);margin-top:10px;line-height:1.6}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0 0}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+.grid2 .card + .card{margin-top:0}
+.muted{font-size:13.5px;color:var(--dim);line-height:1.7}
+.tight{margin:8px 0 0;padding-left:18px;font-size:14px;line-height:1.8;color:var(--dim)}
+.tight b{color:var(--fg)}
+.diagram{width:100%;height:auto;display:block;margin:10px 0}
+.diagram.wide{margin:18px 0}

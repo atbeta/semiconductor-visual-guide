@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>量检测图鉴 · 明场 / 暗场 / 套刻 / 沉积 / 颗粒 — 半导体制造可视化</title>
+<link rel="stylesheet" href="assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='13' fill='%23ffc247'/><circle cx='16' cy='16' r='13' fill='none' stroke='%23b8730a' stroke-width='2.5'/><path d='M7 20h18M7 12h18' stroke='%23b8730a' stroke-width='2' opacity='.55'/></svg>">
+<meta name="color-scheme" content="dark light">
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">附录 · 量检测</span>
+    <nav>
+      <a href="index.html">目录</a>
+      <a href="metrology.html" aria-current="page">量检测</a>
+      <a href="3d/index.html">3D 图库</a>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">Appendix · Metrology &amp; Inspection</div>
+    <h1>量检测图鉴</h1>
+    <p class="lede">明场、暗场、套刻、沉积、颗粒——这几样是产线上每天都要打交道的东西。这一页把它们的「原理长什么样」和「数据怎么读」放在一起，当成一份可以随时翻的笔记。</p>
+    <div class="badges">
+      <span class="badge on">套刻</span>
+      <span class="badge">明场 / 暗场</span>
+      <span class="badge">PVD / CVD</span>
+      <span class="badge">颗粒</span>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>套刻：两层对没对上</h2>
+    <p>套刻（overlay）量的<strong>不是这一层做多宽</strong>，而是<strong>这一层相对上一层偏了多少</strong>。工艺上每加一层都要对准前一层，对不准，后面的通孔就接不上。</p>
+    <figure class="fig">
+      <img src="assets/3d/overlay.png" alt="套刻标记：外框是前一层，内框是这一层，两者错开" loading="lazy">
+      <figcaption>外框（琥珀）是前一层做的，内框（青）是这一层做的。内框整体向右上偏了一点，这个偏移就是 overlay。</figcaption>
+    </figure>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>读数怎么来的</h3>
+        <svg viewBox="0 0 320 260" class="diagram" role="img" aria-label="套刻标记俯视图与 X、Y 偏移">
+          <rect x="40" y="30" width="240" height="200" fill="none" stroke="var(--metal)" stroke-width="14" opacity=".55"/>
+          <rect x="105" y="90" width="120" height="90" fill="none" stroke="var(--on-sub)" stroke-width="10"/>
+          <line x1="160" y1="135" x2="200" y2="135" stroke="#f59e0b" stroke-width="3" marker-end="url(#ar)"/>
+          <line x1="160" y1="135" x2="160" y2="105" stroke="#22d3ee" stroke-width="3" marker-end="url(#ar2)"/>
+          <text x="204" y="132" fill="#f59e0b" font-size="15">ΔX</text>
+          <text x="166" y="102" fill="#22d3ee" font-size="15">ΔY</text>
+          <defs>
+            <marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#f59e0b"/></marker>
+            <marker id="ar2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8z" fill="#22d3ee"/></marker>
+          </defs>
+        </svg>
+        <p class="muted">量测机台读的是两个方向的偏差：ΔX 和 ΔY，单位通常是纳米。有的机台还会给出残差（residual）和放大率误差。</p>
+      </div>
+      <div class="card">
+        <h3>什么样的数算好</h3>
+        <ul class="tight">
+          <li><b>先进节点</b>：overlay 预算常在 2–4 nm 量级，约等于线宽的一小部分</li>
+          <li><b>成熟节点</b>：可以放宽到十几 nm</li>
+          <li>判断标准是<b>相对设计规则</b>，不是绝对数——同一个 3 nm，对 7 nm 节点可能已经超规</li>
+          <li>看数时先确认：这是<b>单点</b>还是<b>整片统计</b>（均值 / 最大值 / 3σ）</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="note amber"><b>容易混的两件事：</b>CD 量的是「这一层做多宽」，overlay 量的是「这一层对没对上」。前者是尺寸误差，后者是位置误差——修法完全不同：CD 偏了调曝光剂量，overlay 偏了调对准。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">02</span>沉积：材料怎么落到晶圆上</h2>
+    <p>PVD 和 CVD 的差别，在<strong>平坦表面上几乎看不出来</strong>，一到台阶和沟槽就原形毕露。</p>
+    <figure class="fig">
+      <img src="assets/3d/deposition.png" alt="PVD 与 CVD 腔体对比：左侧沟槽侧壁几乎无膜，右侧完整覆盖" loading="lazy">
+      <figcaption>左：PVD，靶材在上方，原子直线飞下来，沟槽侧壁几乎盖不到。右：CVD，气体从喷淋头下来，在表面反应成膜，连槽壁和槽底都长上了。</figcaption>
+    </figure>
+    <div class="grid2">
+      <div class="card">
+        <h3>PVD（溅射）</h3>
+        <ul class="tight">
+          <li>靶材被离子轰击，原子<b>飞</b>到晶圆上</li>
+          <li>方向性强 → 台阶侧壁薄、底部更薄（阴影效应）</li>
+          <li>适合：金属层、阻挡层</li>
+          <li>改进手段：加热基片、加偏压、旋转台</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>CVD / ALD</h3>
+        <ul class="tight">
+          <li>气体在表面<b>反应生成</b>薄膜，不是「飞」过来的</li>
+          <li>保形性好 → 台阶、沟槽、通孔都能均匀覆盖</li>
+          <li>ALD 一层一层长，最均匀但最慢</li>
+          <li>适合：介质层、阻挡层、高 k 栅氧</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note cyan"><b>看图的诀窍：</b>判断一种沉积工艺保形不保形，就看<b>侧壁厚度 ÷ 顶面厚度</b>这个比值。接近 1 是保形，远小于 1 就是方向性沉积。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">03</span>明场 vs 暗场：同一颗颗粒，两种看法</h2>
+    <p>同样是光学检测，照明的角度不同，看到的图像几乎相反。</p>
+    <div class="grid2">
+      <div class="card">
+        <h3>明场（Brightfield）</h3>
+        <svg viewBox="0 0 300 200" class="diagram" role="img" aria-label="明场：亮背景上的暗点">
+          <rect x="0" y="0" width="300" height="200" fill="#dfe7f2"/>
+          <circle cx="150" cy="100" r="16" fill="#3b4657"/>
+          <text x="150" y="176" text-anchor="middle" fill="#3b4657" font-size="14">亮背景 · 缺陷是暗点</text>
+        </svg>
+        <p class="muted">照明与成像同轴。平整处把光原样反射回来 → 背景亮；颗粒把光散射走 → 局部变暗。</p>
+      </div>
+      <div class="card">
+        <h3>暗场（Darkfield）</h3>
+        <svg viewBox="0 0 300 200" class="diagram" role="img" aria-label="暗场：暗背景上的亮点">
+          <rect x="0" y="0" width="300" height="200" fill="#0d1420"/>
+          <circle cx="150" cy="100" r="10" fill="#eaf3ff"/>
+          <circle cx="150" cy="100" r="26" fill="none" stroke="#5b7ea8" stroke-width="1.5" opacity=".7"/>
+          <text x="150" y="176" text-anchor="middle" fill="#9db4d0" font-size="14">暗背景 · 颗粒是亮点</text>
+        </svg>
+        <p class="muted">照明是斜的，平整处的反射光进不了物镜 → 背景暗；只有颗粒把光散射进物镜 → 亮点。</p>
+      </div>
+    </div>
+    <p class="note amber"><b>一句话记法：</b>明场看「少了什么」，暗场看「多了什么」。所以查残留、缺角用明场，查颗粒、微划伤用暗场。</p>
+    <figure class="fig">
+      <img src="assets/3d/inspection.png" alt="明场与暗场检测头的结构差异" loading="lazy">
+      <figcaption>设备上的差别：明场的照明从物镜内部同轴下去（头顶是一块照明模块）；暗场是两支斜臂，光从侧面斜射到晶圆。</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">04</span>颗粒检测：看得见，还要数得清</h2>
+    <p>暗场成像是「看得见颗粒」，颗粒检测（particle count）是「数得清、量得出多大」。</p>
+    <svg viewBox="0 0 720 260" class="diagram wide" role="img" aria-label="颗粒检测原理：激光斜射到晶圆，颗粒散射，探测器收集">
+      <rect x="60" y="180" width="600" height="26" fill="var(--metal)"/>
+      <text x="360" y="232" text-anchor="middle" fill="var(--muted)" font-size="14">晶圆表面</text>
+      <circle cx="420" cy="172" r="7" fill="#f87171"/>
+      <line x1="80" y1="60" x2="418" y2="170" stroke="#fbbf24" stroke-width="2.5"/>
+      <text x="96" y="52" fill="#fbbf24" font-size="14">激光</text>
+      <line x1="422" y1="170" x2="620" y2="70" stroke="#22d3ee" stroke-width="2.5" stroke-dasharray="6 4"/>
+      <text x="556" y="60" fill="#22d3ee" font-size="14">散射光</text>
+      <rect x="600" y="52" width="54" height="40" rx="6" fill="none" stroke="#22d3ee" stroke-width="2"/>
+      <text x="627" y="112" text-anchor="middle" fill="var(--muted)" font-size="13">探测器</text>
+      <line x1="80" y1="60" x2="360" y2="120" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3 6" opacity=".5"/>
+      <text x="360" y="140" text-anchor="middle" fill="var(--muted)" font-size="13">平坦处：反射光不进探测器</text>
+    </svg>
+    <div class="grid2">
+      <div class="card">
+        <h3>为什么能测尺寸</h3>
+        <ul class="tight">
+          <li>颗粒越大，散射光越强</li>
+          <li>用标准颗粒（已知尺寸的球）标定，就能把信号换算成尺寸</li>
+          <li>所以报的是<b>等效球径</b>，不是颗粒的真实形状</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>数据怎么读</h3>
+        <ul class="tight">
+          <li>通常输出<b>每片多少个 + 尺寸分布</b>，不是图像</li>
+          <li>关注<b>新增颗粒数</b>（与上一道工序比），而不是绝对总数</li>
+          <li>颗粒落在图形区还是边缘，影响完全不同</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note cyan"><b>和暗场的分工：</b>暗场负责「这一片有没有问题、大概在哪」，颗粒检测负责「有多少、多大、从哪道工序带进来的」。前者是找位置，后者是追来源。</p>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">05</span>把这几个数放在一起看</h2>
+    <div class="cards">
+      <div class="cc"><h4>CD</h4><p>这一层做多宽。偏了调曝光剂量。</p></div>
+      <div class="cc"><h4>Overlay</h4><p>这一层对没对上。偏了调对准。</p></div>
+      <div class="cc"><h4>膜厚</h4><p>这一层多厚。偏了调时间/流量。</p></div>
+      <div class="cc"><h4>缺陷密度</h4><p>这一片有多脏。高了追前道工序。</p></div>
+    </div>
+    <p class="muted">四个数各自独立，但会互相牵连：膜厚变了，CD 可能跟着变；overlay 超规，通孔电阻就会飘。产线上把它们放在同一张趋势图里看，才能判断是「某一台机台的问题」还是「整条线的漂移」。</p>
+  </section>
+
+  <p class="muted" style="margin:40px 0 60px">本页的 3D 图由 <code>fabkit</code> 生成；原理图用 SVG 手绘，便于随主题换色。</p>
+</main>
+
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  var b=document.getElementById('themeBtn');
+  b&&b.addEventListener('click',function(){
+    var r=document.documentElement, n=r.dataset.theme==='light'?'dark':'light';
+    r.dataset.theme=n; try{localStorage.setItem('smi-theme',n)}catch(e){}
+  });
+})();
+</script>
+</body>
+</html>
