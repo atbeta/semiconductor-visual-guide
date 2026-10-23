@@ -52,6 +52,7 @@
         <button id="bIso" aria-pressed="true">等距</button>
         <button id="bTop" aria-pressed="false">俯视</button>
         <button id="bSpin" aria-pressed="false">自动旋转</button>
+        <button id="bPlay" aria-pressed="false">▶ 播放</button>
       </div>
       <canvas id="stage"></canvas>
       <p class="hint">左键拖动旋转 · 滚轮缩放 · 右键平移。三个模型从左到右：平面、FinFET、GAA。</p>
@@ -111,7 +112,9 @@ const fill = new THREE.DirectionalLight(0xbfd4ff, 0.55); fill.position.set(-8, 4
 const rim = new THREE.DirectionalLight(0xffe8cc, 0.8); rim.position.set(-2, 5, -9); scene.add(rim);
 scene.add(new THREE.HemisphereLight(0xdfe9ff, 0x1b2230, 0.55));
 
-let model = null, spinning = false;
+let model = null, spinning = false, playing = false;
+let movers = [];          // 天车 / 吊带 / FOUP：整组一起沿轨道滑
+let animT = 0;
 
 const MODELS = {
   transistors: { file: '../assets/3d/transistors.glb', title: '平面 / FinFET / GAA' },
@@ -138,6 +141,10 @@ function loadModel(key) {
     }
   });
   scene.add(model);
+  movers = [];
+  model.traverse(o => {
+    if (/^(oht|hoist|foup|wafer)/i.test(o.name)) movers.push({ o, x0: o.position.x });
+  });
   controls.enableDamping = false;
   resize();          // 先让 buffer / viewport 跟上画布尺寸
   frame();
@@ -240,8 +247,27 @@ document.getElementById('bSpin').onclick = (e) => {
 function tick() {
   requestAnimationFrame(tick);
   if (spinning && model) model.rotation.y += 0.005;
+  if (playing && movers.length) {
+    animT += 1 / 60;
+    const dx = Math.sin(animT * 0.9) * 1.6;
+    movers.forEach(m => { m.o.position.x = m.x0 + dx; });
+  }
   controls.update();
   renderer.render(scene, camera);
+}
+
+document.getElementById('bPlay').onclick = (e) => {
+  playing = !playing;
+  e.currentTarget.setAttribute('aria-pressed', playing);
+};
+
+// 供截图/调试：?t=秒 直接定到某一帧
+const tq = parseFloat(new URLSearchParams(location.search).get('t') || '0');
+if (tq) {
+  animT = tq;
+  const dx = Math.sin(animT * 0.9) * 1.6;
+  const apply = () => movers.forEach(m => { m.o.position.x = m.x0 + dx; });
+  const iv = setInterval(() => { if (movers.length) { apply(); clearInterval(iv); } }, 120);
 }
 
 resize();
