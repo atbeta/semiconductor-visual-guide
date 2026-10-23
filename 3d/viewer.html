@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D 剖面 · 三代晶体管 — 半导体制造可视化</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script>try{var __q=new URLSearchParams(location.search);document.documentElement.dataset.theme=__q.get('theme')||localStorage.getItem('smi-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark')}catch(e){}</script>
+<meta name="color-scheme" content="dark light">
+<style>
+  #stage{width:100%;height:min(56vh,500px);display:block;touch-action:none;cursor:grab}
+  #stage:active{cursor:grabbing}
+  .viewbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .hint{font-size:12.5px;color:var(--faint);margin-top:10px}
+</style>
+</head>
+<body>
+
+<header class="sitebar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">半导体制造<span>·</span>可视化</a>
+    <span class="chapno">3D</span>
+    <nav>
+      <a href="../index.html">目录</a>
+      <a href="../chapters/12-advanced-transistors.html">第 12 章</a>
+      <button id="themeBtn" title="切换深浅色" aria-label="切换深浅色">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="chap-head">
+    <div class="kicker">交互模型 · 第 12 章配套</div>
+    <h1>三代结构，可以转着看</h1>
+    <p class="lede">Blender 建模、正交相机渲染的同一套模型，导出 glTF 后在浏览器里实时渲染。拖动旋转、滚轮缩放——看看栅极到底包住了沟道的几个面。</p>
+  </div>
+
+  <section>
+    <div class="card">
+      <div class="viewbar">
+        <button id="bFront" aria-pressed="false">正视图</button>
+        <button id="bIso" aria-pressed="true">等距</button>
+        <button id="bTop" aria-pressed="false">俯视</button>
+        <button id="bSpin" aria-pressed="false">自动旋转</button>
+      </div>
+      <canvas id="stage"></canvas>
+      <p class="hint">左键拖动旋转 · 滚轮缩放 · 右键平移。三个模型从左到右：平面、FinFET、GAA。</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec-head"><span class="num">01</span>看什么</h2>
+    <div class="grid3">
+      <div class="card"><b style="font-size:13px;color:var(--amber)">平面</b><p class="caption" style="margin:4px 0 0">栅极只在沟道上方，包住 <b>1 个面</b>。沟道横躺在硅表面。</p></div>
+      <div class="card"><b style="font-size:13px;color:var(--amber)">FinFET</b><p class="caption" style="margin:4px 0 0">沟道立起来成「鳍」，栅极跨过去，包住 <b>3 个面</b>。</p></div>
+      <div class="card"><b style="font-size:13px;color:var(--amber)">GAA</b><p class="caption" style="margin:4px 0 0">沟道是几片悬空的薄片，栅极四面全包，<b>4 个面</b>。</p></div>
+    </div>
+  </section>
+
+  <nav class="pager">
+    <a class="prev" href="../chapters/12-advanced-transistors.html">← 回到第 12 章</a>
+    <a class="next" href="../index.html">目录 →</a>
+  </nav>
+
+  <footer>
+    <p>模型由本项目的 Blender 脚本生成（<code>3d/fig_transistors.py</code>），three.js 实时渲染。</p>
+  </footer>
+</main>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "../assets/vendor/three.module.js",
+    "three/addons/": "../assets/vendor/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const canvas = document.getElementById('stage');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+
+const scene = new THREE.Scene();
+const camera = new THREE.OrthographicCamera(-5, 5, 3, -3, -50, 200);
+
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.target.set(0, 0.4, 0);
+
+// 三点光，尽量还原 Blender 里的布光
+const key = new THREE.DirectionalLight(0xffffff, 1.7); key.position.set(6, 9, 8); scene.add(key);
+const fill = new THREE.DirectionalLight(0xbfd4ff, 0.55); fill.position.set(-8, 4, 6); scene.add(fill);
+const rim = new THREE.DirectionalLight(0xffe8cc, 0.8); rim.position.set(-2, 5, -9); scene.add(rim);
+scene.add(new THREE.HemisphereLight(0xdfe9ff, 0x1b2230, 0.55));
+
+let model = null, spinning = false;
+
+new GLTFLoader().load('../assets/3d/transistors.glb', (gltf) => {
+  model = gltf.scene;
+  // GAA 的栅极保持半透明，才能看见里面的薄片
+  model.traverse(o => {
+    if (o.isMesh && /gaa_gate/i.test(o.name)) {
+      o.material = o.material.clone();
+      o.material.transparent = true;
+      o.material.opacity = 0.32;
+      o.material.depthWrite = false;
+    }
+  });
+  scene.add(model);
+  frame();
+  document.getElementById('bIso').setAttribute('aria-pressed', 'true');
+});
+
+const VIEWS = {
+  iso:   [6.4, 5.6, 8.4],
+  front: [0, 1.6, 12],
+  top:   [0, 12, 0.01]
+};
+
+function setView(name) {
+  const [x, y, z] = VIEWS[name];
+  camera.position.set(x, y, z);
+  controls.target.set(0, 0.4, 0);
+  controls.update();
+  ['bFront', 'bIso', 'bTop'].forEach(id => document.getElementById(id).setAttribute('aria-pressed', 'false'));
+  const btn = name === 'iso' ? 'bIso' : name === 'front' ? 'bFront' : 'bTop';
+  document.getElementById(btn).setAttribute('aria-pressed', 'true');
+}
+
+function frame() {
+  const box = new THREE.Box3().setFromObject(model);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+  controls.target.copy(center);
+
+  // 正交相机：直接按包围盒定视口宽度，宽高比不够就按高度补
+  const aspect = canvas.clientWidth / canvas.clientHeight || 2;
+  const fitW = size.x * 1.14;
+  const fitH = (size.z * 2.0) * 1.14;      // 斜视时的高度近似
+  const w = Math.max(fitW, fitH * aspect);
+  camera.left = -w / 2; camera.right = w / 2;
+  camera.top = w / aspect / 2; camera.bottom = -w / aspect / 2;
+  camera.near = -50; camera.far = 200;
+  camera.updateProjectionMatrix();
+
+  const dir = new THREE.Vector3(0.5, 0.55, 0.85).normalize();
+  camera.position.copy(center).addScaledVector(dir, 40);
+  camera.lookAt(center);
+  controls.update();
+}
+
+function resize() {
+  const w = canvas.clientWidth, h = canvas.clientHeight;
+  renderer.setSize(w, h, false);
+  if (model) frame();
+}
+addEventListener('resize', resize);
+
+document.getElementById('bFront').onclick = () => setView('front');
+document.getElementById('bIso').onclick = () => setView('iso');
+document.getElementById('bTop').onclick = () => setView('top');
+document.getElementById('bSpin').onclick = (e) => {
+  spinning = !spinning;
+  e.currentTarget.setAttribute('aria-pressed', spinning);
+};
+
+function tick() {
+  requestAnimationFrame(tick);
+  if (spinning && model) model.rotation.y += 0.005;
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+resize();
+tick();
+
+document.getElementById('themeBtn').onclick = () => {
+  const cur = document.documentElement.dataset.theme;
+  const next = cur === 'light' ? 'dark' : 'light';
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem('smi-theme', next); } catch (e) {}
+};
+</script>
+</body>
+</html>
