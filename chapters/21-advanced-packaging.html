@@ -198,6 +198,17 @@
     <p class="note cyan"><b>前后段界线在模糊：</b>先进封装大量使用光刻、电镀、CMP，这些原本是晶圆厂的工艺。所以现在常说「封装在往前走」，和晶圆制造越来越像。</p>
   </section>
 <section>
+    <h2 class="sec-head"><span class="num">05</span>3D 剖面：把整摞摆出来</h2>
+    <p class="sub">同一套结构做成 3D：下面封装基板，中间紫色的是硅中介层（做成半透明，能看见里面的 TSV），上面左边是逻辑 die，右边是三组 HBM 堆叠。</p>
+    <figure style="margin:0">
+      <img src="../assets/3d/advpack.png" alt="2.5D 封装：基板、中介层、逻辑 die 与三组 HBM" style="width:100%;height:auto;display:block;border-radius:12px;background:var(--card2)">
+      <figcaption style="margin-top:10px;font-size:13px;color:var(--dim)">
+        中介层里竖着的青色小柱就是 TSV；它们把上方的芯片连到下方基板。HBM 每组由多片 DRAM 叠成，靠微凸块和 TSV 串起来。
+      </figcaption>
+    </figure>
+    <p class="note cyan"><b>为什么用 3D：</b>这种「一层压一层」的结构，剖面图只能看到一条线，转到 3D 才看得出谁在谁上面、TSV 怎么穿过去。</p>
+  </section>
+<section>
     <h2 class="sec-head"><span class="num">＋</span>先进封装的挑战</h2>
     <div style="overflow-x:auto">
       <table>
