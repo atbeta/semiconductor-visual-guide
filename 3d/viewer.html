@@ -41,6 +41,7 @@
         <button class="mbtn" data-m="transistors" aria-pressed="true">三代晶体管</button>
         <button class="mbtn" data-m="advpack" aria-pressed="false">2.5D 封装</button>
         <button class="mbtn" data-m="packaging" aria-pressed="false">打线 / 覆晶</button>
+        <button class="mbtn" data-m="cptest" aria-pressed="false">CP 测试</button>
       </div>
       <div class="viewbar">
         <button id="bFront" aria-pressed="false">正视图</button>
@@ -111,7 +112,8 @@ let model = null, spinning = false;
 const MODELS = {
   transistors: { file: '../assets/3d/transistors.glb', title: '平面 / FinFET / GAA' },
   advpack:     { file: '../assets/3d/advpack.glb',     title: '2.5D 封装：中介层 + HBM' },
-  packaging:   { file: '../assets/3d/packaging.glb',   title: '打线 vs 覆晶' }
+  packaging:   { file: '../assets/3d/packaging.glb',   title: '打线 vs 覆晶' },
+  cptest:      { file: '../assets/3d/cp-test.glb',     title: 'CP 探针测试' }
 };
 const loader = new GLTFLoader();
 
