@@ -128,3 +128,23 @@ def render(path, w=1600, h=1000):
     sc.render.filepath = path
     bpy.ops.render.render(write_still=True)
     print("RENDERED", path)
+
+
+def tube(name, points, radius, material, resolution=4):
+    """用曲线生成一根圆管，用来画金线、光纤之类的细长弯曲结构。"""
+    cu = bpy.data.curves.new(name, "CURVE")
+    cu.dimensions = "3D"
+    cu.bevel_depth = radius
+    cu.bevel_resolution = resolution
+    cu.resolution_u = 12
+    sp = cu.splines.new("BEZIER")
+    sp.bezier_points.add(len(points) - 1)
+    for i, p in enumerate(points):
+        bp = sp.bezier_points[i]
+        bp.co = p
+        bp.handle_left_type = "AUTO"
+        bp.handle_right_type = "AUTO"
+    ob = bpy.data.objects.new(name, cu)
+    bpy.context.collection.objects.link(ob)
+    ob.data.materials.append(material)
+    return ob
