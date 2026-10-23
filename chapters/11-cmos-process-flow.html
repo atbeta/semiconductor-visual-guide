@@ -196,6 +196,18 @@
     <p class="sub">一个简单的 CMOS 工艺大约要二十层掩模版；先进工艺加上多重曝光，可以到数十层以上。每多一层，就多一轮「沉积、光刻、刻蚀、清洗、测量」，成本与周期一起涨。</p>
     <p class="note cyan"><b>业界的效率指标：</b>把生产周期除以掩模版层数，得到「平均每层花几天」，常见水准约每层一到两天。只看总天数会误判——层数多的产品本来就更久。</p>
   </section>
+<section>
+    <h2 class="sec-head"><span class="num">04</span>3D 剖面：七步做完之后长什么样</h2>
+    <p class="sub">把最终的截面「挤出」一点厚度：正面看是层层叠叠的剖面，斜着看能看出每一块都嵌在别的块里面。</p>
+    <figure style="margin:0">
+      <img src="../assets/3d/feol-stack.png" alt="FEOL 完成后的 CMOS 立体剖面" style="width:100%;height:auto;display:block;border-radius:12px;background:var(--card2)">
+      <figcaption style="margin-top:10px;font-size:13px;color:var(--dim)">
+        紫色是 P 阱、深蓝是 N 阱；左右两端与中间青绿色的是 STI 隔离；浅蓝方块是源极/漏极；中间两个橙色立柱是栅极，两侧浅灰薄片是侧墙，顶端深色是金属硅化物。
+      </figcaption>
+    </figure>
+    <p class="note cyan"><b>3D 才讲得清的一件事：</b>源漏是<b>嵌在</b>阱里的，栅极是<b>压在</b>沟道上的，STI 是<b>插在</b>器件之间的——这三个「在……里/上/间」的关系，平面剖面只能靠画线暗示。</p>
+  </section>
+
 <!-- enriched:start -->
 <section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>FEOL、MOL、BEOL</span></h4><dl><dt>定义</dt><dd>FEOL（Front End of Line）负责做出晶体管；MOL（Middle of Line）负责把晶体管接出来；BEOL（Back End of Line）负责做多层金属导线。</dd><dt>现场用法</dt><dd>「这是 BEOL 的问题，跟 FEOL 无关。」</dd><dt>相关名词</dt><dd>前段、后段、接触孔、金属层</dd><dt>常见混淆</dt><dd class="q">三段的分界在不同工厂略有不同，MOL 有时会被并入 FEOL 或 BEOL。另外要注意，这里的「前段、后段」都发生在晶圆厂内，和封装测试的「后段」不同，见<a href="00-overview.html">第 0 章</a>。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>STI（Shallow Trench Isolation，浅沟槽隔离）</span></h4><dl><dt>定义</dt><dd>在晶体管之间挖出浅沟槽并填入绝缘材料，把器件彼此隔开的结构。</dd><dt>现场用法</dt><dd>「STI 的深度偏浅」「STI CMP 磨完要确认氮化硅的厚度」。</dd><dt>相关名词</dt><dd>有源区（Active Area）、CMP、隔离</dd><dt>常见混淆</dt><dd class="q">STI 通常是流程中最早做的结构之一，虽然它不会导电，但它的形状会影响晶体管的特性和漏电。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>用「每层掩模版几天」比较生产效率</span></h4><dl><dt>情境</dt><dd>要比较两个掩模版层数不同的产品，哪一个生产得比较有效率。</dd><dt>做法</dt><dd>把生产周期除以掩模版层数，得到「平均每层掩模版花几天」，业界常用这个指标比较工厂的效率，常见水准大约在每层一到两天之间，数字越小代表效率越好。</dd><dt>为什么</dt><dd>掩模版层数越多，步骤就越多，总天数自然越长。除以层数之后，才能公平比较。</dd><dt>没做会怎样</dt><dd class="q">只看总天数，会误以为层数多的产品生产效率比较差。</dd><dt>相关章节</dt><dd><a href="01-how-a-fab-works.html">第 1 章 晶圆厂如何运行</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>同一台设备，晶圆会回来很多次</span></h4><dl><dt>情境</dt><dd>一片晶圆在整个流程中，要回到光刻区数十次。</dd><dt>做法</dt><dd>派工时要考虑每批晶圆在流程中的位置，并让最忙碌的设备（通常是光刻）尽量不要闲置。</dd><dt>为什么</dt><dd>刚投片的晶圆和快完成的晶圆，会抢同一批设备。这种「重复进入」的流程，是晶圆厂调度特别复杂的原因。</dd><dt>没做会怎样</dt><dd class="q">晶圆在瓶颈设备前大量堆积，整座工厂的生产周期变长。</dd><dt>相关章节</dt><dd><a href="23-fab-systems.html">第 23 章 工厂如何被系统管理</a></dd></dl></div></div></section>
 <section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>James D. Plummer、Michael D. Deal、Peter B. Griffin，《Silicon VLSI Technology》，第 2 章（完整的 CMOS 流程介绍）</li><li>Michael Quirk、Julian Serda，《Semiconductor Manufacturing Technology》，工艺集成相关章节</li></ul></section>
