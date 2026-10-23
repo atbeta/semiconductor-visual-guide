@@ -48,6 +48,7 @@
         <button class="mbtn" data-m="mosfet" aria-pressed="false">MOSFET</button>
         <button class="mbtn" data-m="litho" aria-pressed="false">光刻光路</button>
         <button class="mbtn" data-m="etch" aria-pressed="false">刻蚀腔</button>
+        <button class="mbtn" data-m="cmp" aria-pressed="false">CMP</button>
       </div>
       <div class="viewbar">
         <button id="bFront" aria-pressed="false">正视图</button>
@@ -128,7 +129,8 @@ const MODELS = {
   route:       { file: '../assets/3d/fab-route.glb',   title: '工厂流转路径' },
   mosfet:      { file: '../assets/3d/mosfet.glb',      title: 'MOSFET 透视' },
   litho:       { file: '../assets/3d/litho-column.glb', title: '光刻光路' },
-  etch:        { file: '../assets/3d/etch-chamber.glb', title: '刻蚀腔' }
+  etch:        { file: '../assets/3d/etch-chamber.glb', title: '刻蚀腔' },
+  cmp:         { file: '../assets/3d/cmp-platen.glb',  title: 'CMP 抛光台' }
 };
 const loader = new GLTFLoader();
 
