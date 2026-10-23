@@ -37,6 +37,11 @@
 
   <section>
     <div class="card">
+      <div class="viewbar" id="models">
+        <button class="mbtn" data-m="transistors" aria-pressed="true">三代晶体管</button>
+        <button class="mbtn" data-m="advpack" aria-pressed="false">2.5D 封装</button>
+        <button class="mbtn" data-m="packaging" aria-pressed="false">打线 / 覆晶</button>
+      </div>
       <div class="viewbar">
         <button id="bFront" aria-pressed="false">正视图</button>
         <button id="bIso" aria-pressed="true">等距</button>
@@ -47,6 +52,8 @@
       <p class="hint">左键拖动旋转 · 滚轮缩放 · 右键平移。三个模型从左到右：平面、FinFET、GAA。</p>
     </div>
   </section>
+
+  <p class="hint" id="modelTitle" style="margin-top:0">平面 / FinFET / GAA</p>
 
   <section>
     <h2 class="sec-head"><span class="num">01</span>看什么</h2>
@@ -83,7 +90,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const canvas = document.getElementById('stage');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setPixelRatio(1);
 
 const scene = new THREE.Scene();
 const camera = new THREE.OrthographicCamera(-5, 5, 3, -3, -50, 200);
@@ -101,21 +108,52 @@ scene.add(new THREE.HemisphereLight(0xdfe9ff, 0x1b2230, 0.55));
 
 let model = null, spinning = false;
 
-new GLTFLoader().load('../assets/3d/transistors.glb', (gltf) => {
+const MODELS = {
+  transistors: { file: '../assets/3d/transistors.glb', title: '平面 / FinFET / GAA' },
+  advpack:     { file: '../assets/3d/advpack.glb',     title: '2.5D 封装：中介层 + HBM' },
+  packaging:   { file: '../assets/3d/packaging.glb',   title: '打线 vs 覆晶' }
+};
+const loader = new GLTFLoader();
+
+function loadModel(key) {
+  const cfg = MODELS[key];
+  if (!cfg) return;
+  loader.load(cfg.file, (gltf) => {
+  if (model) { scene.remove(model); dispose(model); }
   model = gltf.scene;
-  // GAA 的栅极保持半透明，才能看见里面的薄片
+  // 半透明部件在 glTF 里已经带 alpha，这里只补一个关闭深度写入，避免排序问题
   model.traverse(o => {
-    if (o.isMesh && /gaa_gate/i.test(o.name)) {
-      o.material = o.material.clone();
-      o.material.transparent = true;
-      o.material.opacity = 0.32;
+    if (o.isMesh && o.material && o.material.transparent) {
       o.material.depthWrite = false;
     }
   });
   scene.add(model);
+  controls.enableDamping = false;
+  resize();          // 先让 buffer / viewport 跟上画布尺寸
   frame();
-  document.getElementById('bIso').setAttribute('aria-pressed', 'true');
+  controls.enableDamping = true;
+  document.title = 'loaded:' + key;
+  document.querySelectorAll('.mbtn').forEach(b =>
+    b.setAttribute('aria-pressed', b.dataset.m === key));
+  });
+}
+
+function dispose(root) {
+  root.traverse(o => {
+    if (o.geometry) o.geometry.dispose();
+    if (o.material) {
+      const ms = Array.isArray(o.material) ? o.material : [o.material];
+      ms.forEach(m => { for (const k in m) if (m[k] && m[k].isTexture) m[k].dispose(); m.dispose(); });
+    }
+  });
+}
+
+document.querySelectorAll('.mbtn').forEach(b => {
+  b.onclick = () => loadModel(b.dataset.m);
 });
+
+const qs = new URLSearchParams(location.search).get('m');
+loadModel(MODELS[qs] ? qs : 'transistors');
 
 const VIEWS = {
   iso:   [6.4, 5.6, 8.4],
@@ -135,32 +173,51 @@ function setView(name) {
 
 function frame() {
   const box = new THREE.Box3().setFromObject(model);
-  const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());
-  controls.target.copy(center);
 
-  // 正交相机：直接按包围盒定视口宽度，宽高比不够就按高度补
-  const aspect = canvas.clientWidth / canvas.clientHeight || 2;
-  const fitW = size.x * 1.14;
-  const fitH = (size.z * 2.0) * 1.14;      // 斜视时的高度近似
-  const w = Math.max(fitW, fitH * aspect);
-  camera.left = -w / 2; camera.right = w / 2;
-  camera.top = w / aspect / 2; camera.bottom = -w / aspect / 2;
-  camera.near = -50; camera.far = 200;
-  camera.updateProjectionMatrix();
-
+  // 先摆好相机方向，再把 8 个角点投到相机空间，精确算出正交视口
   const dir = new THREE.Vector3(0.5, 0.55, 0.85).normalize();
   camera.position.copy(center).addScaledVector(dir, 40);
   camera.lookAt(center);
+  camera.updateMatrixWorld();
+
+  const inv = camera.matrixWorldInverse;
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  const v = new THREE.Vector3();
+  for (let i = 0; i < 8; i++) {
+    v.set(i & 1 ? box.max.x : box.min.x,
+          i & 2 ? box.max.y : box.min.y,
+          i & 4 ? box.max.z : box.min.z).applyMatrix4(inv);
+    minX = Math.min(minX, v.x); maxX = Math.max(maxX, v.x);
+    minY = Math.min(minY, v.y); maxY = Math.max(maxY, v.y);
+  }
+  const pad = 0.22;
+  const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+  const aspect = canvas.clientWidth / Math.max(canvas.clientHeight, 1);
+  // 先按内容定半宽/半高，再强制匹配画布比例，避免拉伸或裁切
+  let hw = (maxX - minX) / 2 * (1 + pad);
+  let hh = (maxY - minY) / 2 * (1 + pad);
+  if (hw / hh < aspect) hw = hh * aspect; else hh = hw / aspect;
+
+  camera.left = cx - hw; camera.right = cx + hw;
+  camera.bottom = cy - hh; camera.top = cy + hh;
+  camera.near = -200; camera.far = 400;
+  camera.updateProjectionMatrix();
+
+  controls.target.copy(center);
   controls.update();
+  if (0) console.log('FRAME', JSON.stringify({l:camera.left,r:camera.right,t:camera.top,b:camera.bottom,asp:canvas.clientWidth/canvas.clientHeight,cw:canvas.clientWidth,ch:canvas.clientHeight,cx:center.x,cy:center.y,cz:center.z}));
 }
 
 function resize() {
-  const w = canvas.clientWidth, h = canvas.clientHeight;
-  renderer.setSize(w, h, false);
+  const w = Math.round(canvas.getBoundingClientRect().width) || 800;
+  const h = Math.round(canvas.getBoundingClientRect().height) || 500;
+  renderer.setPixelRatio(1);
+  renderer.setSize(w, h, true);   // true：让 canvas 的 CSS 尺寸与 buffer 一致
   if (model) frame();
 }
 addEventListener('resize', resize);
+if (window.ResizeObserver) new ResizeObserver(() => resize()).observe(canvas);
 
 document.getElementById('bFront').onclick = () => setView('front');
 document.getElementById('bIso').onclick = () => setView('iso');
