@@ -23,6 +23,7 @@ PW = kit.mat("pwell", (0.42, 0.38, 0.62, 1), rough=0.55)
 NW = kit.mat("nwell", (0.30, 0.45, 0.62, 1), rough=0.55)
 STI = kit.mat("sti", (0.28, 0.62, 0.58, 1), rough=0.5)
 SD = kit.mat("sd", kit.PALETTE["nplus"], rough=0.35)
+N_LDD = kit.mat("ldd", (0.34, 0.78, 0.98, 1), rough=0.4)
 GATE = kit.mat("gate", kit.PALETTE["gate"], rough=0.3, metal=0.2)
 OX = kit.mat("oxide", kit.PALETTE["oxide"], rough=0.2)
 SP = kit.mat("spacer", (0.78, 0.80, 0.86, 1), rough=0.45)
@@ -31,8 +32,10 @@ SIL = kit.mat("silicide", (0.72, 0.76, 0.84, 1), rough=0.35, metal=0.65)
 Y0, Y1 = -0.26, 0.26
 DEPTH = Y1 - Y0
 
-def slab(name, x0, x1, z0, z1, m, y0=Y0, y1=Y1, bevel=0.006):
-    kit.box(name, (x1 - x0, y1 - y0, z1 - z0),
+def slab(name, x0, x1, z0, z1, m, y0=Y0, y1=Y1, bevel=0.006, step=0):
+    """step>0 时给对象名加 stN_ 前缀，网页端按步骤逐个显示。"""
+    full = f"st{step}_{name}" if step else name
+    kit.box(full, (x1 - x0, y1 - y0, z1 - z0),
             ((x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2), m, bevel=bevel)
 
 # ---------- 衬底：P 阱（左）/ N 阱（右），中间夹 STI ----------
@@ -60,22 +63,27 @@ top_segments(0.06, 1.30, [(a, b) for a, b in SD_RANGES if a >= 0.06], TOP, NW)
 
 # 源漏：正好填进缺口，顶面与衬底齐平
 for name, (x0, x1) in zip(["sd1", "sd2", "sd3", "sd4"], SD_RANGES):
-    slab(name, x0, x1, H - TOP + 0.001, H, SD, y0=Y0 + 0.004, y1=Y1 - 0.004, bevel=0.003)
+    slab(name, x0, x1, H - TOP + 0.001, H, SD, y0=Y0 + 0.004, y1=Y1 - 0.004, bevel=0.003, step=6)
+
+# LDD：栅极两侧的浅掺杂延伸（第 5 步）
+for xc in (-0.55, 0.55):
+    slab("ldd_l", xc - 0.30, xc - 0.17, H - 0.03, H, N_LDD, y0=Y0 + 0.006, y1=Y1 - 0.006, bevel=0.002, step=5)
+    slab("ldd_r", xc + 0.17, xc + 0.30, H - 0.03, H, N_LDD, y0=Y0 + 0.006, y1=Y1 - 0.006, bevel=0.002, step=5)
 
 # STI：略高于表面，表示浅浅的沟槽隔离
-slab("sti_mid", -0.08, 0.08, 0, H + 0.02, STI)
-slab("sti_l", -1.42, -1.30, 0, H + 0.02, STI)
-slab("sti_r", 1.30, 1.42, 0, H + 0.02, STI)
+slab("sti_mid", -0.08, 0.08, 0, H + 0.02, STI, step=1)
+slab("sti_l", -1.42, -1.30, 0, H + 0.02, STI, step=1)
+slab("sti_r", 1.30, 1.42, 0, H + 0.02, STI, step=1)
 
 # ---------- 栅极堆栈 ----------
 for xc in (-0.55, 0.55):
-    slab("gox", xc - 0.18, xc + 0.18, H + 0.012, H + 0.03, OX, bevel=0.002)
-    slab("gate", xc - 0.17, xc + 0.17, H + 0.03, H + 0.24, GATE)
+    slab("gox", xc - 0.18, xc + 0.18, H + 0.012, H + 0.03, OX, bevel=0.002, step=2)
+    slab("gate", xc - 0.17, xc + 0.17, H + 0.03, H + 0.24, GATE, step=3)
     # 侧墙（两侧的小三角块用薄板代替）
-    slab("sp_l", xc - 0.20, xc - 0.17, H + 0.03, H + 0.17, SP, bevel=0.002)
-    slab("sp_r", xc + 0.17, xc + 0.20, H + 0.03, H + 0.17, SP, bevel=0.002)
+    slab("sp_l", xc - 0.20, xc - 0.17, H + 0.03, H + 0.17, SP, bevel=0.002, step=4)
+    slab("sp_r", xc + 0.17, xc + 0.20, H + 0.03, H + 0.17, SP, bevel=0.002, step=4)
     # 金属硅化物（栅极顶面）
-    slab("sil", xc - 0.16, xc + 0.16, H + 0.24, H + 0.27, SIL, bevel=0.003)
+    slab("sil", xc - 0.16, xc + 0.16, H + 0.24, H + 0.27, SIL, bevel=0.003, step=7)
 
 # 源漏顶部直接做金属化（不再叠一块硅化物，避免共面闪烁）
 

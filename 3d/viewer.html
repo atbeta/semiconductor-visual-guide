@@ -59,7 +59,8 @@
         <button id="bPlay" aria-pressed="false">▶ 播放</button>
       </div>
       <canvas id="stage"></canvas>
-      <p class="hint">左键拖动旋转 · 滚轮缩放 · 右键平移。<b>厂房剖面、工厂流转、CP 测试、CMP、光刻光路</b>这五个模型带动画，点「▶ 播放」看；其余模型只能转。</p>
+      <p class="hint" id="stepLabel"></p>
+      <p class="hint">左键拖动旋转 · 滚轮缩放 · 右键平移。<b>厂房剖面、工厂流转、CP 测试、CMP、光刻光路、FEOL 七步</b>这六个模型带动画，点「▶ 播放」看；其余模型只能转。</p>
     </div>
   </section>
 
@@ -184,6 +185,38 @@ const ANIMS = {
     };
   },
 
+  // FEOL：七步逐层长出（对象名带 stN_ 前缀）
+  build(root) {
+    const groups = {};
+    root.traverse(o => {
+      const m = /^st(\d)_/.exec(o.name);
+      if (m) (groups[+m[1]] ||= []).push(o);
+    });
+    const steps = Object.keys(groups).map(Number).sort((a, b) => a - b);
+    if (!steps.length) return null;
+    const all = Object.values(groups).flat();
+    all.forEach(o => { o.visible = false; o.scale.setScalar(1); });
+    const DUR = 1.0;      // 每步 1 秒
+    return t => {
+      const idx = (t / DUR) % (steps.length + 1);
+      all.forEach(o => { o.visible = false; });
+      steps.forEach((st, i) => {
+        if (idx >= i) {
+          const k = Math.min(1, (idx - i) * 3);        // 0.33 秒长出来
+          groups[st].forEach(o => {
+            o.visible = true;
+            o.scale.setScalar(1 + 0.14 * (1 - k));      // 轻微回弹
+          });
+        }
+      });
+      const label = document.getElementById('stepLabel');
+      if (label) {
+        const cur = Math.min(steps.length, Math.floor(idx));
+        label.textContent = cur === 0 ? '基底：已掺杂的硅' : `第 ${cur} 步 / ${steps.length}`;
+      }
+    };
+  },
+
   // CP：探针卡下压—抬起，模拟逐颗测试
   probe(root) {
     const head = collect(root, /^(pcb|ring|probe|head)/i);
@@ -197,7 +230,7 @@ const ANIMS = {
   }
 };
 
-const ANIM_FOR = { fab: 'convoy', route: 'convoy', cmp: 'spin', litho: 'pulse', cptest: 'probe' };
+const ANIM_FOR = { fab: 'convoy', route: 'convoy', cmp: 'spin', litho: 'pulse', cptest: 'probe', feol: 'build' };
 
 function buildAnim(key, root) {
   const fn = ANIM_FOR[key];
@@ -210,7 +243,7 @@ const MODELS = {
   packaging:   { file: '../assets/3d/packaging.glb',   title: '打线 vs 覆晶' },
   cptest:      { file: '../assets/3d/cp-test.glb',     title: 'CP 探针测试' },
   fab:         { file: '../assets/3d/fab-section.glb', title: '厂房剖面' },
-  feol:        { file: '../assets/3d/feol-stack.glb',  title: 'FEOL 立体剖面' },
+  feol:        { file: '../assets/3d/feol-build.glb',  title: 'FEOL 七步构建' },
   route:       { file: '../assets/3d/fab-route.glb',   title: '工厂流转路径' },
   mosfet:      { file: '../assets/3d/mosfet.glb',      title: 'MOSFET 透视' },
   litho:       { file: '../assets/3d/litho-column.glb', title: '光刻光路' },
