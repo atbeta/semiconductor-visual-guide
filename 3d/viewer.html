@@ -44,6 +44,7 @@
         <button class="mbtn" data-m="cptest" aria-pressed="false">CP 测试</button>
         <button class="mbtn" data-m="fab" aria-pressed="false">厂房剖面</button>
         <button class="mbtn" data-m="feol" aria-pressed="false">FEOL 剖面</button>
+        <button class="mbtn" data-m="route" aria-pressed="false">工厂流转</button>
       </div>
       <div class="viewbar">
         <button id="bFront" aria-pressed="false">正视图</button>
@@ -117,7 +118,8 @@ const MODELS = {
   packaging:   { file: '../assets/3d/packaging.glb',   title: '打线 vs 覆晶' },
   cptest:      { file: '../assets/3d/cp-test.glb',     title: 'CP 探针测试' },
   fab:         { file: '../assets/3d/fab-section.glb', title: '厂房剖面' },
-  feol:        { file: '../assets/3d/feol-stack.glb',  title: 'FEOL 立体剖面' }
+  feol:        { file: '../assets/3d/feol-stack.glb',  title: 'FEOL 立体剖面' },
+  route:       { file: '../assets/3d/fab-route.glb',   title: '工厂流转路径' }
 };
 const loader = new GLTFLoader();
 

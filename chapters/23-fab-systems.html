@@ -126,6 +126,18 @@
     <p class="sub">系统会为每一片晶圆留下完整履历：经过哪些步骤、用了哪台设备与腔体、哪个 Recipe 版本、什么时间、量测结果是多少。</p>
     <p class="note"><b>这份记录是整座工厂的记忆：</b>良率异常时做共因分析、设备出问题时界定影响范围、客户端回报时从一颗芯片一路追回它的晶圆与批次——都靠它。</p>
   </section>
+<section>
+    <h2 class="sec-head"><span class="num">05</span>3D 场景：谁决定晶圆去哪一站</h2>
+    <p class="sub">四台设备排成一排，头顶的天车把 FOUP 从一站搬到下一站。地面上那条发光的折线不是画上去的装饰——它是系统算出来的路线。</p>
+    <figure style="margin:0">
+      <img src="../assets/3d/fab-route.png" alt="工厂内晶圆流转路径的 3D 示意" style="width:100%;height:auto;display:block;border-radius:12px;background:var(--card2)">
+      <figcaption style="margin-top:10px;font-size:13px;color:var(--dim)">
+        灰色方块是设备，橙色是装载口；头顶轨道上挂着两辆天车，每辆吊着一个 FOUP；地面发光的折线是 MES 与派工系统决定的路径——晶圆先到哪、后到哪，不是操作员决定的。
+      </figcaption>
+    </figure>
+    <p class="note cyan"><b>这张图想说明的事：</b>「晶圆走错一站」在纸面上是个流程错误，在厂房里是一次真实的搬运。所以系统要在每次搬运前确认目的地，而不是搬到了才发现错了。</p>
+  </section>
+
 <!-- enriched:start -->
 <section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>MES（Manufacturing Execution System，制造执行系统）</span></h4><dl><dt>定义</dt><dd>管理生产现场的核心系统，记录每批晶圆的位置、状态与历程，并控制晶圆能不能进入下一个步骤。</dd><dt>现场用法</dt><dd>「MES 上这批显示 Hold，要先查原因。」</dd><dt>相关名词</dt><dd>Track-in、Track-out、Route、Hold、派工</dd><dt>常见混淆</dt><dd class="q">MES 不等于工厂的所有系统。它是核心，但设备连接、搬运、派工、工艺控制通常由其他系统负责，彼此互相配合。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>进站与出站（Track-in / Track-out）</span></h4><dl><dt>定义</dt><dd>进站是晶圆开始在某一站加工时，在系统上的登记；出站是完成加工后的登记，并把晶圆推进到下一个步骤。</dd><dt>现场用法</dt><dd>「这批进站之后设备就 Down 了，要处理一下帐。」</dd><dt>相关名词</dt><dd>MES、Route、履历</dd><dt>常见混淆</dt><dd class="q">系统上的状态和实物晶圆必须一致。系统显示已出站、但晶圆其实还没做完，就是现场说的「账实不符」，必须立即处理。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>每一条防呆规则背后，通常都有一次事故</span></h4><dl><dt>情境</dt><dd>急件赶着出货，有人希望暂时跳过某个系统检查。</dd><dt>做法</dt><dd>例外处理必须经过正式的申请和核准，并且留下记录，事后也要检讨规则是否需要调整。</dd><dt>为什么</dt><dd>很多规则都是从过去的事故学来的。规则看起来麻烦，往往是因为它挡下的错误很少再发生，大家已经忘了它为什么存在。</dd><dt>没做会怎样</dt><dd class="q">同样的事故再次发生，而且因为规则被跳过，事后也很难追查。</dd><dt>相关章节</dt><dd><a href="18-abnormality-handling.html">第 18 章 异常处理与工程变更</a></dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>系统停摆，工厂就停摆</span></h4><dl><dt>情境</dt><dd>MES 突然宕机。</dd><dt>做法</dt><dd>核心系统采用冗余备份架构，系统的修改要经过完整测试，并安排在影响最小的时段上线；工厂也会事先准备系统停摆时的应急程序。</dd><dt>为什么</dt><dd>晶圆的每一次进出站都要经过系统，系统一停，设备就算正常也无法继续生产。</dd><dt>没做会怎样</dt><dd class="q">整座工厂停线，正在等待的晶圆还可能因为超过 Q-Time 而需要返工或报废。</dd><dt>相关章节</dt><dd><a href="09-cleaning.html">第 9 章 清洗与污染控制</a></dd></dl></div></div></section>
 <section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>Heiko Meyer、Franz Fuchs、Klaus Thiel，《Manufacturing Execution Systems: Optimal Design, Planning, and Deployment》</li><li>Wallace J. Hopp、Mark L. Spearman，《Factory Physics》</li><li>SEMI 的设备通信相关标准（SECS/GEM）</li></ul></section>

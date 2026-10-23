@@ -84,7 +84,8 @@ smi-viz/
   --python 3d/fig_transistors.py -- assets/3d/transistors.png assets/3d/transistors.glb
 ```
 
-- `3d/kit.py`：材质（sRGB→线性）、基本体、正交相机、三点光、渲染设置
+- `3d/kit.py`：材质（sRGB→线性）、基本体、正交相机、三点光、渲染设置、`tube()` 曲线管道
+- 已生成的图：晶体管（12）、DRAM（13）、FEOL（11）、CP 测试（19）、封装（20）、先进封装（21）、厂房（01）、工厂流转（23）
 - `3d/viewer.html`：three.js 正交相机实时渲染，可旋转/切视角（three.js 已 vendor 到 `assets/vendor/`）
 - **坑**：Blender 5.x 默认走 AgX 色调映射，颜色会偏；必须设 `view_settings.view_transform = "Standard"`，
   否则渲染结果和调色板对不上（用一块纯色标定过：Standard 下 #f59e0b 输出正好是 245,158,10）。
