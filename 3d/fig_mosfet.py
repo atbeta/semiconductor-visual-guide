@@ -20,9 +20,9 @@ OUT = argv[0] if argv else os.path.abspath("assets/3d/mosfet.png")
 kit.reset()
 SUB = kit.mat("sub", (0.60, 0.66, 0.76, 1), rough=0.6)
 SD = kit.mat("sd", kit.PALETTE["nplus"], rough=0.35)
-CH = kit.mat("chan", (0.45, 0.70, 0.95, 1), rough=0.35)
-OX = kit.mat("ox", kit.PALETTE["oxide"], rough=0.15, alpha=0.45)
-G = kit.mat("gate", kit.PALETTE["gate"], rough=0.25, metal=0.15, alpha=0.28)
+CH = kit.mat("chan", (0.45, 0.70, 0.95, 1), rough=0.35, emit=0.9)
+OX = kit.mat("ox", kit.PALETTE["oxide"], rough=0.15, alpha=0.28)
+G = kit.mat("gate", kit.PALETTE["gate"], rough=0.25, metal=0.15, alpha=0.22)
 MET = kit.mat("metal", (0.80, 0.84, 0.90, 1), rough=0.25, metal=0.8)
 
 H = 0.42          # 衬底高度

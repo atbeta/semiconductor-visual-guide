@@ -22,7 +22,7 @@ S = kit.mat("substrate", kit.PALETTE["substrate"], rough=0.6)
 D = kit.mat("die", (0.33, 0.45, 0.62, 1), rough=0.45)
 AU = kit.mat("gold", (0.95, 0.72, 0.25, 1), rough=0.22, metal=0.9)
 B = kit.mat("bump", (0.92, 0.62, 0.18, 1), rough=0.28, metal=0.6)
-M = kit.mat("mold", (0.72, 0.66, 0.92, 1), rough=0.4, alpha=0.22)
+M = kit.mat("mold", (0.72, 0.66, 0.92, 1), rough=0.45, alpha=0.42)
 U = kit.mat("underfill", (0.35, 0.8, 0.85, 1), rough=0.3, alpha=0.16)
 BALL = kit.mat("ball", (0.78, 0.82, 0.88, 1), rough=0.25, metal=0.7)
 
@@ -60,7 +60,7 @@ for px in pads:
     kit.tube("wire", [p0, mid, p1], 0.016, AU)
 
 # 塑封（半透明）
-kit.box("mold", (2.0, 1.5, 0.72), (X, -0.05, SUB_H + 0.36), M, bevel=0.03)
+kit.box("mold", (2.0, 1.5, 0.72), (X, -0.05, SUB_H + 0.365), M, bevel=0.03)
 
 # ---------------- 右：倒装芯片 ----------------
 X = 2.1
