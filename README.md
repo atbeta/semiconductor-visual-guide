@@ -74,7 +74,12 @@ smi-viz/
 - **深链**：`?theme=light`、`?step=4`（光刻）、`?v=2.4&mode=pmos`（晶体管）、`?s=gaa`、`?z=2&burn=1`（可靠性）、`?d=200`（晶棒直径）、`?len=0.7`（长晶进度），方便截图和分享某个状态。
 - **零依赖**：没有构建、没有框架。一个 `<script>`，几张 SVG。
 
-## 3D 图（实验）
+## 3D 图
+
+模块库独立成包：[fabkit](~/Projects/fabkit)（`import fabkit as fk`），本仓库的 `3d/` 是各张图的具体场景脚本。
+工作流与踩坑记录见本地技能 `semiconductor-visuals`。
+
+## 3D 图（历史说明）
 
 部分图开始用 Blender 建模 + 正交相机渲染，替代纯手绘 SVG：
 

@@ -5,6 +5,7 @@
 """
 import bpy
 import math
+import os
 from mathutils import Vector
 
 def srgb(c):
@@ -148,3 +149,19 @@ def tube(name, points, radius, material, resolution=4):
     bpy.context.collection.objects.link(ob)
     ob.data.materials.append(material)
     return ob
+
+
+def world(hdri_path, strength=1.0):
+    """用 HDRI 当环境光。EEVEE 下也能提供柔和的反射与补光。"""
+    if not os.path.exists(hdri_path):
+        return None
+    w = bpy.data.worlds.new("HDRI")
+    bpy.context.scene.world = w
+    w.use_nodes = True
+    nt = w.node_tree
+    bg = nt.nodes.get("Background")
+    env = nt.nodes.new("ShaderNodeTexEnvironment")
+    env.image = bpy.data.images.load(hdri_path)
+    nt.links.new(env.outputs["Color"], bg.inputs["Color"])
+    bg.inputs["Strength"].default_value = strength
+    return w
