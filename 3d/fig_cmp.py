@@ -12,8 +12,11 @@ import sys
 import os
 import math
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import kit  # noqa: E402
+FABKIT = os.path.expanduser("~/Projects/fabkit")
+if FABKIT not in sys.path:
+    sys.path.insert(0, FABKIT)
+import fabkit as kit  # noqa: E402
+kit.configure(engine="CYCLES", samples=96)
 
 argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 OUT = argv[0] if argv else os.path.abspath("assets/3d/cmp-platen.png")
