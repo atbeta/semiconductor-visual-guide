@@ -426,7 +426,18 @@
 
   
   
-  <!-- enriched:start -->
+    <section>
+    <h2 class="sec-head"><span class="num">06</span>3D 光路：光是怎么走到晶圆上的</h2>
+    <p class="sub">一台曝光机本质上是一根竖直的光路：光源在最上面，往下穿过照明透镜、掩模版、投影物镜，最后打在晶圆上。镜筒做成半透明，才看得见里面那几片透镜。</p>
+    <figure style="margin:0">
+      <img src="../assets/3d/litho-column.png" alt="光刻机光路的 3D 剖面" style="width:100%;height:auto;display:block;border-radius:12px;background:var(--card2)">
+      <figcaption style="margin-top:10px;font-size:13px;color:var(--dim)">
+        顶端发亮的是光源；往下是照明镜组；中间那块深色平板是掩模版，上面几道琥珀色开口就是电路图形；再往下是投影物镜（两个圆筒里各有一片透镜）；最底下蓝色圆片是晶圆。半透明的琥珀色柱子是光路。
+      </figcaption>
+    </figure>
+    <p class="note cyan"><b>为什么光路必须是竖直的：</b>光从掩模到晶圆要走两米多，中间任何一点振动都会让图形糊掉；竖直结构让重力方向与光轴平行，机械上最稳。这也是曝光机做得又高又重的原因。</p>
+  </section>
+<!-- enriched:start -->
 <section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>光刻（Lithography）</span></h4><dl><dt>定义</dt><dd>利用光把掩模版上的图形转移到晶圆光刻胶上的工艺。</dd><dt>现场用法</dt><dd>光刻区使用黄色照明，现场通常直接叫「黄光」，例如「这批卡在黄光」。</dd><dt>相关名词</dt><dd>掩模版、光刻胶、曝光机</dd><dt>常见混淆</dt><dd class="q">光刻只负责「定义图形」，真正把材料挖掉的是下一站的刻蚀。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>光刻是「可以重来」的最后机会</span></h4><dl><dt>情境</dt><dd>检查发现图形尺寸或对准不合格。</dd><dt>做法</dt><dd>把光刻胶全部去掉，重新涂布、曝光，这叫 <b>Rework</b>。</dd><dt>为什么</dt><dd>这时晶圆上只多了一层光刻胶，底下的材料还没被动过。</dd><dt>没做会怎样</dt><dd class="q">一旦进入刻蚀，错误的图形就会永久刻进材料里，晶圆可能只能报废。所以工厂的系统会在检查不合格时自动挡下这批晶圆。</dd><dt>相关章节</dt><dd><a href="06-etching.html">第 6 章 刻蚀</a>、<a href="18-abnormality-handling.html">第 18 章 异常处理与工程变更</a></dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>EUV（Extreme Ultraviolet，极紫外光光刻）</span></h4><dl><dt>定义</dt><dd>使用 13.5 nm 波长光源的光刻技术，最先进工艺的关键层都依赖它。</dd><dt>现场用法</dt><dd>「这层是 EUV 层」代表这层图形最细、成本最高。</dd><dt>相关名词</dt><dd>DUV（深紫外光，指 248 nm 和 193 nm 的光源）、反射式掩模版</dd><dt>常见混淆</dt><dd class="q">一个产品并不是每层都用 EUV，只有最关键的几层才用，其他层仍然用 DUV 以控制成本。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>CD 与 Overlay</span></h4><dl><dt>定义</dt><dd>CD（Critical Dimension，关键尺寸）是图形最需要控制的尺寸，例如线宽；Overlay 是这一层和前一层的对准误差。</dd><dt>现场用法</dt><dd>「CD 偏大 2 nm」「Overlay 往 X 方向偏」，这是光刻工程师最常讲的两个词。</dd><dt>相关名词</dt><dd>ADI、对准标记</dd><dt>常见混淆</dt><dd class="q">CD 不等于工艺节点的「几纳米」，见<a href="14-process-nodes.html">第 14 章</a>。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>为什么光刻区是黄色的？</span></h4><dl><dt>情境</dt><dd>第一次进晶圆厂的人，常会注意到光刻区的灯光是黄色的。</dd><dt>做法</dt><dd>光刻区的照明会滤掉短波长的光，只留下黄光。</dd><dt>为什么</dt><dd>光刻胶对紫外光和蓝光敏感，一般白光就足以让它起反应，黄光则几乎不会。</dd><dt>没做会怎样</dt><dd class="q">还没曝光的光刻胶被环境光照到，图形质量会变差。</dd><dt>相关章节</dt><dd><a href="01-how-a-fab-works.html">第 1 章 晶圆厂如何运行</a></dd></dl></div></div></section>
 <section><h2 class="sec-head"><span class="num">＋</span>常见异常</h2><div style="overflow-x:auto"><table><thead><tr><th>异常</th><th>可能原因</th><th>结果</th></tr></thead><tbody><tr><td>CD 偏大或偏小</td><td>曝光能量偏移、曝光后烘烤异常</td><td>线宽不合格</td></tr><tr><td>局部失焦</td><td>晶圆背面有颗粒把晶圆顶高</td><td>局部图形模糊</td></tr><tr><td>Overlay 超规</td><td>设备对准误差、晶圆变形</td><td>上下层接不上</td></tr><tr><td>光刻胶缺陷</td><td>涂布时有气泡或颗粒</td><td>图形缺损</td></tr></tbody></table></div></section>
 <section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>Peter Van Zant，《Microchip Fabrication》，光刻相关章节</li><li>James D. Plummer、Michael D. Deal、Peter B. Griffin，《Silicon VLSI Technology》，光刻章节</li><li>Chris Mack，《Fundamental Principles of Optical Lithography》</li></ul></section>
