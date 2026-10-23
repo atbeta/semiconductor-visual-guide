@@ -145,6 +145,18 @@
     </div>
     <p class="note"><b>TSV 与 Via 的区别：</b>Via 只连接芯片内相邻的金属层；TSV 贯穿整个硅基板。做 TSV 还要先把晶圆磨到只剩几十微米。</p>
   </section>
+<section>
+    <h2 class="sec-head"><span class="num">04</span>3D 剖面：把电容剖开看</h2>
+    <p class="sub">一个 DRAM 单元就是「一个晶体管 + 一个电容」。电容如果整颗画出来，里面的电极永远看不见，所以这里把它做成少了前壁的开口杯。</p>
+    <figure style="margin:0">
+      <img src="../assets/3d/dram-cell.png" alt="DRAM 1T1C 单元的 3D 剖面" style="width:100%;height:auto;display:block;border-radius:12px;background:var(--card2)">
+      <figcaption style="margin-top:10px;font-size:13px;color:var(--dim)">
+        前方黑色长条是埋入式字线；蓝色两块是源极与漏极，中间琥珀色是栅极；右侧开口的琥珀色「杯子」是电容，杯里银色柱子是内电极；后方金属条是位线。
+      </figcaption>
+    </figure>
+    <p class="note cyan"><b>为什么是「杯子」：</b>真实电容是圆柱体，但画成实心圆柱就看不到内电极。剖掉一半既保留了圆柱的体积感，又能看见电荷存哪儿——这正是 3D 比 2D 剖面强的地方。</p>
+  </section>
+
 <!-- enriched:start -->
 <section><h2 class="sec-head"><span class="num">＋</span>原文里的名词与现场经验</h2><p class="sub">以下内容逐条取自原书，保留「定义 / 现场用法 / 常见混淆」与「情境 / 做法 / 为什么」的原始结构。</p><div class="cards"><div class="cc note-c"><h4><span class="badge-s">名词</span><span>DRAM（Dynamic Random Access Memory，动态随机存储器）</span></h4><dl><dt>定义</dt><dd>以电容存储电荷来记录数据的存储器，速度快，但需要定期刷新，断电后数据会消失。</dd><dt>现场用法</dt><dd>「这一代 DRAM 是 1β。」</dd><dt>相关名词</dt><dd>1T1C、电容、字线、位线、刷新</dd><dt>常见混淆</dt><dd class="q">DRAM 的世代用 1x、1y、1z、1α、1β、1γ 等代号命名，代表都属于 10 纳米级，和逻辑工艺的「几纳米」不能直接比较，见<a href="14-process-nodes.html">第 14 章</a>。</dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>3D NAND</span></h4><dl><dt>定义</dt><dd>把存储单元沿着垂直方向堆叠的 NAND Flash，靠增加层数提高容量。</dd><dt>现场用法</dt><dd>「这一代又多叠了好几十层。」</dd><dt>相关名词</dt><dd>沟道孔、阶梯、字线置换、高深宽比刻蚀</dd><dt>常见混淆</dt><dd class="q">层数不是唯一的指标。每个单元存几个比特、单元的大小、外围电路的位置，都会影响实际的容量密度和成本。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>叠得越高，晶圆越容易弯</span></h4><dl><dt>情境</dt><dd>3D NAND 要在晶圆上堆叠数百层薄膜。</dd><dt>做法</dt><dd>仔细调整每一层薄膜的应力，让拉力和压力互相抵销，并持续测量晶圆的弯曲程度，必要时在晶圆背面铺上补偿用的薄膜。</dd><dt>为什么</dt><dd>每一层薄膜都有一点应力，数百层累积起来，就足以让整片晶圆翘曲。</dd><dt>没做会怎样</dt><dd class="q">晶圆无法平贴在曝光机上，造成对准误差；严重时机械臂甚至无法正常取放晶圆。</dd><dt>相关章节</dt><dd><a href="05-thin-films.html">第 5 章 薄膜</a></dd></dl></div><div class="cc note-c"><h4><span class="badge-s">名词</span><span>TSV（Through-Silicon Via，硅通孔）</span></h4><dl><dt>定义</dt><dd>垂直贯穿整颗芯片、填满金属的导线，让上下叠在一起的芯片可以直接连通。</dd><dt>现场用法</dt><dd>「TSV 的孔太深，铜没有填满。」</dd><dt>相关名词</dt><dd>HBM、晶圆薄化、微凸块、3D 堆叠</dd><dt>常见混淆</dt><dd class="q">TSV 和芯片内部的通孔（Via）不同。Via 只连接芯片内相邻的金属层，TSV 则贯穿整个硅基板。</dd></dl></div><div class="cc tip-c"><h4><span class="badge-s">Know-how</span><span>存储器里藏着备用电路</span></h4><dl><dt>情境</dt><dd>一颗存储器有数十亿个存储单元，几乎不可能每个都完美。</dd><dt>做法</dt><dd>设计时预留备用的行与列。测试时找到坏掉的单元，就用熔丝把它切换到备用电路上，称为<b>修补</b>（Repair）。</dd><dt>为什么</dt><dd>只要坏掉的数量在可修补范围内，整颗芯片就能「救回来」。</dd><dt>没做会怎样</dt><dd class="q">只要有一个单元坏掉，整颗芯片就得报废，存储器的良率会低到无法接受。</dd><dt>相关章节</dt><dd><a href="19-wafer-test.html">第 19 章 晶圆测试</a></dd></dl></div></div></section>
 <section><h2 class="sec-head"><span class="num">＋</span>延伸阅读</h2><ul style="color:var(--dim);font-size:14.5px;line-height:2;padding-left:22px"><li>Rino Micheloni、Luca Crippa、Alessia Marelli，《Inside NAND Flash Memories》</li><li>Bruce Jacob、Spencer W. Ng、David T. Wang，《Memory Systems: Cache, DRAM, Disk》</li></ul></section>

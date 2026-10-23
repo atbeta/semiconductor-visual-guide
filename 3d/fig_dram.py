@@ -1,8 +1,11 @@
-"""第 13 章：DRAM 1T1C 存储单元，正交 3D 渲染。
+"""第 13 章：DRAM 1T1C 存储单元（正交 3D，电容做成开口剖切）。
+
+思路：圆柱电容整颗画出来，里面的电极永远看不见。所以把它做成
+「少了前壁的杯子」——左壁、右壁、后壁、底，前面敞开，一眼看到内电极。
 
 运行：
   /Applications/Blender.app/Contents/MacOS/Blender -b --factory-startup \
-      --python 3d/fig_dram.py -- 输出.png
+      --python 3d/fig_dram.py -- 输出.png [输出.glb]
 """
 import bpy
 import sys
@@ -19,35 +22,39 @@ S = kit.mat("substrate", kit.PALETTE["substrate"], rough=0.55)
 N = kit.mat("nplus", kit.PALETTE["nplus"], rough=0.4)
 G = kit.mat("gate", kit.PALETTE["gate"], rough=0.3, metal=0.2)
 M = kit.mat("metal", kit.PALETTE["metal"], rough=0.25, metal=0.6)
-C = kit.mat("cap_glass", kit.PALETTE["gate"], rough=0.25, metal=0.1, alpha=0.34)
-D = kit.mat("dark", kit.PALETTE["dark"], rough=0.6)
+D = kit.mat("dark", kit.PALETTE["dark"], rough=0.55)
 
-# 衬底
-kit.box("sub", (3.0, 1.9, 0.3), (0, 0, 0.15), S, bevel=0.03)
+kit.box("sub", (3.2, 2.0, 0.28), (0, 0, 0.14), S, bevel=0.02)
+# 沟槽比字线略大、略低，避免共面导致 z-fighting
+kit.box("wl_trench", (2.96, 0.5, 0.2), (0, -0.52, 0.2), D, bevel=0.005)
+kit.box("wl", (2.9, 0.32, 0.1), (0, -0.52, 0.24), G, bevel=0.012)
 
-# 埋入式字线（横穿衬底的一条沟槽）
-kit.box("wl", (3.5, 0.34, 0.14), (0, -0.42, 0.33), D, bevel=0.02)
-kit.box("wl_cap", (3.5, 0.3, 0.03), (0, -0.42, 0.41), G, bevel=0.01)
+kit.box("sd_l", (0.34, 0.42, 0.1), (-0.62, -0.15, 0.33), N, bevel=0.01)
+kit.box("sd_r", (0.34, 0.42, 0.1), (0.62, -0.15, 0.33), N, bevel=0.01)
+kit.box("gate", (0.26, 0.5, 0.16), (0, -0.15, 0.37), G, bevel=0.01)
 
-# 源/漏区
-kit.box("sd_l", (0.36, 0.4, 0.1), (-0.55, -0.1, 0.35), N, bevel=0.01)
-kit.box("sd_r", (0.36, 0.4, 0.1), (0.55, -0.1, 0.35), N, bevel=0.01)
+kit.cyl("plug", 0.075, 0.30, (0.62, -0.15, 0.53), M, verts=24)
+kit.cyl("bl_plug", 0.07, 0.4, (-0.62, 0.4, 0.56), M, verts=24)
 
-# 存储节点接触
-kit.cyl("contact", 0.09, 0.34, (0.55, -0.1, 0.55), M, verts=32)
+# 位线放到后面，避免在视觉上挡住晶体管和电容
+kit.box("bl", (2.7, 0.16, 0.08), (0, 0.62, 0.72), M, bevel=0.012)
 
-# 圆柱电容：外电极 + 内电极
-kit.cyl("cap_out", 0.42, 0.95, (0.55, -0.1, 1.1), C, verts=48, bevel=0.02)
-kit.cyl("cap_in", 0.3, 0.8, (0.55, -0.1, 1.13), D, verts=48, bevel=0.01)
-kit.cyl("cap_hole", 0.18, 0.84, (0.55, -0.1, 1.14), S, verts=48, bevel=0.01)
+CX, CY, CZ = 0.62, -0.15, 0.98
+R, T, Hh, DEP = 0.46, 0.075, 0.62, 0.62
 
-# 位线
-kit.cyl("bl_contact", 0.09, 0.5, (-0.55, -0.1, 0.6), M, verts=32)
-kit.box("bl", (2.4, 0.2, 0.1), (-0.25, -0.78, 0.95), M, bevel=0.02)
+kit.box("cap_l", (T, DEP, Hh), (CX - R + T / 2, CY, CZ + Hh / 2), G, bevel=0.012)
+kit.box("cap_r", (T, DEP, Hh), (CX + R - T / 2, CY, CZ + Hh / 2), G, bevel=0.012)
+kit.box("cap_b", (2 * R, T, Hh), (CX, CY + DEP / 2 - T / 2, CZ + Hh / 2), G, bevel=0.012)
+kit.box("cap_f", (2 * R, DEP, T), (CX, CY, CZ + T / 2), G, bevel=0.012)
 
-# 电容顶部电极（横跨）
-kit.box("plate", (1.5, 0.9, 0.08), (0.35, -0.1, 1.74), M, bevel=0.02)
+kit.cyl("cap_inner", 0.13, Hh * 0.78, (CX, CY, CZ + T + Hh * 0.39), M, verts=32)
+kit.cyl("cap_contact", 0.06, 0.18, (CX, CY, CZ - 0.07), M, verts=20)
 
-kit.ortho_camera(loc=(5.2, -6.8, 4.6), target=(0.0, -0.15, 0.8), scale=5.4)
+kit.ortho_camera(loc=(4.4, -6.0, 3.7), target=(0.35, -0.15, 0.72), scale=4.6)
 kit.lights()
-kit.render(OUT, 1400, 900)
+kit.render(OUT, 1400, 1000)
+
+if len(argv) > 1 and argv[1].endswith(".glb"):
+    bpy.ops.export_scene.gltf(filepath=argv[1], export_format="GLB",
+                              export_apply=True, export_yup=True)
+    print("EXPORTED", argv[1])
